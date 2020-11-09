@@ -1,5 +1,8 @@
-import axios from 'axios';
+import axios from 'axios'; //API Getter
 
-//Gets weather api for corvallis
-export const getWeather = () => 
-  axios.get('http://api.openweathermap.org/data/2.5/weather?q=corvallis&appid=359129023dbd2efbbf6a1118594099e0');
+
+
+//Gets lodging api from our server;
+export const getLodge = () => 
+    axios.get('http://localhost:8888/lodgings');
+

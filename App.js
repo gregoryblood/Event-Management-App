@@ -4,18 +4,18 @@ import { render } from 'react-dom';
 import { 
   ActivityIndicator, 
   FlatList, 
+  ListViewBase, 
   StyleSheet, 
   Text, 
   View } from 'react-native';
-import { getWeather } from './Client/API/index.js'
+import { getLodge } from './Client/API/index.js'
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: null,
-      isLoading: true
+      data: null
     };
   }
 
@@ -25,17 +25,35 @@ export default class App extends Component {
   }
   async getData() {
     //Calls api and will finish when data is loaded
-    const { data } = await getWeather();
+    const { data } = await getLodge();
     this.setState({ data });
   }
   render() {
-    const { data, isLoading } = this.state;
+    const { data } = this.state;
 
     return (
-      <View style={{ flex: 1, padding: 24 }}>
+      <View style={styles.container}>
         { //If data then display api otherwise loading indicator
-        data ? (
-          <Text>{data.weather[0].main}</Text>): 
+        data ? ( //if data
+          <React.Fragment>
+            {/*this is how you get 1 item*/}
+            <Text style={styles.bold}>{data.lodgings[0].name}</Text>
+            {/*this is how you get multiple items*/}
+            <React.Fragment>
+              {data.lodgings.map((lodge, i) => (
+                  <Text key = {i}>
+                    <Text>
+                      {lodge.name}
+                    </Text>
+
+                  </Text>
+              ))}
+            </React.Fragment>
+          </React.Fragment>
+          
+          
+        ) 
+        : //else 
         (<ActivityIndicator/>)
         }
       </View>
@@ -50,4 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  bold: {
+    fontWeight: 'bold',
+  }
 });

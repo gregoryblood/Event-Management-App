@@ -1,0 +1,82 @@
+[
+    {
+      "name": "Lodging 1",
+      "description": "Description 1",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 2",
+      "description": "Description 2",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 3",
+      "description": "Description 3",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 4",
+      "description": "Description 4",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 5",
+      "description": "Description 5",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 6",
+      "description": "Description 6",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 7",
+      "description": "Description 7",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 8",
+      "description": "Description 8",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 9",
+      "description": "Description 9",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 10",
+      "description": "Description 10",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 11",
+      "description": "Description 11",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 12",
+      "description": "Description 12",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 13",
+      "description": "Description 13",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 14",
+      "description": "Description 14",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 15",
+      "description": "Description 15",
+      "price": 128.00
+    },
+    {
+      "name": "Lodging 16",
+      "description": "Description 16",
+      "price": 128.00
+    }
+  ]
