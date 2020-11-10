@@ -8,8 +8,8 @@
     "client:install": "npm install",
     "client": "npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node server/index.js",
-    "start": "node server/index.js",
+    "server": "node Server/index.js",
+    "start": "node Server/index.js",
     "heroku-postbuild": "npm install && npm run build"
   },
   "author": "gregory blood",
