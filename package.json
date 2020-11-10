@@ -1,12 +1,19 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "client:install": "npm install",
+    "client": "npm start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node server/index.js",
+    "start": "node server/index.js",
+    "heroku-postbuild": "npm install && npm run build"
   },
+  "author": "gregory blood",
+  "license": "ISC",
   "dependencies": {
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
@@ -24,5 +31,9 @@
   "devDependencies": {
     "@babel/core": "~7.9.0"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": "13.9.0",
+    "npm": "6.13.7"
+  }
 }
