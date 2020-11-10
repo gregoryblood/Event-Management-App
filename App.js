@@ -36,16 +36,19 @@ export default class App extends Component {
         { //If data then display api otherwise loading indicator
         data ? ( //if data
           <React.Fragment>
-            {/*this is how you get 1 item*/}
-            <Text style={styles.bold}>{data.lodgings[0].name}</Text>
+            {/*this is how you get 1 item
+            <Text style={styles.bold}>{data.events[0].name}</Text>
+            */}
+            
             {/*this is how you get multiple items*/}
             <React.Fragment>
-              {data.lodgings.map((lodge, i) => (
+              {data.events.map((lodge, i) => (
                   <Text key = {i}>
-                    <Text>
+                    <Text style = {styles.bold}>
                       {lodge.name}
                     </Text>
-
+                    <Text>{lodge.description}</Text>
+                    <Text>{lodge.location}</Text>
                   </Text>
               ))}
             </React.Fragment>
