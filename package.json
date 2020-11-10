@@ -1,5 +1,6 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "homepage": "https://osu-event-app.herokuapp.com/",
   "scripts": {
     "start": "npm start",
     "android": "expo start --android",
@@ -8,7 +9,7 @@
     "eject": "expo eject",
     "client:install": "npm install && npm install -g expo-cli",
     "client": "npm start",
-    "heroku-postbuild": "npm install && npm install -g expo-cli && npm run web-build",
+    "heroku-postbuild": "npm install && npm install -g expo-cli && expo build:web --no-pwa",
     "server": "node Server/index.js"
   },
   "dependencies": {
