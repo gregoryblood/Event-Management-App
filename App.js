@@ -6,22 +6,29 @@ import {
   AppRegistry,
   StyleSheet, 
   Text, 
-  View } from 'react-native';
+  View,
+  Dimensions  } from 'react-native';
 import { getLodge } from './Client/API/index.js'
+
+
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: null
+      data: null,
     };
   }
 
   componentDidMount() {
     //When app.js loads it will run an async func
     this.getData();
+    //Listens for screen change
   }
+
   async getData() {
     //Calls api and will finish when data is loaded
     const { data } = await getLodge();
@@ -41,17 +48,15 @@ export default class App extends Component {
             */}
             
             {/*this is how you get multiple items*/}
-            <React.Fragment>
+            <View style={styles.eventbox}>
               {data.events.map((lodge, i) => (
-                  <Text key = {i}>
-                    <Text style = {styles.bold}>
-                      {lodge.name}
-                    </Text>
-                    <Text>{lodge.description}</Text>
-                    <Text>{lodge.location}</Text>
-                  </Text>
+                  <View style={styles.event}  key = {i}>
+                    <Text style = {styles.title}>{lodge.name}</Text>
+                    <Text style = {styles.location}>{lodge.location}</Text>
+                    <Text style = {styles.description}>{lodge.description}</Text>
+                  </View>
               ))}
-            </React.Fragment>
+            </View>
           </React.Fragment>
           
           
@@ -71,8 +76,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  bold: {
+  eventbox: {
+    flexDirection: "column",
+    flex:1,
+    width: '100%'
+  },
+  event: {
+    flexDirection: "column",
+    height: 100,
+    padding: 20,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    borderStyle: 'solid'
+  },
+  title: {
     fontWeight: 'bold',
+    fontSize: 22
+  },
+  description: {
+    fontSize: 16
+  },
+  location: {
+    fontSize: 16,
+    fontStyle: "italic",
+    color: 'gray'
   }
 });
 
