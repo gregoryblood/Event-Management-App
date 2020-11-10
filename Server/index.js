@@ -3,6 +3,7 @@ const express = require('express'); // Express web server framework
 const request = require('request'); // "Request" library
 const cors = require('cors'); //Fixes Core Errors
 const path = require('path'); //Helps find files and stuff
+const PORT = process.env.PORT || 8888; ///Finds the port the server is being ran on
 //Create Server
 const app = express();
 //Tell our app to use tools
@@ -49,6 +50,6 @@ res.status(404).send({
 });
 
 //Function to console log that the server is running
-app.listen(8888, function () {
+app.listen(PORT, function () {
     console.log("== Server is listening on port 8888");
 });
