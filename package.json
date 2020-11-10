@@ -8,7 +8,7 @@
     "eject": "expo eject",
     "client:install": "npm install && npm install -g expo-cli",
     "client": "npm start",
-    "heroku-postbuild": "npm install && npm install -g expo-cli && expo build:web",
+    "heroku-postbuild": "npm install && npm install -g expo-cli && npm run build",
     "server": "node Server/index.js"
   },
   "dependencies": {
