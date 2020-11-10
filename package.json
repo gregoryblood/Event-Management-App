@@ -2,7 +2,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "homepage": "https://osu-event-app.herokuapp.com/",
   "scripts": {
-    "start": "expo start",
+    "start": "node Server/index.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
