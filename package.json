@@ -1,22 +1,16 @@
 {
-  "main": "./App.js",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "node Server/index.js",
+    "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build-web": "react-scripts build",
     "eject": "expo eject",
     "client:install": "npm install",
     "client": "npm start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node Server/index.js",
-    "heroku-postbuild": "npm install && npm run web"
+    "heroku-postbuild": "npm install && expo build:web",
+    "server": "node Server/index.js"
   },
-  "homepage": "https://osu-event-app.herokuapp.com",
-  "proxy": "http://localhost:3000",
-  "author": "Gregory Blood",
-  "license": "ISC",
   "dependencies": {
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
@@ -28,15 +22,11 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
-    "react-native-web": "^0.13.18",
+    "react-native-web": "~0.13.12",
     "request": "^2.88.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
   },
-  "private": true,
-  "engines": {
-    "node": "13.9.0",
-    "npm": "6.13.7"
-  }
+  "private": true
 }

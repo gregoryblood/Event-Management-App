@@ -3,8 +3,7 @@ import React, {Component} from 'react';
 import { render } from 'react-dom';
 import { 
   ActivityIndicator, 
-  FlatList, 
-  ListViewBase, 
+  AppRegistry,
   StyleSheet, 
   Text, 
   View } from 'react-native';
@@ -27,6 +26,7 @@ export default class App extends Component {
     //Calls api and will finish when data is loaded
     const { data } = await getLodge();
     this.setState({ data });
+    console.log(data);
   }
   render() {
     const { data } = this.state;
@@ -72,3 +72,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   }
 });
+
+
