@@ -1,17 +1,11 @@
 {
   "main": "node_modules/expo/AppEntry.js",
-  "homepage": "https://osu-event-app.herokuapp.com/",
   "scripts": {
-    "client:install": "npm install && npm install -g expo-cli",
-    "client": "expo build:web --no-pwa",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject",
-    
-    "heroku-postbuild": "npm install && npm install -g expo-cli && expo build:web --no-pwa",
-    "server": "node Server/index.js"
+    "eject": "expo eject"
   },
   "dependencies": {
     "axios": "^0.21.0",
