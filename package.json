@@ -8,7 +8,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "client:install": "npm install && npm install -g expo-cli",
-    "client": "npm start",
+    "client": "expo build:web --no-pwa",
     "heroku-postbuild": "npm install && npm install -g expo-cli && expo build:web --no-pwa",
     "server": "node Server/index.js"
   },
