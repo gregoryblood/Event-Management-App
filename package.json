@@ -1,28 +1,30 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "dependencies": {
+    "@ant-design/react-native": "^4.0.5",
+    "@react-native-community/masked-view": "~0.1.10",
+    "@react-navigation/drawer": "~5.8.4",
+    "@react-navigation/native": "~5.6.1",
+    "axios": "^0.21.0",
+    "babel-plugin-import": "^1.13.1",
+    "expo": "~39.0.0",
+    "react": "~16.13.0",
+    "react-dom": "~16.13.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
+    "react-native-gesture-handler": "~1.6.1",
+    "react-native-reanimated": "~1.9.0",
+    "react-native-safe-area-context": "~3.0.6",
+    "react-native-screens": "~2.10.1",
+    "react-native-web": "0.13.13"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0"
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
+    "web": "expo web",
     "eject": "expo eject"
-  },
-  "dependencies": {
-    "axios": "^0.21.0",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "expo": "~39.0.2",
-    "expo-status-bar": "~1.0.2",
-    "express": "^4.17.1",
-    "path": "^0.12.7",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
-    "react-native-web": "~0.13.12",
-    "request": "^2.88.2"
-  },
-  "devDependencies": {
-    "@babel/core": "~7.9.0"
   },
   "private": true
 }
