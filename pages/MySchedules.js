@@ -1,6 +1,6 @@
 import React, { Component, } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator
+  View, Text, StyleSheet, ActivityIndicator, Button, TextInput
 } from 'react-native'
 import { getLodge } from './../Client/API/index.js'
 export default class MySchedules extends Component {
@@ -9,7 +9,9 @@ export default class MySchedules extends Component {
 
     this.state = {
       data: null,
+      eventList: 0,
     };
+
   }
 
   componentDidMount() {
@@ -32,11 +34,22 @@ export default class MySchedules extends Component {
       </View>
     })
   }
+  
+  sayTest(){
+    if (this.state.eventList == 0) return <h1>Test</h1>
+  }
 
-  render() {
+  onCreatePress(changeTo){
+    this.setState({
+      eventList: changeTo,
+    });
+  }
+
+  sendEventList(){
     const { data } = this.state
-    return (
+    return(
       <View style={styles.container}>
+        <React.Fragment>
         { //If data then display api otherwise loading indicator
           data ? ( //if data
             <React.Fragment>
@@ -55,12 +68,58 @@ export default class MySchedules extends Component {
             : //else 
             (<ActivityIndicator />)
         }
+        </React.Fragment>
+        <React.Fragment><Button style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.onCreatePress(1)} ></Button></React.Fragment>
       </View>
+    ) 
+  }
+  sendCreateForm(){
+    return(
+      <React.Fragment>
+        <form>
+          <Text style={styles.formLabel}>Event Name:</Text>
+          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <Text style={styles.formLabel}>Event Description:</Text>
+          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <Text style={styles.formLabel}>Event Location</Text>
+          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+        </form>
+        <Button style={styles.createbutton} color = '#ff9900' title="Submit Event" onPress={() => this.onCreatePress(0)}></Button>
+      </React.Fragment>
+    )
+  }
+  displayOrCreate(){
+    if (this.state.eventList == 0) return this.sendEventList();
+    if(this.state.eventList == 1) return this.sendCreateForm();
+  }
+
+  render() {
+    return (
+        <React.Fragment>
+          {this.displayOrCreate()}
+        </React.Fragment>
     )
   }
 
 }
 const styles = StyleSheet.create({
+  
+  formLabel:{
+    marginLeft: '20%',
+  },
+
+  formInput:{
+    margin: 20,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+
+  createbutton:{
+    paddingLeft: '25%',
+    paddingRight: '25%',
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -92,7 +151,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "italic",
     color: 'gray'
-  }
+  },
+  
+
 });
 
 
