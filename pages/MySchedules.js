@@ -1,17 +1,22 @@
 import React, { Component, } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput
-} from 'react-native'
-import { getLodge } from './../Client/API/index.js'
+} from 'react-native';
+
+import { getEvent, addEventToList } from './../Client/API/index.js';
+
+const initialState = {
+  name: '',
+  description: '',
+  location: '',
+  eventList: 0
+};
+
 export default class MySchedules extends Component {
-  constructor(props) {
-    super(props);
+  state = initialState;
 
-    this.state = {
-      data: null,
-      eventList: 0,
-    };
-
+  updateField = (field) => (text) => {
+    this.setState({ [field]: text });
   }
 
   componentDidMount() {
@@ -20,17 +25,25 @@ export default class MySchedules extends Component {
 
   async getData() {
     //Calls api and will finish when data is loaded
-    const { data } = await getLodge();
+    const { data } = await getEvent();
     this.setState({ data });
-    console.log(data);
+  }
+  //Adds object to Events  //addToEvents = async () =>
+  addToEvents = async () => {
+    const { name, description, location } = this.state;
+    await addEventToList(name, description, location);
+    this.getData();
+    this.setState(initialState);
+    this.onCreatePress(0);
+    
   }
 
   showList(arr) {
-    return arr.map((lodge, i) => {
+    return arr.map((event, i) => {
       return <View style={styles.event} key={i}>
-        <Text style={styles.title}>{lodge.name}</Text>
-        <Text style={styles.location}>{lodge.location}</Text>
-        <Text style={styles.description}>{lodge.description}</Text>
+        <Text style={styles.title}>{event.name}</Text>
+        <Text style={styles.location}>{event.location}</Text>
+        <Text style={styles.description}>{event.description}</Text>
       </View>
     })
   }
@@ -43,6 +56,7 @@ export default class MySchedules extends Component {
     this.setState({
       eventList: changeTo,
     });
+
   }
 
   sendEventList(){
@@ -74,17 +88,22 @@ export default class MySchedules extends Component {
     ) 
   }
   sendCreateForm(){
+    
+
     return(
       <React.Fragment>
         <form>
           <Text style={styles.formLabel}>Event Name:</Text>
-          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <TextInput onChangeText={this.updateField('name')}
+            style={styles.formInput} type="text"></TextInput><br></br>
           <Text style={styles.formLabel}>Event Description:</Text>
-          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <TextInput onChangeText={this.updateField('description')}
+            style={styles.formInput} type="text"></TextInput><br></br>
           <Text style={styles.formLabel}>Event Location</Text>
-          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <TextInput onChangeText={this.updateField('location')}
+            style={styles.formInput} type="text"></TextInput><br></br>
         </form>
-        <Button style={styles.createbutton} color = '#ff9900' title="Submit Event" onPress={() => this.onCreatePress(0)}></Button>
+        <Button onPress={this.addToEvents} style={styles.createbutton} color = '#ff9900' title="Submit Event" ></Button>
       </React.Fragment>
     )
   }
@@ -116,8 +135,10 @@ const styles = StyleSheet.create({
   },
 
   createbutton:{
-    paddingLeft: '25%',
-    paddingRight: '25%',
+    width: 44,
+    height: 44,
+    borderRadius: 44/2,
+    alignSelf: 'flex-end'
   },
 
   container: {

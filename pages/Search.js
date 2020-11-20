@@ -7,7 +7,10 @@ export default class Search extends Component {
 
   render() {
     return (
-      <View><Text>The search page</Text></View>
+      <View>
+        <Text>The search page</Text>
+        
+      </View>
     )
   }
 
