@@ -40,14 +40,13 @@ export default class MySchedules extends Component {
 
   showList(arr) {
     return arr.map((event, i) => {
-      return <View style={styles.event} key={i}>
+      return<View style={styles.event} key={i}>
         <Text style={styles.title}>{event.name}</Text>
         <Text style={styles.location}>{event.location}</Text>
         <Text style={styles.description}>{event.description}</Text>
       </View>
     })
   }
-  
   sayTest(){
     if (this.state.eventList == 0) return <h1>Test</h1>
   }
@@ -73,11 +72,9 @@ export default class MySchedules extends Component {
 
               {/*this is how you get multiple items*/}
               <View style={styles.eventbox}>
-                {data && this.showList(this.state.data.events)}
+                {data && this.showList(this.state.data)}
               </View>
             </React.Fragment>
-
-
           )
             : //else 
             (<ActivityIndicator />)
@@ -162,6 +159,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid'
   },
   title: {
+
+    color: '#ff9900',
     fontWeight: 'bold',
     fontSize: 22
   },
