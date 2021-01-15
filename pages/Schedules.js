@@ -73,7 +73,7 @@ export default class Schedules extends Component {
 
               {/*this is how you get multiple items*/}
               <View style={styles.eventbox}>
-                {data && this.showList(this.state.data.events)}
+                {data && this.showList(this.state.data)}
               </View>
             </React.Fragment>
 
