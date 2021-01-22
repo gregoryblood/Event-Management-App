@@ -3,6 +3,7 @@ import { TabBar,Icon } from '@ant-design/react-native';
 
 import * as Font from 'expo-font';
 
+//import EventInfo from './EventInfo'
 import Home1Page from './MySchedules' //My Events page页面
 import Home2Page from './Schedules' //Explore page页面
 import Home3Page from './Search' //Search page页面
@@ -39,6 +40,7 @@ export default class MainScreen extends React.Component {
   }
   render() {
     return (
+      <React.Fragment>
       <TabBar
         unselectedTintColor="#949494"
         tintColor="#FD7420"
@@ -66,9 +68,13 @@ export default class MainScreen extends React.Component {
           selected={this.state.selectedTab === 'Tab3'}
           onPress={() => this.onChangeTab('Tab3')}
         >
+          <React.Fragment>
+            <h1>Hello</h1>
+          </React.Fragment>
           <Home3Page></Home3Page>
         </TabBar.Item>
       </TabBar>
+      </React.Fragment>
     );
   }
 }

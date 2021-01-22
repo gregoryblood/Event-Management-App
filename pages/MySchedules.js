@@ -1,6 +1,6 @@
 import React, { Component, } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator, Button, TextInput
+  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableWithoutFeedback
 } from 'react-native'
 import { getLodge } from './../Client/API/index.js'
 export default class MySchedules extends Component {
@@ -10,6 +10,10 @@ export default class MySchedules extends Component {
     this.state = {
       data: null,
       eventList: 0,
+      cardName: "unset",
+      cardLoc: "unset",
+      cardDesc: "unset",
+
     };
 
   }
@@ -24,14 +28,23 @@ export default class MySchedules extends Component {
     this.setState({ data });
     console.log(data);
   }
-
+  expandInfo(name, location, description){
+    this.setState({
+      cardName: name,
+      cardLoc: location,
+      cardDesc: description,
+      eventList: 2
+    })
+  }
   showList(arr) {
     return arr.map((lodge, i) => {
-      return <View style={styles.event} key={i}>
+      return <TouchableWithoutFeedback onPress={() => this.expandInfo(lodge.name, lodge.location, lodge.description)}>
+        <View style={styles.event} key={i}>
         <Text style={styles.title}>{lodge.name}</Text>
         <Text style={styles.location}>{lodge.location}</Text>
         <Text style={styles.description}>{lodge.description}</Text>
       </View>
+      </TouchableWithoutFeedback>
     })
   }
   
@@ -43,6 +56,16 @@ export default class MySchedules extends Component {
     this.setState({
       eventList: changeTo,
     });
+  }
+
+  sendCard(){
+    return(<React.Fragment>
+        <View>{this.state.cardName}</View>
+        <View>{this.state.cardLoc}</View>
+        <View>{this.state.cardDesc}</View>
+        <Button style={styles.createbutton} color = '#ff9900' title="Return to list" onPress={() => this.onCreatePress(0)}></Button>
+      </React.Fragment>
+    )
   }
 
   sendEventList(){
@@ -58,9 +81,9 @@ export default class MySchedules extends Component {
           */}
 
               {/*this is how you get multiple items*/}
-              <View style={styles.eventbox}>
-                {data && this.showList(this.state.data.events)}
-              </View>
+               <View style={styles.eventbox}>
+                 {data && this.showList(this.state.data)}
+               </View>
             </React.Fragment>
 
 
@@ -91,6 +114,7 @@ export default class MySchedules extends Component {
   displayOrCreate(){
     if (this.state.eventList == 0) return this.sendEventList();
     if(this.state.eventList == 1) return this.sendCreateForm();
+    if(this.state.eventList == 2) return this.sendCard();
   }
 
   render() {
