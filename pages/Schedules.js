@@ -1,180 +1,174 @@
-import React, { Component, } from 'react'
+import React, { Component } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator, Button, TextInput
-} from 'react-native';
-
-import { getEvent, addEventToList } from './../Client/API/index.js';
-
-const initialState = {
-  name: '',
-  description: '',
-  location: '',
-  eventList: 0
-};
+  View, Text
+} from 'react-native'
+import { WhiteSpace, WingBlank, Card, Icon } from '@ant-design/react-native';
+import * as Font from 'expo-font';
+import Home1Page from './MySchedules' //My Events page
 
 export default class Schedules extends Component {
-  state = initialState;
-
-  updateField = (field) => (text) => {
-    this.setState({ [field]: text });
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTab: 'Tab2', //The default opentab1
+      monthList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      monthValue: 2
+    };
   }
 
-  componentDidMount() {
-    this.getData();
+  async componentDidMount() {
+    //get icon
+    await Font.loadAsync(
+      'antfill',
+      // eslint-disable-next-line
+      require('@ant-design/icons-react-native/fonts/antfill.ttf')
+    );
+    // eslint-disable-next-line
   }
 
-  async getData() {
-    //Calls api and will finish when data is loaded
-    const { data } = await getEvent();
-    this.setState({ data });
-  }
-  //Adds object to Events  //addToEvents = async () =>
-  addToEvents = async () => {
-    const { name, description, location } = this.state;
-    await addEventToList(name, description, location);
-    this.getData();
-    this.setState(initialState);
-    this.onCreatePress(0);
-    
-  }
-
-  showList(arr) {
-    return arr.map((event, i) => {
-      return <View style={styles.event} key={i}>
-        <Text style={styles.title}>{event.name}</Text>
-        <Text style={styles.location}>{event.location}</Text>
-        <Text style={styles.description}>{event.description}</Text>
-      </View>
-    })
-  }
-  
-  sayTest(){
-    if (this.state.eventList == 0) return <h1>Test</h1>
-  }
-
-  onCreatePress(changeTo){
+  onChangeTab(tabName) {
+    //switch tab
     this.setState({
-      eventList: changeTo,
+      selectedTab: tabName,
     });
-
   }
 
-  sendEventList(){
-    const { data } = this.state
-    return(
-      <View style={styles.container}>
-        <React.Fragment>
-        { //If data then display api otherwise loading indicator
-          data ? ( //if data
-            <React.Fragment>
-              {/*this is how you get 1 item
-          <Text style={styles.bold}>{data.events[0].name}</Text>
-          */}
-
-              {/*this is how you get multiple items*/}
-              <View style={styles.eventbox}>
-                {data && this.showList(this.state.data)}
-              </View>
-            </React.Fragment>
-
-
-          )
-            : //else 
-            (<ActivityIndicator />)
-        }
-        </React.Fragment>
-        <React.Fragment><Button style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.onCreatePress(1)} ></Button></React.Fragment>
-      </View>
-    ) 
-  }
-  sendCreateForm(){
-    
-
-    return(
-      <React.Fragment>
-        <form>
-          <Text style={styles.formLabel}>Event Name:</Text>
-          <TextInput onChangeText={this.updateField('name')}
-            style={styles.formInput} type="text"></TextInput><br></br>
-          <Text style={styles.formLabel}>Event Description:</Text>
-          <TextInput onChangeText={this.updateField('description')}
-            style={styles.formInput} type="text"></TextInput><br></br>
-          <Text style={styles.formLabel}>Event Location</Text>
-          <TextInput onChangeText={this.updateField('location')}
-            style={styles.formInput} type="text"></TextInput><br></br>
-        </form>
-        <Button onPress={this.addToEvents} style={styles.createbutton} color = '#ff9900' title="Submit Event" ></Button>
-      </React.Fragment>
-    )
-  }
-  displayOrCreate(){
-    if (this.state.eventList == 0) return this.sendEventList();
-    if(this.state.eventList == 1) return this.sendCreateForm();
+  setMonth() {
+    //Change month
+    if (this.state.monthValue == 11) {
+      this.setState({
+        monthValue: 0
+      })
+    } else {
+      var index = this.state.monthValue
+      this.setState({
+        monthValue: index + 1
+      })
+    }
   }
 
   render() {
     return (
-        <React.Fragment>
-          {this.displayOrCreate()}
-        </React.Fragment>
+      <View style={{ height: '97%', overflow: 'scroll' }}>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div style={{
+            flex: 1, textAlign: 'left', padding: 12,
+            margin: 'auto 2px',
+            display:this.state.selectedTab == 'Tab1' ?'block':'none'
+          }}>
+            {this.state.monthList[this.state.monthValue]}<span style={{ color: '#999' }} onClick={() => this.setMonth()}> ⏷ </span>
+          </div>
+          <div style={{ flex: 1, textAlign: 'right' }}>
+            <div style={{ margin: '12px' }}>
+              <span onClick={() => this.onChangeTab('Tab1')} style={{ 'overflow': 'none', 'zIndex': 1,'position': 'fixed', 'top': 5, 'right': 50, 'background': this.state.selectedTab == 'Tab1' ? "#ff9900" : "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Icon name={"book"} color={this.state.selectedTab == 'Tab1' ? "#fff" : "#666"} /></span>
+              <span onClick={() => this.onChangeTab('Tab2')} style={{ 'overflow': 'none','zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': this.state.selectedTab == 'Tab2' ? "#ff9900" : "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Icon name={"menu"} color={this.state.selectedTab == 'Tab2' ? "#fff" : "#666"} /></span>
+            </div>
+          </div>
+        </div>
+        {
+          this.state.selectedTab == 'Tab1' ? <div>
+            <WingBlank>
+              {/*Calendar content */}
+              <div>
+                <div style={{ marginBottom: 12, borderRadius: 5, display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ flex: 1, textAlign: 'center' }}>S</div>
+                  <div style={{ flex: 1, textAlign: 'center' }}>M</div>
+                  <div style={{ flex: 1, textAlign: 'center' }}>T</div>
+                  <div style={{ flex: 1, textAlign: 'center' }}>W</div>
+                  <div style={{ flex: 1, textAlign: 'center' }}>T</div>
+                  <div style={{ flex: 1, textAlign: 'center' }}>F</div>
+                  <div style={{ flex: 1, textAlign: 'center' }}>S</div>
+                </div>
+                <div style={{ marginBottom: 12, border: '1px solid #999', borderRadius: 5, display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>30</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>31</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>1</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>2</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>3</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>
+                    4
+              <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#000', margin: '0px auto' }}></div>
+                  </div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px' }}>5</div>
+                </div>
+                <div style={{ marginBottom: 12, border: '1px solid #999', borderRadius: 5, display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>6</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>7</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>8</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>
+                    9
+              <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div>
+                  </div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>10</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>11</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px' }}>12</div>
+                </div>
+                <div style={{ marginBottom: 12, border: '1px solid #999', borderRadius: 5, display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>13</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>14</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>
+                    15
+              <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div>
+                  </div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>16</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>17</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>18</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px' }}>19</div>
+                </div>
+                <div style={{ marginBottom: 12, border: '1px solid #999', borderRadius: 5, display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>20</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>21</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>22</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>
+                    23
+              <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#000', margin: '0px auto' }}></div>
+                  </div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>24</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>
+                    25
+              <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div></div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px' }}>26</div>
+                </div>
+                <div style={{ marginBottom: 12, border: '1px solid #999', borderRadius: 5, display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>27</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>28</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>29</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>30</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>31</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>1</div>
+                  <div style={{ flex: 1, textAlign: 'center', padding: '6px 0px' }}>2</div>
+                </div>
+              </div>
+            </WingBlank>
+
+            {/* card content */}
+            <WingBlank>
+              <Card>
+                <WingBlank><h1 color="#f50">First Event</h1></WingBlank>
+                <WingBlank><div>Wendnesday. Septemer 9,2021</div></WingBlank>
+                <WingBlank><div>Location at 6:00 pm</div></WingBlank>
+                <WingBlank><div>Description</div></WingBlank>
+              </Card>
+              <Card>
+                <WingBlank><h1 color="#f50">Event</h1></WingBlank>
+                <WingBlank><div>Wendnesday. Septemer 10,2021</div></WingBlank>
+                <WingBlank><div>Location at 6:00 pm</div></WingBlank>
+                <WingBlank><div>Description</div></WingBlank>
+              </Card>
+              <Card>
+                <WingBlank><h1 color="#f50">Super long event name...</h1></WingBlank>
+                <WingBlank><div>Wendnesday. Septemer 9,2021</div></WingBlank>
+                <WingBlank><div>Location at 6:00 pm</div></WingBlank>
+                <WingBlank><div>Description</div></WingBlank>
+              </Card>
+              <WhiteSpace></WhiteSpace>
+            </WingBlank>
+          </div> : <Home1Page></Home1Page>}
+      </View>
     )
   }
 
+
+  componentDidMount() {
+  }
 }
-const styles = StyleSheet.create({
-  
-  formLabel:{
-    marginLeft: '20%',
-  },
-
-  formInput:{
-    margin: 20,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'black',
-  },
-
-  createbutton:{
-    width: 44,
-    height: 44,
-    borderRadius: 44/2,
-    alignSelf: 'flex-end'
-  },
-
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  eventbox: {
-    flexDirection: "column",
-    flex: 1,
-    width: '100%'
-  },
-  event: {
-    flexDirection: "column",
-    height: 100,
-    padding: 20,
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    borderStyle: 'solid'
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 22
-  },
-  description: {
-    fontSize: 16
-  },
-  location: {
-    fontSize: 16,
-    fontStyle: "italic",
-    color: 'gray'
-  },
-  
-
-});
-
-

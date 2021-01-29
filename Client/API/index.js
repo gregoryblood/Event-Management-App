@@ -3,10 +3,15 @@ import axios from 'axios'; //API Getter
 
 
 
-//Gets lodging api from our server;
+//Gets all events
 export const getEvent = () => 
     axios.get('https://osu-event-server.herokuapp.com/');
-
+//Gets one event
+export const getAEvent = (id) => 
+    axios.get('https://osu-event-server.herokuapp.com/'+id);
+//Gets number of events
+export const getCount = () => 
+    axios.get('https://osu-event-server.herokuapp.com/count');
 
 //Adds tracks to a given playlist
 export const addEventToList = (name, description, location) => {
