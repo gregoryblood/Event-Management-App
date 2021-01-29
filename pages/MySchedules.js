@@ -1,8 +1,9 @@
 import React, { Component, } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableWithoutFeedback
-} from 'react-native'
-import { getLodge } from './../Client/API/index.js'
+} from 'react-native';
+import { getEvent } from './../Client/API/index.js';
+
 export default class MySchedules extends Component {
   constructor(props) {
     super(props);
@@ -15,17 +16,17 @@ export default class MySchedules extends Component {
       cardDesc: "unset",
 
     };
-
+  }
 
   updateField = (field) => (text) => {
     this.setState({ [field]: text });
   }
 
   componentDidMount() {
-    this.getData();
+    this.getEvent();
   }
 
-  async getData() {
+  async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();
     this.setState({ data });
