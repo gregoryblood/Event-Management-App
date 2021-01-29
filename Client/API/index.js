@@ -16,7 +16,7 @@ export const addAttendee = (id) =>
 export const removeAttendee = (id) => 
     axios.get('https://osu-event-server.herokuapp.com/removeattendee/'+id);
 //Updates the max slots of an event
-export const removeAttendee = (id, num) => 
+export const updateMaxSlots = (id, num) => 
     axios.get('https://osu-event-server.herokuapp.com/updatemaxslots/'+id+'/'+num);
 
 //Adds tracks to a given playlist
