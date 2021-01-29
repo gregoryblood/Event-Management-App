@@ -16,6 +16,9 @@ export default class MySchedules extends Component {
 
     };
 
+
+  updateField = (field) => (text) => {
+    this.setState({ [field]: text });
   }
 
   componentDidMount() {
@@ -24,9 +27,17 @@ export default class MySchedules extends Component {
 
   async getData() {
     //Calls api and will finish when data is loaded
-    const { data } = await getLodge();
+    const { data } = await getEvent();
     this.setState({ data });
-    console.log(data);
+  }
+  //Adds object to Events  //addToEvents = async () =>
+  addToEvents = async () => {
+    const { name, description, location } = this.state;
+    await addEventToList(name, description, location);
+    this.getData();
+    this.setState(initialState);
+    this.onCreatePress(0);
+    
   }
   expandInfo(name, location, description){
     this.setState({
@@ -37,17 +48,18 @@ export default class MySchedules extends Component {
     })
   }
   showList(arr) {
+
     return arr.map((lodge, i) => {
       return <TouchableWithoutFeedback onPress={() => this.expandInfo(lodge.name, lodge.location, lodge.description)}>
         <View style={styles.event} key={i}>
         <Text style={styles.title}>{lodge.name}</Text>
         <Text style={styles.location}>{lodge.location}</Text>
         <Text style={styles.description}>{lodge.description}</Text>
+
       </View>
       </TouchableWithoutFeedback>
     })
   }
-  
   sayTest(){
     if (this.state.eventList == 0) return <h1>Test</h1>
   }
@@ -56,6 +68,7 @@ export default class MySchedules extends Component {
     this.setState({
       eventList: changeTo,
     });
+
   }
 
   sendCard(){
@@ -81,12 +94,11 @@ export default class MySchedules extends Component {
           */}
 
               {/*this is how you get multiple items*/}
-               <View style={styles.eventbox}>
-                 {data && this.showList(this.state.data)}
-               </View>
+
+              <View style={styles.eventbox}>
+                {data && this.showList(this.state.data)}
+              </View>
             </React.Fragment>
-
-
           )
             : //else 
             (<ActivityIndicator />)
@@ -97,17 +109,22 @@ export default class MySchedules extends Component {
     ) 
   }
   sendCreateForm(){
+    
+
     return(
       <React.Fragment>
         <form>
           <Text style={styles.formLabel}>Event Name:</Text>
-          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <TextInput onChangeText={this.updateField('name')}
+            style={styles.formInput} type="text"></TextInput><br></br>
           <Text style={styles.formLabel}>Event Description:</Text>
-          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <TextInput onChangeText={this.updateField('description')}
+            style={styles.formInput} type="text"></TextInput><br></br>
           <Text style={styles.formLabel}>Event Location</Text>
-          <TextInput style={styles.formInput} type="text"></TextInput><br></br>
+          <TextInput onChangeText={this.updateField('location')}
+            style={styles.formInput} type="text"></TextInput><br></br>
         </form>
-        <Button style={styles.createbutton} color = '#ff9900' title="Submit Event" onPress={() => this.onCreatePress(0)}></Button>
+        <Button onPress={this.addToEvents} style={styles.createbutton} color = '#ff9900' title="Submit Event" ></Button>
       </React.Fragment>
     )
   }
@@ -140,8 +157,10 @@ const styles = StyleSheet.create({
   },
 
   createbutton:{
-    paddingLeft: '25%',
-    paddingRight: '25%',
+    width: 44,
+    height: 44,
+    borderRadius: 44/2,
+    alignSelf: 'flex-end'
   },
 
   container: {
@@ -165,6 +184,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid'
   },
   title: {
+
+    color: '#ff9900',
     fontWeight: 'bold',
     fontSize: 22
   },
