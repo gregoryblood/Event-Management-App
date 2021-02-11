@@ -9,6 +9,7 @@
     "dependencies": "0.0.1",
     "expo": "~39.0.0",
     "expo-cli": "^4.0.7",
+    "moment": "^2.29.1",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
