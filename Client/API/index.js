@@ -27,3 +27,6 @@ export const addEventToList = (name, description, location) => {
     return axios({ method: 'post', url, data });
   };
 
+//search
+export const getEventByTime = (start,end) => 
+    axios.get('http://localhost:8888/getByTime/'+start+'/'+end);
