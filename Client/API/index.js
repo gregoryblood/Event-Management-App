@@ -19,7 +19,7 @@ export const removeAttendee = (id) =>
 export const updateMaxSlots = (id, num) => 
     axios.get('https://osu-event-server.herokuapp.com/updatemaxslots/'+id+'/'+num);
 
-//Adds tracks to a given playlist
+//Adds event
 export const addEventToList = (name, description, location) => {
     const url = `https://osu-event-server.herokuapp.com/events`;
     const data = {name, description, location};
@@ -27,3 +27,6 @@ export const addEventToList = (name, description, location) => {
     return axios({ method: 'post', url, data });
   };
 
+//search
+export const getEventByTime = (start,end) => 
+    axios.get('http://localhost:8888/getByTime/'+start+'/'+end);

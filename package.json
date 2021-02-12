@@ -8,7 +8,12 @@
     "babel-plugin-import": "^1.13.1",
     "dependencies": "0.0.1",
     "expo": "~39.0.0",
+<<<<<<< HEAD
     "expo-cli": "^4.1.6",
+=======
+    "expo-cli": "^4.0.7",
+    "moment": "^2.29.1",
+>>>>>>> 09b3722a38a05e0c246f701f1006d3df04b504b0
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
