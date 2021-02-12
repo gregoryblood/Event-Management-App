@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {
   View, Text
-} from 'react-native'
+} from 'react-native';
 import { WhiteSpace, WingBlank, Card, Icon } from '@ant-design/react-native';
 import * as Font from 'expo-font';
-import Home1Page from './MySchedules' //My Events page
-import moment from 'moment'
+import Home1Page from './MySchedules'; //My Events page
+import moment from 'moment';
 import { getEventByTime } from './../Client/API/index.js';
 
 export default class Schedules extends Component {
@@ -50,7 +50,7 @@ export default class Schedules extends Component {
     if (monthVal < 10) {
       monthVal = "0" + monthVal
     }
-    var startDate = moment(new Date().getFullYear() + '-' + monthVal + '- 01' + ' 00:00:00');
+    var startDate = moment(new Date().getFullYear() + '-' + monthVal + '-01' + ' 00:00:00');
     var endDate = startDate.clone().endOf('month');
     console.log(startDate.toDate(), moment(startDate).format('YYYY-MM-DD'));
     console.log(endDate.toDate(), moment(endDate).format('YYYY-MM-DD'));
