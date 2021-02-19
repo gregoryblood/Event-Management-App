@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   title: {
 
-    color: '#ff9900',
+    color: "black",
     fontWeight: 'bold',
     fontSize: 22
   },

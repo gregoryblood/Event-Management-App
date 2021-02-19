@@ -52,10 +52,10 @@ export default class Schedules extends Component {
     }
     var startDate = moment(new Date().getFullYear() + '-' + monthVal + '-01' + ' 00:00:00');
     var endDate = startDate.clone().endOf('month');
-    console.log(startDate.toDate(), moment(startDate).format('YYYY-MM-DD'));
-    console.log(endDate.toDate(), moment(endDate).format('YYYY-MM-DD'));
+    //console.log(startDate.toDate(), moment(startDate).format('YYYY-MM-DD'));
+    //console.log(endDate.toDate(), moment(endDate).format('YYYY-MM-DD'));
     const { data } = await getEventByTime(moment(startDate).format('YYYY-MM-DD'), moment(endDate).format('YYYY-MM-DD'));
-    console.log(data)
+    //console.log(data)
     this.setState({ eventData: data })
   }
 //月 Switch month
@@ -101,7 +101,7 @@ export default class Schedules extends Component {
   }
 //Select the date, if there is an event on the date, access the interface to get the event
   showEvents(val) {
-    console.log(this.state.eventData)
+    //console.log(this.state.eventData)
     let monthVal = this.state.monthValue + 1
     if (monthVal < 10) {
       monthVal = "0" + monthVal
@@ -111,7 +111,7 @@ export default class Schedules extends Component {
       dayVal = "0" + dayVal
     }
     let dat = moment(new Date().getFullYear() + '-' + monthVal + '-' + dayVal + ' 00:00:00')
-    console.log(dat)
+    //console.log(dat)
     dat = new Date(dat).getTime()
     let dayEvent = []
     if (this.state.eventData && this.state.eventData.length) {
@@ -122,7 +122,7 @@ export default class Schedules extends Component {
         }
       });
     }
-    console.log(dayEvent)
+    //console.log(dayEvent)
     this.setState({
       dayEvent
     })
@@ -133,7 +133,7 @@ export default class Schedules extends Component {
     return arr.map((item, i) => {
       return  <WingBlank>
               <Card>
-                <WingBlank><h1 color="#f50">{item.name}</h1></WingBlank>
+                <WingBlank><h1 color="black">{item.name}</h1></WingBlank>
                 <WingBlank><div>{item.edate}</div></WingBlank>
                 <WingBlank><div>{item.location}</div></WingBlank>
                 <WingBlank><div>{item.description}</div></WingBlank>

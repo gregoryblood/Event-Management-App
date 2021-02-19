@@ -29,4 +29,4 @@ export const addEventToList = (name, description, location) => {
 
 //search
 export const getEventByTime = (start,end) => 
-    axios.get('http://localhost:8888/getByTime/'+start+'/'+end);
+    axios.get('https://osu-event-server.herokuapp.com/getByTime/'+start+'/'+end);
