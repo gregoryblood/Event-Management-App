@@ -3,6 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableWithoutFeedback
 } from 'react-native';
 import { getEvent } from './../Client/API/index.js';
+import { Icon } from '@ant-design/react-native';
 
 export default class MySchedules extends Component {
   constructor(props) {
@@ -11,11 +12,13 @@ export default class MySchedules extends Component {
     this.state = {
       data: null,
       eventList: 0,
-      cardName: "unset",
-      cardLoc: "unset",
-      cardDesc: "unset",
+      currCard: null,
+      doSign: 1,
 
     };
+
+    this.signUp = this.signUp.bind(this);
+    this.signDown = this.signDown.bind(this);
   }
 
   updateField = (field) => (text) => {
@@ -40,18 +43,17 @@ export default class MySchedules extends Component {
     this.onCreatePress(0);
     
   }
-  expandInfo(name, location, description){
+  expandInfo(lodge){
     this.setState({
-      cardName: name,
-      cardLoc: location,
-      cardDesc: description,
-      eventList: 2
+      currCard: lodge,
+      eventList: 2,
+      doSign: 1
     })
   }
   showList(arr) {
 
     return arr.map((lodge, i) => {
-      return <TouchableWithoutFeedback onPress={() => this.expandInfo(lodge.name, lodge.location, lodge.description)}>
+      return <TouchableWithoutFeedback onPress={() => this.expandInfo(lodge)}>
         <View style={styles.event} key={i}>
         <Text style={styles.title}>{lodge.name}</Text>
         <Text style={styles.location}>{lodge.location}</Text>
@@ -72,19 +74,49 @@ export default class MySchedules extends Component {
 
   }
 
+  signUp(){
+    this.setState({
+      doSign: 0
+    });
+  }
+  
+  signDown(){
+    this.setState({
+      doSign: 1
+    });
+  }
+
+  signForm(){
+    if(this.state.doSign == 0) return(
+      <View style = {styles.signSheet}>
+        <TouchableWithoutFeedback onPress = {this.signDown}><Icon style = {styles.signSheetClose} name = {'close'}/></TouchableWithoutFeedback>
+        <Text style = {styles.signSheetText}>This event has the option of to be integrated with your persoal calendar</Text>
+        <View style = {styles.syncHolder}><Button style = {styles.calendarSyncButton} title = 'Sync Calednar' color = 'orange'></Button></View>
+      </View>
+    );
+  }
+
   sendCard(){
-    return(<React.Fragment>
-        <View>{this.state.cardName}</View>
-        <View>{this.state.cardLoc}</View>
-        <View>{this.state.cardDesc}</View>
-        <Button style={styles.createbutton} color = '#ff9900' title="Return to list" onPress={() => this.onCreatePress(0)}></Button>
-      </React.Fragment>
+    //name description location edate etime slots maxslots
+    return(<>
+        <React.Fragment>{this.signForm()}</React.Fragment>
+        <View style ={styles.displayCard}>
+        <TouchableWithoutFeedback style = {styles.optionBox} onPress={this.signUp}><View style = {styles.optionBox}><Icon name={"more"} style = {styles.moreIcon}/></View></TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress = {() => this.onCreatePress(0)}><View><Icon name={"arrow-left"} style = {styles.goBack}/></View></TouchableWithoutFeedback>
+          <View style = {styles.cardTitle}>{this.state.currCard.name}</View>
+          <View style = {styles.cardElement}><Text style = {styles.cardWhenWhere}>{this.state.currCard.edate.slice(0, 10)}</Text></View>
+          <View style = {styles.cardElement}><Text style = {styles.cardWhenWhere}>{this.state.currCard.location} at {this.state.currCard.etime.slice(0,5)}</Text></View>
+          <View style = {styles.cardElement}><Text style = {styles.cardDescription}>{this.state.currCard.description}</Text></View>
+          <View style = {styles.bottomButton}><Button style={styles.returnButton}  color = '#ff9900' title="Sign Up" onPress={() => this.onCreatePress(0)}></Button></View>
+        </View>      
+      </>
     )
   }
 
   sendEventList(){
     const { data } = this.state
     return(
+      <>
       <View style={styles.container}>
         <React.Fragment>
         { //If data then display api otherwise loading indicator
@@ -105,13 +137,13 @@ export default class MySchedules extends Component {
             (<ActivityIndicator />)
         }
         </React.Fragment>
-        <React.Fragment><Button style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.onCreatePress(1)} ></Button></React.Fragment>
       </View>
+      <React.Fragment><Button style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.onCreatePress(1)} ></Button></React.Fragment>
+
+      </>
     ) 
   }
   sendCreateForm(){
-    
-
     return(
       <React.Fragment>
         <form>
@@ -145,7 +177,97 @@ export default class MySchedules extends Component {
 
 }
 const styles = StyleSheet.create({
-  
+  syncHolder:{
+    color: 'black',
+    marginTop: '125px',
+    marginLeft: '10px',
+    marginRight: '10px',
+    borderColor: 'black',
+    borderRadius: '8px',
+    borderWidth: '2px',
+  },
+
+  goBack:{
+    fontSize: '40px',
+    color: 'darkgrey',
+    width: '45px',
+    marginTop: '5px',
+    marginLeft: '5px',
+    zIndex: 1,
+  },
+
+  signSheetClose:{
+    color: 'black',
+    fontSize: '25px',
+    textAlign: 'end',
+    marginTop: '5px',
+    marginRight: '5px',
+  },
+
+  signSheetText:{
+    fontSize: '25px',
+    marginTop: '25px',
+    marginLeft: '3px',
+    marginRight: '3px',
+    textAlign: 'center',
+
+  },
+
+  signSheet:{
+    position: 'fixed',
+    top: '5%',
+    bottom: '20%',
+    left: '20%',
+    right: '20%',
+    backgroundColor: 'lightgrey',
+    zIndex: 2,
+    borderColor: 'black',
+    borderWidth: '2px',
+    borderRadius: '8px',
+    
+  },
+  moreIcon:{
+    fontSize: '40px',
+    color: 'darkgrey',
+    borderWidth: '2px',
+    borderColor: 'darkgrey',
+    width: '45px',
+    textAlign: 'end',
+    marginTop: '5px',
+    marginRight: '5px',
+    borderRadius: '5px',
+    zIndex: 1,
+  },
+  optionBox:{
+    right: 0,
+    position: 'fixed',
+    zIndex: 1,
+  },
+  cardElement:{
+    textAlign: 'center',
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
+  cardWhenWhere:{
+    color: 'grey',
+  },
+  displayCard:{
+    position:'fixed',
+    overflow: 'scroll',
+    width: '100%',
+    height: '100%',
+    paddingBottom: '80px',
+  }, 
+  cardText:{
+    fontSize: 25,
+  },
+  cardDescription:{
+    fontSize: 25,
+  },
+  cardTitle:{
+    textAlign: 'center',
+    fontSize: 45,
+  },
   formLabel:{
     marginLeft: '20%',
   },
@@ -156,12 +278,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
   },
+  bottomButton:{
+    position: 'fixed',
+    bottom: 45,
+    width: '100%',
+  },
+  returnButton:{
+    height: '20px',
+  },
 
   createbutton:{
     width: 44,
     height: 44,
     borderRadius: 44/2,
-    alignSelf: 'flex-end'
+    zIndex: 0,
+    bottom: 0,
   },
 
   container: {
@@ -169,6 +300,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'scroll',
   },
   eventbox: {
     flexDirection: "column",

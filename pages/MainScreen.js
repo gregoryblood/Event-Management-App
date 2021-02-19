@@ -45,7 +45,7 @@ export default class MainScreen extends React.Component {
         unselectedTintColor="#949494"
         tintColor="#FD7420"
         barTintColor="#f5f5f5"
-      >
+        >
         <TabBar.Item
           title="My Events"
           icon={<Icon name={"menu"} color={this.state.selectedTab=='Tab1'?"#FD7420":"#949494"} />}
