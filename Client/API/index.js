@@ -20,9 +20,9 @@ export const updateMaxSlots = (id, num) =>
     axios.get('https://osu-event-server.herokuapp.com/updatemaxslots/'+id+'/'+num);
 
 //Adds event
-export const addEventToList = (name, description, location) => {
-    const url = `https://osu-event-server.herokuapp.com/events`;
-    const data = {name, description, location};
+export const addEventToList = (name, description, location,edate,etime,slots,maxslots) => {
+    const url = `https://osu-event-server.herokuapp.com/add`;
+    const data = {name, description, location,edate,etime};
     console.log(data);
     return axios({ method: 'post', url, data });
   };
