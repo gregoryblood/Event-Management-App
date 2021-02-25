@@ -29,7 +29,7 @@ export default class Schedules extends Component {
     );
     // eslint-disable-next-line
   }
-//切换tab event
+  //切换tab event
   onChangeTab(tabName) {
     console.log(tabName)
     //switch tab
@@ -58,7 +58,7 @@ export default class Schedules extends Component {
     //console.log(data)
     this.setState({ eventData: data })
   }
-//月 Switch month
+  //月 Switch month
   setMonth() {
     //Change month
     if (this.state.monthValue == 11) {
@@ -74,7 +74,7 @@ export default class Schedules extends Component {
       this.getMonthData(index + 1)
     }
   }
-//Determine whether there is an event on the incoming date
+  //Determine whether there is an event on the incoming date
   showtips(val) {
     var hidden = false;
     let monthVal = this.state.monthValue + 1
@@ -84,14 +84,16 @@ export default class Schedules extends Component {
     let dayVal = val;
     if (dayVal < 10) {
       dayVal = "0" + dayVal
-    } 
+    }
     //https://momentjs.com/
     let dat = moment(new Date().getFullYear() + '-' + monthVal + '-' + dayVal + ' 00:00:00')
     dat = new Date(dat).getTime()
     //If yes, display the following dot
     if (this.state.eventData && this.state.eventData.length) {
+      // console.log(this.state.eventData)
       this.state.eventData.forEach(element => {
         let edate = new Date(moment(element.edate).format('YYYY-MM-DD') + " 00:00:00").getTime()
+        // console.log(edate,dat,monthVal,dayVal,dat,moment("2021-02-03T00:00:00.000Z").format('YYYY-MM-DD') + " 00:00:00")
         if (edate == dat) {
           hidden = true
         }
@@ -99,7 +101,7 @@ export default class Schedules extends Component {
     }
     return hidden;
   }
-//Select the date, if there is an event on the date, access the interface to get the event
+  //Select the date, if there is an event on the date, access the interface to get the event
   showEvents(val) {
     //console.log(this.state.eventData)
     let monthVal = this.state.monthValue + 1
@@ -127,19 +129,19 @@ export default class Schedules extends Component {
       dayEvent
     })
   }
-//显示点击日期的所有事件
-//Show all events of the date you click
+  //显示点击日期的所有事件
+  //Show all events of the date you click
   showList(arr) {
     return arr.map((item, i) => {
-      return  <WingBlank>
-              <Card>
-                <WingBlank><h1 color="black">{item.name}</h1></WingBlank>
-                <WingBlank><div>{item.edate}</div></WingBlank>
-                <WingBlank><div>{item.location}</div></WingBlank>
-                <WingBlank><div>{item.description}</div></WingBlank>
-              </Card>
-              <WhiteSpace></WhiteSpace>
-            </WingBlank>
+      return <WingBlank>
+        <Card>
+          <WingBlank><h1 color="black">{item.name}</h1></WingBlank>
+          <WingBlank><div>{item.edate}</div></WingBlank>
+          <WingBlank><div>{item.location}</div></WingBlank>
+          <WingBlank><div>{item.description}</div></WingBlank>
+        </Card>
+        <WhiteSpace></WhiteSpace>
+      </WingBlank>
     })
   }
 
@@ -228,8 +230,8 @@ export default class Schedules extends Component {
               {this.showtips(20) && <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div>}</div>
                   <div onClick={() => this.showEvents(21)} style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>21
               {this.showtips(21) && <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div>}</div>
-                  <div onClick={() => this.showEvents(22)} style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>22</div>
-                  {this.showtips(22) && <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div>}
+                  <div onClick={() => this.showEvents(22)} style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>22
+                  {this.showtips(22) && <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div>}</div>
                   <div onClick={() => this.showEvents(23)} style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>23
               {this.showtips(23) && <div style={{ width: 5, height: 5, borderRadius: '2.5px', background: '#f50', margin: '0px auto' }}></div>}</div>
                   <div onClick={() => this.showEvents(24)} style={{ flex: 1, textAlign: 'center', padding: '6px 0px', borderRight: '1px solid #999' }}>24
