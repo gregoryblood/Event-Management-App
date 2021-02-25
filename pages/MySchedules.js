@@ -39,7 +39,7 @@ export default class MySchedules extends Component {
   addToEvents = async () => {
     const { name, description, location } = this.state;
     const eDate = new Date();
-    await addEventToList(name, description, location,moment(eDate).format('YYYY-MM-DD'),moment(eDate).format('HH:mm:ss'));
+    await addEventToList(name, description, location,moment(eDate).format('YYYY-MM-DD'),moment(eDate).format('HH:mm:ss'), 0, 0);
     this.getEvent();
     this.onCreatePress(0);
     
@@ -318,7 +318,6 @@ const styles = StyleSheet.create({
     borderStyle: 'solid'
   },
   title: {
-
     color: "black",
     fontWeight: 'bold',
     fontSize: 22
