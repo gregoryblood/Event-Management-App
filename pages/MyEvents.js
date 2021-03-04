@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableWithoutFeedback
 } from 'react-native';
 import moment from 'moment';
-import { getEvent,addEventToList } from './../Client/API/index.js';
+import { getEvent,addEventToList } from '../Client/API/index.js';
 import { Icon } from '@ant-design/react-native';
 
 export default class MySchedules extends Component {
@@ -123,11 +123,6 @@ export default class MySchedules extends Component {
         { //If data then display api otherwise loading indicator
           data ? ( //if data
             <React.Fragment>
-              {/*this is how you get 1 item
-          <Text style={styles.bold}>{data.events[0].name}</Text>
-          */}
-
-              {/*this is how you get multiple items*/}
 
               <View style={styles.eventbox}>
                 {data && this.showList(this.state.data)}
@@ -287,7 +282,6 @@ const styles = StyleSheet.create({
   returnButton:{
     height: '20px',
   },
-
   createbutton:{
     width: 44,
     height: 44,
@@ -295,7 +289,6 @@ const styles = StyleSheet.create({
     zIndex: 0,
     bottom: 0,
   },
-
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -330,8 +323,6 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     color: 'gray'
   },
-  
-
 });
 
 

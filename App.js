@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, StatusBar } from 'react-native';
-import { Button } from '@ant-design/react-native';
-
-//page
-import Home from './pages/MainScreen'
+import Home from './pages/Navbar'
 
 function configureScene(route) {
   return route.scene || Navigator.SceneConfigs.FloatFromBottom

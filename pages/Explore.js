@@ -4,9 +4,9 @@ import {
 } from 'react-native';
 import { WhiteSpace, WingBlank, Card, Icon } from '@ant-design/react-native';
 import * as Font from 'expo-font';
-import Home1Page from './MySchedules'; //My Events page
+import Home1Page from './MyEvents'; //My Events page
 import moment from 'moment';
-import { getEventByTime } from './../Client/API/index.js';
+import { getEventByTime } from '../Client/API/index.js';
 
 export default class Schedules extends Component {
   constructor(props) {

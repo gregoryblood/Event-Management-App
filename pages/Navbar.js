@@ -1,11 +1,9 @@
 import React from 'react';
 import { TabBar,Icon } from '@ant-design/react-native';
-
 import * as Font from 'expo-font';
-
 //import EventInfo from './EventInfo'
-import Home1Page from './MySchedules' //My Events page页面
-import Home2Page from './Schedules' //Explore page页面
+import Home1Page from './MyEvents' //My Events page页面
+import Home2Page from './Explore' //Explore page页面
 import Home3Page from './Search' //Search page页面
 
 export default class MainScreen extends React.Component {
