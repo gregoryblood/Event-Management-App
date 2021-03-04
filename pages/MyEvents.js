@@ -1,6 +1,6 @@
 import React, { Component, } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableWithoutFeedback
+  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
 import { getEvent,addEventToList } from '../Client/API/index.js';
@@ -44,24 +44,24 @@ export default class MySchedules extends Component {
     this.onCreatePress(0);
     
   }
-  expandInfo(lodge){
+  expandInfo(event){
     this.setState({
-      currCard: lodge,
+      currCard: event,
       eventList: 2,
       doSign: 1
     })
   }
   showList(arr) {
 
-    return arr.map((lodge, i) => {
-      return <TouchableWithoutFeedback onPress={() => this.expandInfo(lodge)}>
+    return arr.map((event, i) => {
+      return <TouchableOpacity onPress={() => this.expandInfo(event)}>
         <View style={styles.event} key={i}>
-        <Text style={styles.title}>{lodge.name}</Text>
-        <Text style={styles.location}>{lodge.location}</Text>
-        <Text style={styles.description}>{lodge.description}</Text>
+        <Text style={styles.title}>{event.name}</Text>
+        <Text style={styles.location}>{event.location}</Text>
+        <Text style={styles.description}>{event.description}</Text>
 
       </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     })
   }
   sayTest(){
@@ -90,8 +90,7 @@ export default class MySchedules extends Component {
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
-        <TouchableWithoutFeedback onPress = {this.signDown}><Icon style = {styles.signSheetClose} name = {'close'}/></TouchableWithoutFeedback>
-        <Text style = {styles.signSheetText}>This event has the option of to be integrated with your persoal calendar</Text>
+        <TouchableOpacity onPress = {this.signDown}><Icon style = {styles.signSheetClose} name = {'close'}/></TouchableOpacity>
         <View style = {styles.syncHolder}><Button style = {styles.calendarSyncButton} title = 'Sync Calednar' color = 'orange'></Button></View>
       </View>
     );
@@ -102,13 +101,13 @@ export default class MySchedules extends Component {
     return(<>
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
-        <TouchableWithoutFeedback style = {styles.optionBox} onPress={this.signUp}><View style = {styles.optionBox}><Icon name={"more"} style = {styles.moreIcon}/></View></TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress = {() => this.onCreatePress(0)}><View><Icon name={"arrow-left"} style = {styles.goBack}/></View></TouchableWithoutFeedback>
+        <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><View style = {styles.optionBox}><Icon name={"more"} style = {styles.moreIcon}/></View></TouchableOpacity>
+        <TouchableOpacity onPress = {() => this.onCreatePress(0)}><View><Icon name={"arrow-left"} style = {styles.goBack}/></View></TouchableOpacity>
           <View style = {styles.cardTitle}>{this.state.currCard.name}</View>
           <View style = {styles.cardElement}><Text style = {styles.cardWhenWhere}>{this.state.currCard.edate.slice(0, 10)}</Text></View>
           <View style = {styles.cardElement}><Text style = {styles.cardWhenWhere}>{this.state.currCard.location} at {this.state.currCard.etime.slice(0,5)}</Text></View>
           <View style = {styles.cardElement}><Text style = {styles.cardDescription}>{this.state.currCard.description}</Text></View>
-          <View style = {styles.bottomButton}><Button style={styles.returnButton}  color = '#ff9900' title="Sign Up" onPress={() => this.onCreatePress(0)}></Button></View>
+          <View style = {styles.bottomButton}><Button   color = '#ff9900' title="Sign Up" onPress={() => this.onCreatePress(0)}></Button></View>
         </View>      
       </>
     )
@@ -134,7 +133,9 @@ export default class MySchedules extends Component {
         }
         </React.Fragment>
       </View>
-      <React.Fragment><Button style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.onCreatePress(1)} ></Button></React.Fragment>
+      <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.onCreatePress(1)}>
+        <Icon name={"plus"} style={styles.icon}/>
+      </TouchableOpacity>
 
       </>
     ) 
@@ -143,17 +144,24 @@ export default class MySchedules extends Component {
     return(
       <React.Fragment>
         <form>
-          <Text style={styles.formLabel}>Event Name:</Text>
+          <Text style={styles.formLabel}>Event Name</Text>
           <TextInput onChangeText={this.updateField('name')}
             style={styles.formInput} type="text"></TextInput><br></br>
-          <Text style={styles.formLabel}>Event Description:</Text>
+          <Text style={styles.formLabel}>Event Description</Text>
           <TextInput onChangeText={this.updateField('description')}
             style={styles.formInput} type="text"></TextInput><br></br>
           <Text style={styles.formLabel}>Event Location</Text>
           <TextInput onChangeText={this.updateField('location')}
             style={styles.formInput} type="text"></TextInput><br></br>
+            <Text style={styles.formLabel}>Event Time</Text>
+            
+          <TextInput onChangeText={this.updateField('location')}
+            style={styles.formInput} type="text"></TextInput><br></br>
+            <Text style={styles.formLabel}>Event Date</Text>
+          <TextInput onChangeText={this.updateField('location')}
+            style={styles.formInput} type="text"></TextInput><br></br>
         </form>
-        <Button onPress={this.addToEvents} style={styles.createbutton} color = '#ff9900' title="Submit Event" ></Button>
+        <Button onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" ></Button>
       </React.Fragment>
     )
   }
@@ -175,12 +183,11 @@ export default class MySchedules extends Component {
 const styles = StyleSheet.create({
   syncHolder:{
     color: 'black',
-    marginTop: '125px',
-    marginLeft: '10px',
-    marginRight: '10px',
-    borderColor: 'black',
-    borderRadius: '8px',
-    borderWidth: '2px',
+
+    borderColor: 'gray',
+    borderBottomWidth: '2px',
+    borderTopWidth: '2px',
+    width: '100%',
   },
 
   goBack:{
@@ -206,7 +213,7 @@ const styles = StyleSheet.create({
     marginLeft: '3px',
     marginRight: '3px',
     textAlign: 'center',
-
+    
   },
 
   signSheet:{
@@ -221,16 +228,17 @@ const styles = StyleSheet.create({
     borderWidth: '2px',
     borderRadius: '8px',
     
+    
   },
   moreIcon:{
     fontSize: '40px',
     color: 'darkgrey',
-    borderWidth: '2px',
+    borderWidth: '0px',
     borderColor: 'darkgrey',
     width: '45px',
     textAlign: 'end',
-    marginTop: '5px',
-    marginRight: '5px',
+    marginTop: '10px',
+    marginRight: '20px',
     borderRadius: '5px',
     zIndex: 1,
   },
@@ -246,55 +254,84 @@ const styles = StyleSheet.create({
   },
   cardWhenWhere:{
     color: 'grey',
+    textAlign: 'left',
+    fontSize: 25,
   },
   displayCard:{
     position:'fixed',
-    overflow: 'scroll',
     width: '100%',
     height: '100%',
     paddingBottom: '80px',
   }, 
   cardText:{
     fontSize: 25,
+    textAlign: 'left',
   },
   cardDescription:{
+    paddingTop: 10,
+    textAlign: 'left',
     fontSize: 25,
   },
   cardTitle:{
-    textAlign: 'center',
+    paddingTop: 10,
+    marginLeft: '5%',
+    textAlign: 'left',
     fontSize: 45,
   },
   formLabel:{
-    marginLeft: '20%',
+    marginLeft: '5%',
+    fontSize: 35,
   },
 
   formInput:{
     margin: 20,
     borderStyle: 'solid',
+    height: '40px',
     borderWidth: 1,
+    borderRadius: '8px',
     borderColor: 'black',
+  },
+  finishCreateButton: {
+    position: 'fixed',
+    bottom: 45,
+    padding: 50,
+    paddingLeft: '10%',
+    paddingRight: '10%',
+    borderRadius: '16px',
+    width: '100%',
   },
   bottomButton:{
     position: 'fixed',
     bottom: 45,
+    padding: 50,
+    paddingLeft: '10%',
+    paddingRight: '10%',
+    borderRadius: '16px',
     width: '100%',
   },
-  returnButton:{
-    height: '20px',
+
+  icon: {
+    color: 'white',
+    fontSize: 35,
+    display: 'flex',
+    flex: 1,
+    alignContent: 'center'
   },
   createbutton:{
-    width: 44,
-    height: 44,
-    borderRadius: 44/2,
+    width: 60,
+    height: 60,
+    borderRadius: 60/2,
     zIndex: 0,
-    bottom: 0,
+    backgroundColor: 'orange',
+    margin: 10,
+    marginLeft: 'auto',
+    padding: '13px'
   },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'scroll',
   },
   eventbox: {
     flexDirection: "column",
@@ -303,7 +340,7 @@ const styles = StyleSheet.create({
   },
   event: {
     flexDirection: "column",
-    height: 100,
+    //height: 100,
     padding: 20,
     borderWidth: 0,
     borderBottomWidth: 1,
