@@ -2,8 +2,10 @@
   "dependencies": {
     "@ant-design/react-native": "^4.0.5",
     "@react-native-community/masked-view": "~0.1.10",
+    "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/drawer": "~5.8.4",
-    "@react-navigation/native": "~5.6.1",
+    "@react-navigation/native": "^5.6.1",
+    "@react-navigation/stack": "^5.14.3",
     "axios": "^0.21.1",
     "babel-plugin-import": "^1.13.1",
     "dependencies": "0.0.1",
