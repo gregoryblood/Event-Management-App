@@ -153,7 +153,7 @@ export default class Calendar extends Component {
           <div style={{
             flex: 1, textAlign: 'left', padding: 12,
             margin: 'auto 2px',
-            display: this.state.selectedTab == 'Tab1' ? 'block' : 'none'
+            display: 'block'
           }}>
             {this.state.monthList[this.state.monthValue]}<span style={{ color: '#999' }} onClick={() => this.setMonth()}> ⏷ </span>
           </div>
@@ -165,7 +165,7 @@ export default class Calendar extends Component {
           </div>
         </div>
         {
-          this.state.selectedTab == 'Tab1' ? <div>
+          <div>
             <WingBlank>
               {/*Calendar content */}
               <div>
@@ -261,7 +261,7 @@ export default class Calendar extends Component {
 
             {/* card content */}
             {this.state.dayEvent && this.showList(this.state.dayEvent)}
-          </div> : <Home1Page></Home1Page>}
+          </div>}
       </View>
     )
   }

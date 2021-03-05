@@ -76,15 +76,17 @@ export default class ViewEvents extends Component {
                 <View style={styles.eventbox}>
                   {data && this.showList(this.state.data)}
                 </View>
+                <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
+                  <Ionicons name={'ios-add'} size={45} color={'white'} />
+                </TouchableOpacity>
               </React.Fragment>
+              
             )
               : //else 
               (<ActivityIndicator />)
           }
           </React.Fragment>
-          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
-            <Ionicons name={'ios-add'} size={45} color={'white'} />
-          </TouchableOpacity>
+          
         </View>
         
       </React.Fragment>
