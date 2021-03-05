@@ -15,8 +15,8 @@ export default class CreateEvent extends Component {
       name: null,
       description: null,
       location: null,
-      edate: null,
-      etime: null,
+      eDate: null,
+      eTime: null,
       slots: null,
       maxslots: null,
     };
@@ -42,7 +42,7 @@ export default class CreateEvent extends Component {
   addToEvents = async () => {
     const { name, description, location, edate, etime, slots, maxslots } = this.state;
     const eDate = new Date();
-    await addEventToList(name, description, location, moment(eDate).format('YYYY-MM-DD'),moment(eDate).format('HH:mm:ss'), slots, maxslots);
+    await addEventToList(name, description, location, eDate, eTime, 0, maxslots);
     this.props.navigation.navigator('ViewEvents');
   }
 
