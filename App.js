@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MyEvents from './pages/MyEvents';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
+import { Calendar } from 'react-native-calendars';
 
 const Tab = createBottomTabNavigator();
 

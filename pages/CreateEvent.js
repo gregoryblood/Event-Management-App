@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   formstyle: {
     flex: 1,
     alignItems: 'center',
-    width: '50%',
+    width: '75%',
     marginLeft: 'auto',
     marginRight: 'auto',
     justifyContent: 'center',
