@@ -18,7 +18,8 @@ export default class ViewEventsWithSearch extends Component {
   }
   updateField = (field) => (text) => {
     this.setState({ [field]: text }, () => {
-      this.searchEvents();
+      if (this.state.search != '')
+        this.searchEvents();
     });
     
   }
