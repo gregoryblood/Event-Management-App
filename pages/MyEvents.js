@@ -14,9 +14,7 @@ export default class MyEvents extends Component {
   render() {
     return (
       <MyEventStack.Navigator>
-        {/*This top one will change to just events signed up for */}
         <MyEventStack.Screen name="ViewMyEvents" component={ViewMyEvents} options={{headerShown: false}} />
-
         <MyEventStack.Screen name="Calendar" component={Calendar} options={{headerShown: false}} />
         <MyEventStack.Screen name="CreateEvent" component={CreateEvent} options={{headerTitle: 'Create an Event'}} />
         <MyEventStack.Screen name="EventView" component={EventView} options={{headerShown: false}}/>

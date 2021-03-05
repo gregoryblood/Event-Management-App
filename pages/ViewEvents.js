@@ -43,14 +43,13 @@ export default class ViewEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-        <View style={{ display: 'flex', flexDirection: 'row', position: 'absolute', zIndex: '1' }}>
-          <View onClick={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})}  style={{ flex: 1, textAlign: 'right' }}>
-            <View style={{ margin: 12 }}>
-              <View style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></View>
-              <View style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></View>
-            </View>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})} 
+          style={{ flex: 1, textAlign: 'right', position: 'absolute', right: 0, top: 0, zIndex: 2}}>
+          <View style={{ margin: 12 }}>
+            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 10, backgroundColor: "#fff", padding: 6,  border: '1px solid #ff9900', borderTopRightRadius: 8, borderBottomRightRadius: 8 }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></View>
+            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 45, backgroundColor: "#ff9900", padding: 6,  border: '1px solid #ff9900', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></View>
           </View>
-        </View>
+        </TouchableOpacity>
         <View style={styles.container}>
           <React.Fragment>
           { //If data then display api otherwise loading indicator
