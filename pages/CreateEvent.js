@@ -57,24 +57,24 @@ export default class CreateEvent extends Component {
       <React.Fragment  >
       <View style={styles.formstyle}>
         <TextInput placeholder='Event Name' onChangeText={this.updateField('name')}
-          style={styles.formInput} type="text"></TextInput><br></br>
+          style={styles.formInput} type="text"></TextInput>
           
         <View style={styles.inline}>
           <TextInput placeholder='Time' onChangeText={this.showDatePicker}
-            style={styles.formInputSmall} type="date"></TextInput><br></br>
+            style={styles.formInputSmall} type="date"></TextInput>
 
           <TextInput placeholder='Date' onChangeText={this.showDatePicker}
-            style={styles.formInputSmall} type="time"></TextInput><br></br>
+            style={styles.formInputSmall} type="time"></TextInput>
 
         </View>
         
         <TextInput placeholder='Description' onChangeText={this.updateField('description')}
-          style={styles.formInput} type="text"></TextInput><br></br>
+          style={styles.formInput} type="text"></TextInput>
         <TextInput placeholder='Location' onChangeText={this.updateField('location')}
-          style={styles.formInput} type="text"></TextInput><br></br>
+          style={styles.formInput} type="text"></TextInput>
         
         <TextInput placeholder='Slots' onChangeText={this.updateField('maxslots')}
-          style={styles.formInput} type="text"></TextInput><br></br>
+          style={styles.formInput} type="text"></TextInput>
         
         <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
           <Text style={styles.finishCreateText}>Publish</Text>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginBottom: 20,
     borderStyle: 'solid',
-    height: '60px',
+    height: 60,
     borderBottomWidth: 4,
     borderColor: 'orange',
     fontSize: 35,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingLeft: 10,
     borderStyle: 'solid',
-    height: '60px',
+    height: 60,
     borderBottomWidth: 4,
     borderColor: 'orange',
     fontSize: 35,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   finishCreateButton: {
     backgroundColor: 'orange',
-    borderRadius: '16px',
+    borderRadius: 16,
     width: '100%',
   },
   finishCreateText: {

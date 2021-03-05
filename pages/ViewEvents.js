@@ -43,14 +43,14 @@ export default class ViewEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row', position: 'absolute', zIndex: '1' }}>
-          <div onClick={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})}  style={{ flex: 1, textAlign: 'right' }}>
-            <div style={{ margin: '12px' }}>
-              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></span>
-              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></span>
-            </div>
-          </div>
-        </div>
+        <View style={{ display: 'flex', flexDirection: 'row', position: 'absolute', zIndex: '1' }}>
+          <View onClick={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})}  style={{ flex: 1, textAlign: 'right' }}>
+            <View style={{ margin: 12 }}>
+              <View style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></View>
+              <View style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></View>
+            </View>
+          </View>
+        </View>
         <View style={styles.container}>
           <React.Fragment>
           { //If data then display api otherwise loading indicator
@@ -81,7 +81,7 @@ export default class ViewEvents extends Component {
 const styles = StyleSheet.create({
   icon: {
     textAlign: 'center',
-    marginTop: '-7px'
+    marginTop: -5
   },
   createbutton:{
     width: 60,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
     margin: 20,
     marginLeft: 'auto',
-    padding: '13px'
+    padding: 13
   },
   container: {
     flex: 1,

@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
     color: 'black',
 
     borderColor: 'gray',
-    borderBottomWidth: '2px',
-    borderTopWidth: '2px',
+    borderBottomWidth: 2,
+    borderTopWidth: 2,
     width: '100%',
   },
 
   goBack:{
-    fontSize: '40px',
+    fontSize: 40,
     color: 'darkgrey',
     width: '45px',
     marginTop: '5px',
@@ -94,14 +94,14 @@ const styles = StyleSheet.create({
 
   signSheetClose:{
     color: 'black',
-    fontSize: '25px',
-    textAlign: 'end',
+    fontSize: 25,
+    textAlign: 'right',
     marginTop: '5px',
     marginRight: '5px',
   },
 
   signSheetText:{
-    fontSize: '25px',
+    fontSize: 25,
     marginTop: '25px',
     marginLeft: '3px',
     marginRight: '3px',
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   },
 
   signSheet:{
-    position: 'fixed',
     top: '5%',
     bottom: '20%',
     left: '20%',
@@ -118,26 +117,25 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     zIndex: 2,
     borderColor: 'black',
-    borderWidth: '2px',
-    borderRadius: '8px',
-    
+    borderWidth: 2,
+    borderRadius: 8,
+    height: '40%'
     
   },
   moreIcon:{
-    fontSize: '40px',
+    fontSize: 40,
     color: 'darkgrey',
-    borderWidth: '0px',
+    borderWidth: 0,
     borderColor: 'darkgrey',
     width: '45px',
-    textAlign: 'end',
-    marginTop: '10px',
-    marginRight: '20px',
-    borderRadius: '5px',
+    textAlign: 'right',
+    marginTop: 10,
+    marginRight: 20,
+    borderRadius: 5,
     zIndex: 1,
   },
   optionBox:{
     right: 0,
-    position: 'fixed',
     zIndex: 1,
   },
   cardElement:{
@@ -151,10 +149,9 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   displayCard:{
-    position:'fixed',
     width: '100%',
     height: '100%',
-    paddingBottom: '80px',
+    paddingBottom: 80,
   }, 
   cardText:{
     fontSize: 25,
@@ -172,12 +169,11 @@ const styles = StyleSheet.create({
   },
 
   bottomButton:{
-    position: 'fixed',
     bottom: 45,
     padding: 50,
     paddingLeft: '10%',
     paddingRight: '10%',
-    borderRadius: '16px',
+    borderRadius: 16,
     width: '100%',
   },
 

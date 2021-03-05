@@ -27,7 +27,7 @@ export const searchEvents = (keyword) =>
     axios.get('https://osu-event-server.herokuapp.com/search/' + keyword);
 //Adds event
 export const addEventToList = (name, description, location, edate, etime, slots, maxslots) => {
-    const url = `https://osu-event-server.herokuapp.com/add`;
+    const url = `https://osu-event-server.herokuapp.com/add/`;
     const data = {name, description, location,edate,etime, slots, maxslots};
     console.log(data);
     return axios({ method: 'post', url, data });

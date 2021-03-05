@@ -55,15 +55,15 @@ export default class CalendarClass extends Component {
     const {fromMyEvent} = this.props.route.params;
     return (
       <View>
-        <div style={{ display: 'flex', flexDirection: 'row', position: 'absolute', zIndex: '1' }}>
-          <div onClick={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')} 
+        <View style={{ display: 'flex', flexDirection: 'row', position: 'absolute', zIndex: '1' }}>
+          <View onClick={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')} 
                 style={{ flex: 1, textAlign: 'right' }}>
-            <div style={{ margin: '12px' }}>
-              <div  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' }}><Ionicons name={"ios-calendar"} size={30} color={'white'} /></div>
-              <div  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' }}><Ionicons name={"ios-list"} size={30} color={'gray'} /></div>
-            </div>
-          </div>
-        </div>
+            <View style={{ margin: '12px' }}>
+              <View  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' }}><Ionicons name={"ios-calendar"} size={30} color={'white'} /></View>
+              <View  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' }}><Ionicons name={"ios-list"} size={30} color={'gray'} /></View>
+            </View>
+          </View>
+        </View>
         <Calendar
             style={{
               marginTop: 35,
