@@ -2,24 +2,31 @@ import React, { Component, } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
-import { getEvent,addEventToList } from '../Client/API/index.js';
+import { getEvent, searchEvents } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default class ViewEvents extends Component {
+export default class ViewEventsWithSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
-
+      search: null,
     };
   }
   componentDidMount() {
     this.getEvent();
   }
-
+  updateField = (field) => (text) => {
+    this.setState({ [field]: text });
+    this.searchEvents();
+  }
   async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();
+    this.setState({ data });
+  }
+  async searchEvents() {
+    const { data } = await searchEvents();
     this.setState({ data });
   }
 
@@ -42,26 +49,14 @@ export default class ViewEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div onClick={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})}  style={{ flex: 1, textAlign: 'right' }}>
-            <div style={{ margin: '12px' }}>
-              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></span>
-              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></span>
-            </div>
-          </div>
-        </div>
         <View style={styles.container}>
           <React.Fragment>
           { //If data then display api otherwise loading indicator
             data ? ( //if data
               <React.Fragment>
-
                 <View style={styles.eventbox}>
                   {data && this.showList(this.state.data)}
                 </View>
-                <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
-                  <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
-                </TouchableOpacity>
               </React.Fragment>
               
             )
@@ -71,27 +66,13 @@ export default class ViewEvents extends Component {
           </React.Fragment>
           
         </View>
-        
+        <TextInput style={styles.searchbar} onChangeText={this.updateField('search')} placeholder={'Search'}></TextInput>
       </React.Fragment>
     )
   }
 
 }
 const styles = StyleSheet.create({
-  icon: {
-    textAlign: 'center',
-    marginTop: '-7px'
-  },
-  createbutton:{
-    width: 60,
-    height: 60,
-    borderRadius: 60/2,
-    zIndex: 0,
-    backgroundColor: 'orange',
-    margin: 20,
-    marginLeft: 'auto',
-    padding: '13px'
-  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -101,11 +82,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     width: '100%'
-  },
-  calendar: {
-    position: 'absolute',
-    top: 10,
-    right: 10, 
   },
   event: {
     flexDirection: "column",
@@ -129,4 +105,11 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     color: 'gray'
   },
+  searchbar: {
+    backgroundColor: 'white',
+    padding: 30,
+    fontSize: 30,
+    borderTopWidth: '1px',
+    borderColor: 'gray'
+  }
 });

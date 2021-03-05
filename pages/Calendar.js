@@ -52,10 +52,12 @@ export default class CalendarClass extends Component {
     })
   }
   render() {
+    const {fromMyEvent} = this.props.route.params;
     return (
       <View>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <div onClick={() => this.props.navigation.navigate('ViewEvents')} style={{ flex: 1, textAlign: 'right' }}>
+          <div onClick={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')} 
+                style={{ flex: 1, textAlign: 'right' }}>
             <div style={{ margin: '12px' }}>
               <div  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-calendar"} size={30} color={'white'} /></div>
               <div  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-list"} size={30} color={'gray'} /></div>

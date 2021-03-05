@@ -21,11 +21,15 @@ export const updateMaxSlots = (id, num) =>
 //Gets events with slots more that 0 [WILL REMOVE LATER]
 export const getWithSlots = () => 
     axios.get('https://osu-event-server.herokuapp.com/getwithslots/');
+
+//Gets events with slots more that 0 [WILL REMOVE LATER]
+export const searchEvents = (keyword) => 
+    axios.get('https://osu-event-server.herokuapp.com/search/' + keyword);
 //Adds event
-export const addEventToList = (name, description, location,edate,etime,slots,maxslots) => {
+export const addEventToList = (name, description, location, edate, etime, slots, maxslots) => {
     const url = `https://osu-event-server.herokuapp.com/add`;
     const data = {name, description, location,edate,etime, slots, maxslots};
-    //console.log(data);
+    console.log(data);
     return axios({ method: 'post', url, data });
   };
 

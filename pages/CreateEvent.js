@@ -40,9 +40,14 @@ export default class CreateEvent extends Component {
 
   //Adds object to Events  //addToEvents = async () =>
   addToEvents = async () => {
-    const { name, description, location, edate, etime, slots, maxslots } = this.state;
-    const eDate = new Date();
-    await addEventToList(name, description, location, eDate, eTime, 0, maxslots);
+    const { name, description, location, slots, maxslots } = this.state;
+    let date = new Date();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+    let eDate = date.getFullYear()+'-0'+date.getMonth()+'-0'+date.getDay()+'T00:00:00.000Z'
+    let eTime = hours + ':' + minutes + ':' + seconds;
+    await addEventToList(name, description, location, eDate, eTime, 0, parseInt(maxslots));
     this.props.navigation.navigator('ViewEvents');
   }
 
@@ -56,10 +61,10 @@ export default class CreateEvent extends Component {
           
         <View style={styles.inline}>
           <TextInput placeholder='Time' onChangeText={this.showDatePicker}
-            style={styles.formInputSmall} type="text"></TextInput><br></br>
+            style={styles.formInputSmall} type="date"></TextInput><br></br>
 
           <TextInput placeholder='Date' onChangeText={this.showDatePicker}
-            style={styles.formInputSmall} type="text"></TextInput><br></br>
+            style={styles.formInputSmall} type="time"></TextInput><br></br>
 
         </View>
         
@@ -71,7 +76,9 @@ export default class CreateEvent extends Component {
         <TextInput placeholder='Slots' onChangeText={this.updateField('maxslots')}
           style={styles.formInput} type="text"></TextInput><br></br>
         
-        <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >Create</TouchableOpacity>
+        <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
+          <Text style={styles.finishCreateText}>Publish</Text>
+        </TouchableOpacity>
 
       </View>
     </React.Fragment>
@@ -114,14 +121,17 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   finishCreateButton: {
+    backgroundColor: 'orange',
+    borderRadius: '16px',
+    width: '100%',
+  },
+  finishCreateText: {
     textAlign: 'center',
     color: 'white',
     fontSize: 40,
     height: 20,
     paddingTop: 20,
-    paddingBottom: 60,
-    backgroundColor: 'orange',
-    borderRadius: '16px',
+    paddingBottom: 70,
     width: '100%',
   },
   
