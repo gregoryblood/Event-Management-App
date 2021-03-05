@@ -17,7 +17,7 @@ export default function App() {
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
                   if (route.name === 'Explore') {
-                    iconName = 'ios-add';
+                    iconName = 'ios-add-circle-outline';
                   } else if (route.name === 'MyEvents') {
                     iconName = 'ios-list';
                   }
@@ -25,16 +25,16 @@ export default function App() {
                     iconName = 'ios-search';
                   }
                   // You can return any component that you like here!
-                  return <Ionicons name={iconName} size={size} color={color} />;
+                  return <Ionicons name={iconName} size={40} color={color} />;
                 },
               })}
               tabBarOptions={{
                 activeTintColor: 'orange',
                 inactiveTintColor: 'gray',
               }}>
-        <Tab.Screen name="MyEvents" component={MyEvents} />
-        <Tab.Screen name="Explore" component={Explore} />
-        <Tab.Screen name="Search" component={Search} />
+        <Tab.Screen name="MyEvents" size={40} component={MyEvents} options={{title: ''}}/>
+        <Tab.Screen name="Explore" component={Explore} options={{title: ''}}/>
+        <Tab.Screen name="Search" component={Search} options={{title: ''}}/>
       </Tab.Navigator>
     </NavigationContainer>
   );

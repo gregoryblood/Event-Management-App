@@ -168,15 +168,6 @@ const styles = StyleSheet.create({
     fontSize: 45,
   },
 
-  finishCreateButton: {
-    position: 'fixed',
-    bottom: 45,
-    padding: 50,
-    paddingLeft: '10%',
-    paddingRight: '10%',
-    borderRadius: '16px',
-    width: '100%',
-  },
   bottomButton:{
     position: 'fixed',
     bottom: 45,

@@ -77,7 +77,7 @@ export default class ViewEvents extends Component {
                   {data && this.showList(this.state.data)}
                 </View>
                 <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
-                  <Ionicons name={'ios-add'} size={45} color={'white'} />
+                  <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
                 </TouchableOpacity>
               </React.Fragment>
               
@@ -95,7 +95,10 @@ export default class ViewEvents extends Component {
 
 }
 const styles = StyleSheet.create({
-
+  icon: {
+    textAlign: 'center',
+    marginTop: '-7px'
+  },
   createbutton:{
     width: 60,
     height: 60,
