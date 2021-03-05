@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
-import { getEvent,addEventToList } from '../Client/API/index.js';
+import { getEvent,addEventToList, addAttendee } from '../Client/API/index.js';
 import { Icon } from '@ant-design/react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -30,6 +30,14 @@ export default class EventView extends Component {
   onCreatePress(changeTo){
     
   }
+  addToList(){
+    const {id, name, edate, location, description, etime, slots, maxslots, fromMyEvent} = this.props.route.params;
+    //Method will change once login is implemented
+    if((slots + 1) != maxslots){
+      addAttendee(id);
+    }
+  }
+
   signUp(){
     this.setState({
       doSign: 0
@@ -52,7 +60,7 @@ export default class EventView extends Component {
   }
 
   render() {
-      const {name, edate, location, description, etime, slots, maxslots, fromMyEvent} = this.props.route.params;
+      const {id, name, edate, location, description, etime, slots, maxslots, fromMyEvent} = this.props.route.params;
     return (
       <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
@@ -63,7 +71,7 @@ export default class EventView extends Component {
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
         <Text style = {styles.cardWhenWhere}>{location} at {etime.slice(0,5)}</Text>
         <Text style = {styles.cardDescription}>{description}</Text>
-        <Button style = {styles.bottomButton}color = '#ff9900' title="Sign Up" onPress={() => this.onCreatePress(0)}></Button>
+        <Button style = {styles.bottomButton}color = '#ff9900' title="Sign Up" onPress={() => this.addToList()}></Button>
         </View>  
       </View>
     )
