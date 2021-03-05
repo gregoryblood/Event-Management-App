@@ -2,10 +2,10 @@ import React, { Component, } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
-import { getEvent,addEventToList } from '../Client/API/index.js';
+import { getWithSlots } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default class ViewEvents extends Component {
+export default class ViewMyEvents extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +19,7 @@ export default class ViewEvents extends Component {
 
   async getEvent() {
     //Calls api and will finish when data is loaded
-    const { data } = await getEvent();
+    const { data } = await getWithSlots();
     this.setState({ data });
   }
 
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid'
   },
   title: {
-    color: "black",
+    color: "orange",
     fontWeight: 'bold',
     fontSize: 22
   },

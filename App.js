@@ -25,16 +25,16 @@ export default function App() {
                     iconName = 'ios-search';
                   }
                   // You can return any component that you like here!
-                  return <Ionicons name={iconName} size={40} color={color} />;
+                  return <Ionicons name={iconName} size={35} color={color} />;
                 },
               })}
               tabBarOptions={{
                 activeTintColor: 'orange',
                 inactiveTintColor: 'gray',
               }}>
-        <Tab.Screen name="MyEvents" size={40} component={MyEvents} options={{title: ''}}/>
-        <Tab.Screen name="Explore" component={Explore} options={{title: ''}}/>
-        <Tab.Screen name="Search" component={Search} options={{title: ''}}/>
+        <Tab.Screen name="MyEvents" component={MyEvents} options={{title: ' '}}/>
+        <Tab.Screen name="Explore" component={Explore} options={{title: ' '}}/>
+        <Tab.Screen name="Search" component={Search} options={{title: ' '}}/>
       </Tab.Navigator>
     </NavigationContainer>
   );

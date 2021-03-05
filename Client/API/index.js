@@ -18,7 +18,9 @@ export const removeAttendee = (id) =>
 //Updates the max slots of an event
 export const updateMaxSlots = (id, num) => 
     axios.get('https://osu-event-server.herokuapp.com/updatemaxslots/'+id+'/'+num);
-
+//Gets events with slots more that 0 [WILL REMOVE LATER]
+export const getWithSlots = () => 
+    axios.get('https://osu-event-server.herokuapp.com/getwithslots/');
 //Adds event
 export const addEventToList = (name, description, location,edate,etime,slots,maxslots) => {
     const url = `https://osu-event-server.herokuapp.com/add`;
