@@ -54,7 +54,7 @@ export default class EventView extends Component {
   render() {
       const {name, edate, location, description, etime, slots, maxslots} = this.props.route.params;
     return (
-      <React.Fragment>
+      <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
         <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} colro={'gray'} /></TouchableOpacity>
@@ -65,12 +65,15 @@ export default class EventView extends Component {
         <Text style = {styles.cardDescription}>{description}</Text>
         <Button style = {styles.bottomButton}color = '#ff9900' title="Sign Up" onPress={() => this.onCreatePress(0)}></Button>
         </View>  
-      </React.Fragment>
+      </View>
     )
   }
 
 }
 const styles = StyleSheet.create({
+  containter: {
+    padding: '4%',
+  },
   syncHolder:{
     color: 'black',
 
@@ -177,16 +180,6 @@ const styles = StyleSheet.create({
     borderRadius: '16px',
     width: '100%',
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  eventbox: {
-    flexDirection: "column",
-    flex: 1,
-    width: '100%'
-  },
+
 
 });

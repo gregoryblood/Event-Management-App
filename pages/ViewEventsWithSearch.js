@@ -17,8 +17,10 @@ export default class ViewEventsWithSearch extends Component {
     this.getEvent();
   }
   updateField = (field) => (text) => {
-    this.setState({ [field]: text });
-    this.searchEvents();
+    this.setState({ [field]: text }, () => {
+      this.searchEvents();
+    });
+    
   }
   async getEvent() {
     //Calls api and will finish when data is loaded
@@ -26,7 +28,7 @@ export default class ViewEventsWithSearch extends Component {
     this.setState({ data });
   }
   async searchEvents() {
-    const { data } = await searchEvents();
+    const { data } = await searchEvents(this.state.search);
     this.setState({ data });
   }
 

@@ -42,7 +42,7 @@ export default class ViewEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', position: 'absolute', zIndex: '1' }}>
           <div onClick={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})}  style={{ flex: 1, textAlign: 'right' }}>
             <div style={{ margin: '12px' }}>
               <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></span>

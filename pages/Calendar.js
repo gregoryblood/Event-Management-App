@@ -55,7 +55,7 @@ export default class CalendarClass extends Component {
     const {fromMyEvent} = this.props.route.params;
     return (
       <View>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', position: 'absolute', zIndex: '1' }}>
           <div onClick={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')} 
                 style={{ flex: 1, textAlign: 'right' }}>
             <div style={{ margin: '12px' }}>
@@ -69,7 +69,8 @@ export default class CalendarClass extends Component {
               marginTop: 35,
             }}
             theme={{
-              todayTextColor: 'orange'
+              todayTextColor: 'orange',
+              calendarBackground: '#f2f2f2'
             }}
             // Initially visible month. Default = Date()
             current={this.state.date}
