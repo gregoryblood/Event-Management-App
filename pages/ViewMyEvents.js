@@ -45,8 +45,8 @@ export default class ViewMyEvents extends Component {
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div onClick={() => this.props.navigation.navigate('Calendar', {fromMyEvent: true})}  style={{ flex: 1, textAlign: 'right' }}>
             <div style={{ margin: '12px' }}>
-              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></span>
-              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></span>
+              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopRightRadius: '8px', borderBottomRightRadius: '8px' }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></span>
+              <span style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': "#ff9900", padding: 6, display: 'inline-block', border: '1px solid #ff9900', borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></span>
             </div>
           </div>
         </div>
