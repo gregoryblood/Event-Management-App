@@ -36,6 +36,12 @@ export default class EventView extends Component {
     if((slots + 1) != maxslots){
       addAttendee(id);
     }
+    if(fromMyEvent){
+      this.props.navigation.navigate('ViewMyEvents');
+    }
+    else{
+      this.props.navigation.navigate('ViewEvents');
+    }
   }
 
   signUp(){
@@ -65,13 +71,17 @@ export default class EventView extends Component {
       <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
-        <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} colro={'gray'} /></TouchableOpacity>
-        <TouchableOpacity onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} colro={'gray'} /></TouchableOpacity>
+        <View style ={styles.viewBar}>
+          <TouchableOpacity style = {styles.backBox} onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} colro={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} colro={'gray'} /></TouchableOpacity>
+        </View>
         <Text style = {styles.cardTitle}>{name}</Text>
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
         <Text style = {styles.cardWhenWhere}>{location} at {etime.slice(0,5)}</Text>
         <Text style = {styles.cardDescription}>{description}</Text>
-        <Button style = {styles.bottomButton}color = '#ff9900' title="Sign Up" onPress={() => this.addToList()}></Button>
+        <View style = {styles.bottomButton}>
+          <Button color = '#ff9900' title="Sign Up" onPress={() => this.addToList()}></Button>
+        </View>
         </View>  
       </View>
     )
@@ -79,25 +89,33 @@ export default class EventView extends Component {
 
 }
 const styles = StyleSheet.create({
+  viewBar:{
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
   containter: {
     padding: '4%',
+    position: 'fixed',
+    zIndex: '0',
+    width: '100%',
+    height:'100%',
   },
   syncHolder:{
     color: 'black',
-
     borderColor: 'gray',
     borderBottomWidth: 2,
     borderTopWidth: 2,
     width: '100%',
   },
 
-  goBack:{
+  backBox:{
     fontSize: 40,
     color: 'darkgrey',
     width: '45px',
     marginTop: '5px',
     marginLeft: '5px',
-    zIndex: 1,
   },
 
   signSheetClose:{
@@ -123,7 +141,7 @@ const styles = StyleSheet.create({
     left: '20%',
     right: '20%',
     backgroundColor: 'lightgrey',
-    zIndex: 2,
+    zIndex:'2',
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 8,
@@ -143,6 +161,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   optionBox:{
+    alignSelf: 'flex-end',
     right: 0,
     zIndex: 1,
   },
@@ -150,11 +169,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: '5%',
     marginRight: '5%',
+    textAlign: 'center',
   },
   cardWhenWhere:{
     color: 'grey',
     textAlign: 'left',
     fontSize: 25,
+    textAlign: 'center',
   },
   displayCard:{
     width: '100%',
@@ -164,25 +185,27 @@ const styles = StyleSheet.create({
   cardText:{
     fontSize: 25,
     textAlign: 'left',
+    textAlign: 'center',
   },
   cardDescription:{
     paddingTop: 10,
     textAlign: 'left',
     fontSize: 25,
+    textAlign: 'center',
   },
   cardTitle:{
     paddingTop: 10,
     textAlign: 'left',
     fontSize: 45,
+    textAlign: 'center',
   },
 
   bottomButton:{
-    bottom: 45,
-    padding: 50,
-    paddingLeft: '10%',
-    paddingRight: '10%',
-    borderRadius: 16,
-    width: '100%',
+    position: 'fixed',
+    bottom: '50px',
+    left: '0',
+    right: '0',
+
   },
 
 

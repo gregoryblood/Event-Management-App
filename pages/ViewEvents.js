@@ -83,19 +83,22 @@ const styles = StyleSheet.create({
     marginTop: -5
   },
   createbutton:{
+    position: 'fixed',
     width: 60,
     height: 60,
     borderRadius: 60/2,
     zIndex: 0,
     backgroundColor: 'orange',
     margin: 20,
-    marginLeft: 'auto',
-    padding: 13
+    padding: 13,
+    bottom: '45px',
+    right: '10px',
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow:'scroll',
   },
   eventbox: {
     flexDirection: "column",
