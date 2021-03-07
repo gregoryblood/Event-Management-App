@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     marginTop: -5
   },
   createbutton:{
+    position: 'fixed',
     width: 60,
     height: 60,
     borderRadius: 60/2,
@@ -94,11 +95,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 5,
     right: 10,
+
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'scroll',
   },
   eventbox: {
     flexDirection: "column",

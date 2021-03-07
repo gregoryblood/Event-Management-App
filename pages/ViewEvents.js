@@ -26,7 +26,7 @@ export default class ViewEvents extends Component {
   showList(arr) {
     return arr.map(event => {
       return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
-                                        name: event.name,  location: event.location, description: event.description,
+                                        id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
                                         fromMyEvent: false
                                         })}>
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     marginTop: -5
   },
   createbutton:{
+    position: 'fixed',
     width: 60,
     height: 60,
     borderRadius: 60/2,
@@ -99,6 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow:'scroll',
   },
   eventbox: {
     flexDirection: "column",
