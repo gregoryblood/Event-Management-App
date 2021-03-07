@@ -90,7 +90,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
     margin: 20,
     marginLeft: 'auto',
-    padding: 13
+    padding: 13,
+    position: 'absolute',
+    bottom: 5,
+    right: 10,
   },
   container: {
     flex: 1,
@@ -100,7 +103,10 @@ const styles = StyleSheet.create({
   eventbox: {
     flexDirection: "column",
     flex: 1,
-    width: '100%'
+    width: '100%',
+    position: 'absolute',
+    overflow: 'scroll',
+    height: '100%'
   },
   calendar: {
     position: 'absolute',

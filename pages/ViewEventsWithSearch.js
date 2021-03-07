@@ -84,7 +84,10 @@ const styles = StyleSheet.create({
   eventbox: {
     flexDirection: "column",
     flex: 1,
-    width: '100%'
+    width: '100%',
+    position: 'absolute',
+    overflow: 'scroll',
+    height: '100%'
   },
   event: {
     flexDirection: "column",
