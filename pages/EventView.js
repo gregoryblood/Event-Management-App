@@ -59,8 +59,9 @@ export default class EventView extends Component {
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
-        <TouchableOpacity onPress = {this.signDown}><Icon style = {styles.signSheetClose} name = {'close'}/></TouchableOpacity>
-        <View style = {styles.syncHolder}><Button style = {styles.calendarSyncButton} title = 'Sync Calednar' color = 'orange'></Button></View>
+        <TouchableOpacity onPress = {this.signDown}><Ionicons style = {styles.signSheetClose} name = {"md-contract"}/></TouchableOpacity>
+        <Text style = {styles.syncDesc}>You may sync this event to your personal calendar on your mobile device. Tap the button to your calendar.</Text>
+        <View style = {styles.syncHolder}><Button title = 'Sync Calednar' color = 'orange'></Button></View>
       </View>
     );
   }
@@ -73,7 +74,7 @@ export default class EventView extends Component {
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
           <TouchableOpacity style = {styles.backBox} onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} colro={'gray'} /></TouchableOpacity>
-          <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} colro={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <Text style = {styles.cardTitle}>{name}</Text>
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
@@ -89,6 +90,10 @@ export default class EventView extends Component {
 
 }
 const styles = StyleSheet.create({
+  syncDesc:{
+    fontSize: '30px',
+    textAlign: 'center',
+  },
   viewBar:{
     display: 'flex',
     flexDirection: 'row',
@@ -104,10 +109,14 @@ const styles = StyleSheet.create({
   },
   syncHolder:{
     color: 'black',
-    borderColor: 'gray',
-    borderBottomWidth: 2,
-    borderTopWidth: 2,
-    width: '100%',
+    borderColor: 'black',
+    borderWidth: '2px',
+    borderRadius: '5px',
+    widht: '80%',
+    marginTop: 'auto',
+    marginBottom: '10px',
+    marginRight:'3px',
+    marginLeft: '3px',
   },
 
   backBox:{
@@ -136,6 +145,8 @@ const styles = StyleSheet.create({
   },
 
   signSheet:{
+    position: 'fixed',
+    height: '75%',
     top: '5%',
     bottom: '20%',
     left: '20%',
@@ -145,7 +156,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 8,
-    height: '40%'
     
   },
   moreIcon:{

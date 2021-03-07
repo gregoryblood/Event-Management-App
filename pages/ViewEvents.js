@@ -33,7 +33,7 @@ export default class ViewEvents extends Component {
       <View style={styles.event} >
         <Text style={styles.title}>{event.name}</Text>
         <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
-        <Text style={styles.description}>{event.description}</Text>
+        <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
       </View>
       </TouchableOpacity>
     })
