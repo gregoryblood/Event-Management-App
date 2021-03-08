@@ -33,7 +33,7 @@ export const addEventToList = (name, description, location, edate, etime, slots,
     const url = `https://osu-event-server.herokuapp.com/add/`;
     const data = {name, description, location,edate,etime, slots, maxslots};
     console.log(data);
-    return axios({ method: 'post', url, data });
+    //return axios({ method: 'post', url, data });
   };
 
 //search

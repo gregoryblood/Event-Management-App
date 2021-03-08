@@ -69,7 +69,7 @@ export default class ViewEvents extends Component {
           </React.Fragment>
           
         </ScrollView>
-        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
+        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {fromMyEvent: false})}>
           <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
         </TouchableOpacity>
       </React.Fragment>

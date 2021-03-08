@@ -48,7 +48,11 @@ export default class CreateEvent extends Component {
     let eDate = date.getFullYear()+'-0'+date.getMonth()+'-0'+date.getDay()+'T00:00:00.000Z'
     let eTime = hours + ':' + minutes + ':' + seconds;
     await addEventToList(name, description, location, eDate, eTime, 0, parseInt(maxslots));
-    this.props.navigation.navigate('ViewEvents')
+    const {fromMyEvent} = this.props.route.params;
+    fromMyEvent ? 
+    this.props.navigation.navigate('ViewMyEvents')
+    :
+    this.props.navigation.navigate('ViewEvents');
 
   }
 
@@ -74,7 +78,7 @@ export default class CreateEvent extends Component {
         <TextInput placeholder='Location' onChangeText={this.updateField('location')}
           style={styles.formInput} type="text"></TextInput>
         
-        <TextInput placeholder='Max Slots' onChangeText={this.updateField('maxslots')}
+        <TextInput placeholder='Maximum Attendance' onChangeText={this.updateField('maxslots')}
           style={styles.formInput} type="text"></TextInput>
         
         <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
