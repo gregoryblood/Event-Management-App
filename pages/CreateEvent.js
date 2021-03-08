@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import { addEventToList } from '../Client/API/index.js';
-//import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 export default class CreateEvent extends Component {
@@ -23,11 +23,11 @@ export default class CreateEvent extends Component {
   }
   
   showDatePicker = () => {
-    setDatePickerVisibility(true);
+    showMode('date');
   };
 
-  hideDatePicker = () => {
-    setDatePickerVisibility(false);
+  hideTimePicker = () => {
+    showMode('time');
   };
 
   handleConfirm = (date) => {
@@ -53,7 +53,6 @@ export default class CreateEvent extends Component {
     this.props.navigation.navigate('ViewMyEvents')
     :
     this.props.navigation.navigate('ViewEvents');
-
   }
 
   render() {
@@ -65,14 +64,14 @@ export default class CreateEvent extends Component {
           style={styles.formInput} type="text"></TextInput>
           
         <View style={styles.inline}>
-          <TextInput placeholder='Time' onChangeText={this.showDatePicker}
+          <TextInput placeholder='Time' onChangeText={this.showTimePicker}
             style={styles.formInputSmall} type="date"></TextInput>
 
           <TextInput placeholder='Date' onChangeText={this.showDatePicker}
             style={styles.formInputSmall} type="time"></TextInput>
 
         </View>
-        
+
         <TextInput placeholder='Description' onChangeText={this.updateField('description')}
           style={styles.formInput} type="text"></TextInput>
         <TextInput placeholder='Location' onChangeText={this.updateField('location')}

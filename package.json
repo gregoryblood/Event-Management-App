@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@ant-design/react-native": "^4.0.5",
-    "@react-native-community/datetimepicker": "3.0.0",
+    "@react-native-community/datetimepicker": "^3.0.0",
     "@react-native-community/masked-view": "~0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/drawer": "~5.8.4",
@@ -16,6 +16,7 @@
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
+    "react-native-calendar-picker": "^7.1.1",
     "react-native-calendars": "^1.1254.0",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "~1.7.0",

@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MyEvents from './pages/MyEvents';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
-import { Calendar } from 'react-native-calendars';
+import CalendarClass from './pages/Calendar';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +39,7 @@ export default function App() {
               }}>
         
         <Tab.Screen name="MyEvents" component={MyEvents} options={{title: ' '}}/>
-        <Tab.Screen name="Calendar" component={Calendar} options={{title: ' '}}/>
+        <Tab.Screen name="Calendar" component={CalendarClass} options={{title: ' '}}/>
         <Tab.Screen name="Explore" component={Explore} options={{title: ' '}}/>
         <Tab.Screen name="Search" component={Search} options={{title: ' '}}/>
       </Tab.Navigator>
