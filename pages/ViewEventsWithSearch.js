@@ -1,9 +1,9 @@
 import React, { Component, } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
+  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
 import { getEvent, searchEvents } from '../Client/API/index.js';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 export default class ViewEventsWithSearch extends Component {
   constructor(props) {
@@ -36,11 +36,17 @@ export default class ViewEventsWithSearch extends Component {
   showList(arr) {
     return arr.map(event => {
       return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
-                                        name: event.name,  location: event.location, description: event.description,
+                                        id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate
                                         })}>
       <View style={styles.event} >
-        <Text style={styles.title}>{event.name}</Text>
+        {
+          event.slots == 0 ?
+          <Text style={styles.title}>{event.name}</Text>
+          :
+          <Text style={styles.titleOrange}>{event.name}</Text>
+        }
+        <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
         <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
         <Text style={styles.description}>{event.description}</Text>
       </View>
@@ -52,7 +58,8 @@ export default class ViewEventsWithSearch extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-        <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}>
           <React.Fragment>
           { //If data then display api otherwise loading indicator
             data ? ( //if data
@@ -68,7 +75,7 @@ export default class ViewEventsWithSearch extends Component {
           }
           </React.Fragment>
           
-        </View>
+        </ScrollView>
         <TextInput style={styles.searchbar} onChangeText={this.updateField('search')} placeholder={'Search'}></TextInput>
       </React.Fragment>
     )
@@ -77,17 +84,13 @@ export default class ViewEventsWithSearch extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'scroll'
+
   },
   eventbox: {
     flexDirection: "column",
     flex: 1,
     width: '100%',
     position: 'absolute',
-    overflow: 'scroll',
     height: '100%'
   },
   event: {
@@ -101,6 +104,11 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "black",
+    fontWeight: 'bold',
+    fontSize: 22
+  },
+  titleOrange: {
+    color: "orange",
     fontWeight: 'bold',
     fontSize: 22
   },

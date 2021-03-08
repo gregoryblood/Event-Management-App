@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
-import { getEvent,addEventToList, addAttendee } from '../Client/API/index.js';
+import {  addAttendee, getWithSlots, removeAttendee } from '../Client/API/index.js';
 import { Icon } from '@ant-design/react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -16,32 +16,30 @@ export default class EventView extends Component {
       data: null,
       eventList: 0,
       doSign: 1,
-
+      isSignedUp: false,
     };
 
     this.signUp = this.signUp.bind(this);
     this.signDown = this.signDown.bind(this);
   }
 
-
   componentDidMount() {
-    
+    const {slots} = this.props.route.params;
+    if (slots > 0) {
+      this.setState({isSignedUp: true});
+    }
   }
-  onCreatePress(changeTo){
-    
-  }
-  addToList(){
-    const {id, name, edate, location, description, etime, slots, maxslots, fromMyEvent} = this.props.route.params;
+  addToList(id, slots, maxslots){
     //Method will change once login is implemented
     if((slots + 1) != maxslots){
       addAttendee(id);
+      this.setState({isSignedUp: true});
     }
-    if(fromMyEvent){
-      this.props.navigation.navigate('ViewMyEvents');
-    }
-    else{
-      this.props.navigation.navigate('ViewEvents');
-    }
+
+  }
+  unAddToList(id) {
+    removeAttendee(id);
+    this.setState({isSignedUp: false});
   }
 
   signUp(){
@@ -59,7 +57,7 @@ export default class EventView extends Component {
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
-        <TouchableOpacity onPress = {this.signDown}><Ionicons style = {styles.signSheetClose} name = {"md-contract"}/></TouchableOpacity>
+        <TouchableOpacity onPress = {this.signDown}><Ionicons style = {styles.signSheetClose} name = {"ios-close"}/></TouchableOpacity>
         <Text style = {styles.syncDesc}>You may sync this event to your personal calendar on your mobile device. Tap the button to your calendar.</Text>
         <View style = {styles.syncHolder}><Button title = 'Sync Calednar' color = 'orange'></Button></View>
       </View>
@@ -73,16 +71,29 @@ export default class EventView extends Component {
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
-          <TouchableOpacity style = {styles.backBox} onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} colro={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.backBox} onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
           <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <Text style = {styles.cardTitle}>{name}</Text>
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
         <Text style = {styles.cardWhenWhere}>{location} at {etime.slice(0,5)}</Text>
+        {
+          maxslots > 0 ?
+          <Text style = {styles.cardWhenWhere}>{slots}/{maxslots} spots available</Text>
+          :
+          <Text style = {styles.cardWhenWhere}></Text>
+        }
         <Text style = {styles.cardDescription}>{description}</Text>
-        <View style = {styles.bottomButton}>
-          <Button color = '#ff9900' title="Sign Up" onPress={() => this.addToList()}></Button>
-        </View>
+        {this.state.isSignedUp ? 
+        <TouchableOpacity onPress={() => this.unAddToList(id)} style={styles.signedUpButton} color = '#ff9900' title="Submit Event" >
+          <Text style={styles.signedUpText}>Leave</Text>
+        </TouchableOpacity>
+        :
+        <TouchableOpacity onPress={() => this.addToList(id, slots, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
+          <Text style={styles.signUpText}>Sign Up</Text>
+        </TouchableOpacity> 
+        }
+        
         </View>  
       </View>
     )
@@ -122,9 +133,8 @@ const styles = StyleSheet.create({
   backBox:{
     fontSize: 40,
     color: 'darkgrey',
-    width: '45px',
-    marginTop: '5px',
-    marginLeft: '5px',
+    width: 45,
+
   },
 
   signSheetClose:{
@@ -158,34 +168,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     
   },
-  moreIcon:{
-    fontSize: 40,
-    color: 'darkgrey',
-    borderWidth: 0,
-    borderColor: 'darkgrey',
-    width: '45px',
-    textAlign: 'right',
-    marginTop: 10,
-    marginRight: 20,
-    borderRadius: 5,
-    zIndex: 1,
-  },
+
   optionBox:{
     alignSelf: 'flex-end',
-    right: 0,
+    margin: 0,
     zIndex: 1,
+    paddingRight: 20, 
+    paddingLeft: 20, 
+    
   },
   cardElement:{
-    textAlign: 'center',
     marginLeft: '5%',
     marginRight: '5%',
-    textAlign: 'center',
+
   },
   cardWhenWhere:{
     color: 'grey',
     textAlign: 'left',
     fontSize: 25,
-    textAlign: 'center',
   },
   displayCard:{
     width: '100%',
@@ -195,27 +195,55 @@ const styles = StyleSheet.create({
   cardText:{
     fontSize: 25,
     textAlign: 'left',
-    textAlign: 'center',
   },
   cardDescription:{
     paddingTop: 10,
     textAlign: 'left',
     fontSize: 25,
-    textAlign: 'center',
+
   },
   cardTitle:{
     paddingTop: 10,
     textAlign: 'left',
     fontSize: 45,
-    textAlign: 'center',
+
   },
 
-  bottomButton:{
-    position: 'fixed',
-    bottom: '50px',
-    left: '0',
-    right: '0',
-
+  signUpButton: {
+    position: 'absolute',
+    bottom: 80,
+    backgroundColor: 'white',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'black',
+    width: '100%',
+  },
+  signUpText: {
+    textAlign: 'center',
+    color: 'black',
+    fontSize: 40,
+    height: 20,
+    paddingTop: 20,
+    paddingBottom: 70,
+    width: '100%',
+  },
+  signedUpButton: {
+    position: 'absolute',
+    bottom: 80,
+    backgroundColor: 'orange',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'orange',
+    width: '100%',
+  },
+  signedUpText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 40,
+    height: 20,
+    paddingTop: 20,
+    paddingBottom: 70,
+    width: '100%',
   },
 
 

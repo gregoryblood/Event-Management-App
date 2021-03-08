@@ -43,26 +43,19 @@ export default class CalendarClass extends Component {
     return arr.map((item, i) => {
       return <WingBlank>
         <Card>
-          <WingBlank><h1 color="black">{item.name}</h1></WingBlank>
-          <WingBlank><div>{item.edate}</div></WingBlank>
-          <WingBlank><div>{item.location}</div></WingBlank>
-          <WingBlank><div>{item.description}</div></WingBlank>
+          <WingBlank>{item.name}</WingBlank>
+          <WingBlank>{item.edate}</WingBlank>
+          <WingBlank>{item.location}</WingBlank>
+          <WingBlank>{item.description}</WingBlank>
         </Card>
         <WhiteSpace></WhiteSpace>
       </WingBlank>
     })
   }
   render() {
-    const {fromMyEvent} = this.props.route.params;
     return (
       <React.Fragment>
-        <TouchableOpacity onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')} 
-            style={{ flex: 1, textAlign: 'right', position: 'absolute', right: 0, top: 0, zIndex: 2}}>
-          <View style={{ margin: 12 }}>
-            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 10, backgroundColor: "#ff9900", padding: 6,  border: '1px solid #ff9900', borderTopRightRadius: 8, borderBottomRightRadius: 8 }}><Ionicons name={"ios-calendar"} size={30} color={"#fff"} /></View>
-            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 45, backgroundColor: "#fff", padding: 6,  border: '1px solid #ff9900', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}><Ionicons name={"ios-list"} size={30} color={"#666"} /></View>
-          </View>
-        </TouchableOpacity>
+
         <Calendar
             style={{
               zIndex: 0,
@@ -123,3 +116,13 @@ export default class CalendarClass extends Component {
   }
   
 }
+
+/*
+        <TouchableOpacity onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')} 
+            style={{ flex: 1, textAlign: 'right', position: 'absolute', right: 0, top: 0, zIndex: 2}}>
+          <View style={{ margin: 12 }}>
+            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 10, backgroundColor: "#ff9900", padding: 6,  border: '1px solid #ff9900', borderTopRightRadius: 8, borderBottomRightRadius: 8 }}><Ionicons name={"ios-calendar"} size={30} color={"#fff"} /></View>
+            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 45, backgroundColor: "#fff", padding: 6,  border: '1px solid #ff9900', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}><Ionicons name={"ios-list"} size={30} color={"#666"} /></View>
+          </View>
+        </TouchableOpacity>
+*/

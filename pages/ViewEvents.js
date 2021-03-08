@@ -1,6 +1,6 @@
 import React, { Component, } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
+  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
 import { getEvent,addEventToList } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -31,7 +31,13 @@ export default class ViewEvents extends Component {
                                         fromMyEvent: false
                                         })}>
       <View style={styles.event} >
-        <Text style={styles.title}>{event.name}</Text>
+        {
+          event.slots == 0 ?
+          <Text style={styles.title}>{event.name}</Text>
+          :
+          <Text style={styles.titleOrange}>{event.name}</Text>
+        }
+        <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
         <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
       </View>
@@ -43,14 +49,9 @@ export default class ViewEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})} 
-          style={{ flex: 1, textAlign: 'right', position: 'absolute', right: 0, top: 0, zIndex: 2}}>
-          <View style={{ margin: 12 }}>
-            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 10, backgroundColor: "#fff", padding: 6,  border: '1px solid #ff9900', borderTopRightRadius: 8, borderBottomRightRadius: 8 }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></View>
-            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 45, backgroundColor: "#ff9900", padding: 6,  border: '1px solid #ff9900', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></View>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.container}>
+
+        <ScrollView showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}>
           <React.Fragment>
           { //If data then display api otherwise loading indicator
             data ? ( //if data
@@ -59,9 +60,6 @@ export default class ViewEvents extends Component {
                 <View style={styles.eventbox}>
                   {data && this.showList(this.state.data)}
                 </View>
-                <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
-                  <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
-                </TouchableOpacity>
               </React.Fragment>
               
             )
@@ -70,8 +68,10 @@ export default class ViewEvents extends Component {
           }
           </React.Fragment>
           
-        </View>
-        
+        </ScrollView>
+        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
+          <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
+        </TouchableOpacity>
       </React.Fragment>
     )
   }
@@ -97,17 +97,13 @@ const styles = StyleSheet.create({
     right: 10,
   },
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow:'scroll',
+
   },
   eventbox: {
     flexDirection: "column",
     flex: 1,
     width: '100%',
     position: 'absolute',
-    overflow: 'scroll',
     height: '100%'
   },
   calendar: {
@@ -129,6 +125,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22
   },
+  titleOrange: {
+    color: "orange",
+    fontWeight: 'bold',
+    fontSize: 22
+  },
   description: {
     fontSize: 16
   },
@@ -138,3 +139,13 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
 });
+
+/*
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Calendar', {fromMyEvent: false})} 
+          style={{ flex: 1, textAlign: 'right', position: 'absolute', right: 0, top: 0, zIndex: 2}}>
+          <View style={{ margin: 12 }}>
+            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 10, backgroundColor: "#fff", padding: 6,  border: '1px solid #ff9900', borderTopRightRadius: 8, borderBottomRightRadius: 8 }}><Ionicons name={"ios-calendar"} size={30} color={"#666"} /></View>
+            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 45, backgroundColor: "#ff9900", padding: 6,  border: '1px solid #ff9900', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}><Ionicons name={"ios-list"} size={30} color={"#fff"} /></View>
+          </View>
+        </TouchableOpacity>
+*/

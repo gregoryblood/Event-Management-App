@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 4,
     borderColor: 'orange',
     fontSize: 35,
-    width: '50%',
+    width: '36.80vw',
   },
   finishCreateButton: {
     backgroundColor: 'orange',
