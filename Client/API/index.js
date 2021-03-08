@@ -3,6 +3,9 @@ import axios from 'axios'; //API Getter
 //Gets all events
 export const getEvent = () => 
     axios.get('https://osu-event-server.herokuapp.com/');
+//Removes Event
+export const removeEvent = (id) => 
+    axios.get('https://osu-event-server.herokuapp.com/remove/'+id);   
 //Gets one event
 export const getAEvent = (id) => 
     axios.get('https://osu-event-server.herokuapp.com/get/'+id);
