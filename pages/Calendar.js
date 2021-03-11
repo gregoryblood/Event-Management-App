@@ -11,70 +11,92 @@ import {Calendar, Agenda, } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
+const signedUp = {key:'signedUp', color: 'orange', selectedDotColor: 'white'};
+const basic = {key:'basic', color: 'gray', selectedDotColor: 'gray'};
+const flagged = {key:'flagged', color: 'red'};
+
 export default class CalendarClass extends Component {
   constructor(props) {
     super(props);
+    const date = new Date()
     this.state = {
-      date: undefined,
+      date: date,
       eventData: [],
-      dayEvent: []
+      dayEvent: [],
+      day: date.getFullYear()+'-'+('0'+date.getMonth()).slice(-2)+'-'+('0' + date.getDay()).slice(-2),
+      month: {
+        'dateString': date.getFullYear()+'-'+('0'+date.getMonth()).slice(-2)+'-'+('0' + date.getDay()).slice(-2),
+        'day': date.getDay(),
+        'month': date.getMonth(),
+        'timestamp': 0,
+        'year': date.getFullYear(),
+      },
+
     };
   }
   componentDidMount() {
-    this.state.date = new Date();
+    this.getMonthData(this.state.month);
   }
   
-  async getMonthData(val) {
-    this.setState({ dayEvent: [] })
-    //console.log(val)
-    let monthVal = val + 1
-    if (monthVal < 10) {
-      monthVal = "0" + monthVal
-    }
-    var startDate = moment(new Date().getFullYear() + '-' + monthVal + '-01' + ' 00:00:00');
+  async getMonthData(month) {
+    //console.log(month);
+    var startDate = moment(month.year + '-' + month.month + '-01' + ' 00:00:00.00');
     var endDate = startDate.clone().endOf('month');
     //console.log(startDate.toDate(), moment(startDate).format('YYYY-MM-DD'));
     //console.log(endDate.toDate(), moment(endDate).format('YYYY-MM-DD'));
+
     const { data } = await getEventByTime(moment(startDate).format('YYYY-MM-DD'), moment(endDate).format('YYYY-MM-DD'));
-    //console.log(data)
-    this.setState({ eventData: data })
-  }
-  renderItem(item) {
-    return (
-      <TouchableOpacity
-        style={[styles.item, {height: item.height}]}
-        onPress={() => Alert.alert(item.name)}
-      >
-        <Text>{item.name}</Text>
-      </TouchableOpacity>
-    );
+    if (data)
+      this.setState({ eventData: data });
+    //console.log(this.state.eventData);
+
   }
 
-  renderEmptyDate() {
-    return (
-      <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
-      </View>
-    );
-  }
 
-  rowHasChanged(r1, r2) {
-    return r1.name !== r2.name;
-  }
-
-  timeToString(time) {
-    const date = new Date(time);
+  timeToString() {
+    const date = this.state.date;
     return date.toISOString().split('T')[0];
   }
+
+  onDayPress(day) {
+    this.setState({
+      day: day.dateString
+    });
+  };
+  onMonthChange(month) {
+    this.setState({
+      month: month.month
+    });
+    console.log(month);
+
+  };
   render() {
+    const day = this.state.day
+    var markedDates = null;
+    markedDates = {
+      [this.state.day]: {
+        selected: true, 
+        selectedColor: 'orange', 
+        disableTouchEvent: true,
+      }
+    }
+    for (var i = 0; i < this.state.eventData.length; i++) {
+      markedDates[this.state.eventData[i].edate.slice(0, 10)] = 
+      this.state.eventData[i].slots > 0 ? {dots: [signedUp]}
+      :
+      {dots: [basic]};
+      //  \''+this.state.eventData[i].edate+'\'
+    }
+    
+    console.log(markedDates);
     return (
-<Calendar
+      !day ? <span>LoadingWells</span> :
+      <Calendar
           theme={{
             todayTextColor: 'orange',
             calendarBackground: '#f2f2f2',
             selectedDayBackgroundColor: 'orange',
             selectedDayTextColor: '#ffffff',
-            selectedDotColor: 'orange',
             textDayFontWeight: '600',
             textMonthFontWeight: 'bold',
             textDayHeaderFontWeight: '500',
@@ -89,13 +111,13 @@ export default class CalendarClass extends Component {
           // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
           maxDate={'2040-12-30'}
           // Handler which gets executed on day press. Default = undefined
-          onDayPress={(day) => {console.log('selected day', day)}}
+          onDayPress={(day) => {this.onDayPress(day)}}
           // Handler which gets executed on day long press. Default = undefined
-          onDayLongPress={(day) => {console.log('selected day', day)}}
+          onDayLongPress={(day) => {this.onDayPress(day)}}
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
           monthFormat={'MMMM yyyy'}
           // Handler which gets executed when visible month changes in calendar. Default = undefined
-          onMonthChange={(month) => {console.log('month changed', month)}}
+          onMonthChange={(month) => {this.onMonthChange(month)}}
           // Hide month navigation arrows. Default = false
           hideArrows={false}
           // Replace default arrows with custom ones (direction can be 'left' or 'right')
@@ -124,13 +146,9 @@ export default class CalendarClass extends Component {
           //renderHeader={(date) => {/*Return JSX}}
           // Enable the option to swipe between months. Default = false
           enableSwipeMonths={true}
+          markingType={'multi-dot'}
 
-          markedDates={{
-            '2021-03-16': {selected: true, marked: true, selectedColor: 'orange'},
-            '2021-03-17': {marked: true, dotColor: 'black'},
-            '2021-03-12': {marked: true, dotColor: 'orange'},
-
-          }}
+          markedDates={markedDates}
         />
     );
   }
