@@ -72,20 +72,19 @@ export default class CalendarClass extends Component {
   };
   render() {
     const day = this.state.day
-    var markedDates = null;
-    markedDates = {
-      [this.state.day]: {
-        selected: true, 
-        selectedColor: 'orange', 
-        disableTouchEvent: true,
-      }
-    }
+    var markedDates = {};
+    
     for (var i = 0; i < this.state.eventData.length; i++) {
       markedDates[this.state.eventData[i].edate.slice(0, 10)] = 
       this.state.eventData[i].slots > 0 ? {dots: [signedUp]}
       :
       {dots: [basic]};
       //  \''+this.state.eventData[i].edate+'\'
+    }
+    markedDates[this.state.day] = {
+        selected: true, 
+        selectedColor: 'orange', 
+        disableTouchEvent: true,
     }
     
     console.log(markedDates);
