@@ -65,13 +65,13 @@ export default class EventView extends Component {
   }
 
   render() {
-      const {id, name, edate, location, description, etime, slots, maxslots, fromMyEvent} = this.props.route.params;
+      const {id, name, edate, location, description, etime, slots, maxslots, lastPage} = this.props.route.params;
     return (
       <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
-          <TouchableOpacity style = {styles.backBox} onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
           <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <Text style = {styles.cardTitle}>{name}</Text>

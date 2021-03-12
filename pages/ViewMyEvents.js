@@ -28,7 +28,7 @@ export default class ViewMyEvents extends Component {
       return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
-                                        fromMyEvent: true
+                                        lastPage: 'ViewMyEvents'
                                         })}>
       <View style={styles.event} >
         <Text style={styles.title}>{event.name}</Text>
