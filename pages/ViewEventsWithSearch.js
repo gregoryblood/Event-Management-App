@@ -17,11 +17,15 @@ export default class ViewEventsWithSearch extends Component {
     this.getEvent();
   }
   updateField = (field) => (text) => {
-    this.setState({ [field]: text }, () => {
-      if (this.state.search != '')
-        this.searchEvents();
-    });
-    
+    text = text.toLowerCase();
+    text = text.replace(/\W/g, '') //Strips all non letter/number characters
+    if (text != this.state.search && text.length > 1) {
+      this.setState({ [field]: text }, () => {
+        if (this.state.search != '')
+          //console.log(this.state.search);
+          this.searchEvents();
+      });
+    }
   }
   async getEvent() {
     //Calls api and will finish when data is loaded
@@ -48,7 +52,7 @@ export default class ViewEventsWithSearch extends Component {
         }
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
         <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
-        <Text style={styles.description}>{event.description}</Text>
+        <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
       </View>
       </TouchableOpacity>
     })

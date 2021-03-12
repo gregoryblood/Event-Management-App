@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import {
-  View, StyleSheet
-} from 'react-native';
-import { WhiteSpace, WingBlank, Card } from '@ant-design/react-native';
-
 import moment from 'moment';
 import { getEventByTime } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Calendar, Agenda, } from 'react-native-calendars';
+import {Calendar } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
@@ -44,14 +39,15 @@ export default class CalendarClass extends Component {
     var endDate = startDate.clone().endOf('month');
     //console.log(startDate.toDate(), moment(startDate).format('YYYY-MM-DD'));
     //console.log(endDate.toDate(), moment(endDate).format('YYYY-MM-DD'));
-
+    this.setState({
+      day: month.dateString
+    });
     const { data } = await getEventByTime(moment(startDate).format('YYYY-MM-DD'), moment(endDate).format('YYYY-MM-DD'));
+
     if (data)
       this.setState({ eventData: data });
     //console.log(this.state.eventData);
-
   }
-
 
   timeToString() {
     const date = this.state.date;
@@ -67,13 +63,11 @@ export default class CalendarClass extends Component {
     this.setState({
       month: month.month
     });
-    console.log(month);
+
 
   };
   render() {
-    const day = this.state.day
     var markedDates = {};
-    
     for (var i = 0; i < this.state.eventData.length; i++) {
       markedDates[this.state.eventData[i].edate.slice(0, 10)] = 
       this.state.eventData[i].slots > 0 ? {dots: [signedUp]}
@@ -89,7 +83,8 @@ export default class CalendarClass extends Component {
     
     console.log(markedDates);
     return (
-      !day ? <span>LoadingWells</span> :
+      
+      !this.state.eventData ? <span>LoadingWells</span> :
       <Calendar
           theme={{
             todayTextColor: 'orange',
@@ -153,21 +148,7 @@ export default class CalendarClass extends Component {
   }
   
 }
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30
-  }
-});
+
 /*
         <Agenda
           // The list of items that have to be displayed in agenda. If you want to render item as empty date
