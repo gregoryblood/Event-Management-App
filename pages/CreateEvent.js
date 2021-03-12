@@ -48,11 +48,8 @@ export default class CreateEvent extends Component {
     let eDate = date.getFullYear()+'-0'+date.getMonth()+'-0'+date.getDay()+'T00:00:00.000Z'
     let eTime = hours + ':' + minutes + ':' + seconds;
     await addEventToList(name, description, location, eDate, eTime, 0, parseInt(maxslots));
-    const {fromMyEvent} = this.props.route.params;
-    fromMyEvent ? 
-    this.props.navigation.navigate('ViewMyEvents')
-    :
-    this.props.navigation.navigate('ViewEvents');
+    const {lastPage} = this.props.route.params;
+    this.props.navigation.navigate(lastPage);
   }
 
   render() {

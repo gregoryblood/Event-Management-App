@@ -16,7 +16,9 @@ export default class ViewEvents extends Component {
   componentDidMount() {
     this.getEvent();
   }
-
+  componentDidUpdate() {    
+    this.getEvent();
+  }
   async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();
@@ -46,6 +48,10 @@ export default class ViewEvents extends Component {
   }
 
   render() {
+    const {hasNewData} = this.props.route.params;
+    if (hasNewData) {
+      this.forceUpdate();
+    }
     const data = this.state.data;
     return (
       <React.Fragment>
@@ -69,7 +75,7 @@ export default class ViewEvents extends Component {
           </React.Fragment>
           
         </ScrollView>
-        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {fromMyEvent: false})}>
+        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
           <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
         </TouchableOpacity>
       </React.Fragment>

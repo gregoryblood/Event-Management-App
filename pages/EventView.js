@@ -17,6 +17,7 @@ export default class EventView extends Component {
       eventList: 0,
       doSign: 1,
       isSignedUp: false,
+      hasNewData: false,
     };
 
     this.signUp = this.signUp.bind(this);
@@ -44,14 +45,19 @@ export default class EventView extends Component {
 
   signUp(){
     this.setState({
-      doSign: 0
+      doSign: 0,
+      hasNewData: true
+      
     });
+    
   }
   
   signDown(){
     this.setState({
-      doSign: 1
+      doSign: 1,
+      hasNewData: true
     });
+    this.forceUpdate();
   }
 
   signForm(){
@@ -102,7 +108,7 @@ export default class EventView extends Component {
 }
 const styles = StyleSheet.create({
   syncDesc:{
-    fontSize: '30px',
+    fontSize: 30,
     textAlign: 'center',
   },
   viewBar:{
@@ -113,21 +119,19 @@ const styles = StyleSheet.create({
   },
   containter: {
     padding: '4%',
-    position: 'fixed',
-    zIndex: '0',
     width: '100%',
     height:'100%',
   },
   syncHolder:{
     color: 'black',
     borderColor: 'black',
-    borderWidth: '2px',
-    borderRadius: '5px',
-    widht: '80%',
+    borderWidth: 2,
+    borderRadius: 5,
+    width: '80%',
     marginTop: 'auto',
-    marginBottom: '10px',
-    marginRight:'3px',
-    marginLeft: '3px',
+    marginBottom: 10,
+    marginRight:3,
+    marginLeft: 3,
   },
 
   backBox:{
@@ -141,28 +145,26 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 25,
     textAlign: 'right',
-    marginTop: '5px',
-    marginRight: '5px',
+    marginTop: 5,
+    marginRight: 5,
   },
 
   signSheetText:{
     fontSize: 25,
-    marginTop: '25px',
-    marginLeft: '3px',
-    marginRight: '3px',
+    marginTop: 25,
+    marginLeft: 3,
+    marginRight: 3,
     textAlign: 'center',
     
   },
 
   signSheet:{
-    position: 'fixed',
     height: '75%',
     top: '5%',
     bottom: '20%',
     left: '20%',
     right: '20%',
     backgroundColor: 'lightgrey',
-    zIndex:'2',
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 8,

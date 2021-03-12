@@ -16,7 +16,9 @@ export default class ViewMyEvents extends Component {
   componentDidMount() {
     this.getEvent();
   }
-
+  componentDidUpdate() {    
+    this.getEvent();
+  }
   async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getWithSlots();
@@ -41,6 +43,7 @@ export default class ViewMyEvents extends Component {
   }
 
   render() {
+
     const data = this.state.data;
     return (
       <React.Fragment>

@@ -162,7 +162,7 @@ export default class CalendarView extends Component {
             // Hide month navigation arrows. Default = false
             hideArrows={false}
             // Replace default arrows with custom ones (direction can be 'left' or 'right')
-            renderArrow={(direction) => (<Ionicons name={direction == 'left'? 'ios-arrow-back' : 'ios-arrow-forward'}/>)}            // Do not show days of other months in month page. Default = false
+            renderArrow={(direction) => (<Ionicons size={42} color={'gray'} name={direction == 'left'? 'ios-arrow-back' : 'ios-arrow-forward'}/>)}            // Do not show days of other months in month page. Default = false
             hideExtraDays={false}
             // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
             // day from another month that is visible in calendar page. Default = false

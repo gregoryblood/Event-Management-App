@@ -13,10 +13,9 @@ export default class Explore extends Component {
   render() {
     return (
       <MyEventStack.Navigator>
-        <MyEventStack.Screen name="ViewEvents" component={ViewEvents} options={{headerShown: false}} />
-        <MyEventStack.Screen name="Calendar" component={Calendar} options={{headerShown: false}} />
+        <MyEventStack.Screen name="ViewEvents" component={ViewEvents} options={{headerShown: false}} initialParams={{hasNewData: false}}/>
         <MyEventStack.Screen name="CreateEvent" component={CreateEvent} options={{headerTitle: 'Create an Event'}} />
-        <MyEventStack.Screen name="EventView" component={EventView} options={{headerShown: false}}/>
+        <MyEventStack.Screen name="EventView" component={EventView} options={{headerShown: false}} />
       </MyEventStack.Navigator>
     )
   }
