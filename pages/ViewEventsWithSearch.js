@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import { getEvent, searchEvents } from '../Client/API/index.js';
 
-
 export default class ViewEventsWithSearch extends Component {
   constructor(props) {
     super(props);
@@ -17,13 +16,17 @@ export default class ViewEventsWithSearch extends Component {
     this.getEvent();
   }
   updateField = (field) => (text) => {
-    text = text.toLowerCase();
-    text = text.replace(/\W/g, '') //Strips all non letter/number characters
-    if (text != this.state.search && text.length > 1) {
+    
+    text = text.replace(/\W/g, ''); //Strips all non letter/number characters
+    if (text != this.state.search) {
       this.setState({ [field]: text }, () => {
-        if (this.state.search != '')
+        if (this.state.search != '') {
           //console.log(this.state.search);
           this.searchEvents();
+        }
+        else {
+          this.getEvent();
+        }
       });
     }
   }
@@ -34,14 +37,18 @@ export default class ViewEventsWithSearch extends Component {
   }
   async searchEvents() {
     const { data } = await searchEvents(this.state.search);
-    this.setState({ data });
+    if (data) {
+      this.setState({ data: data });
+    }
+      
   }
 
   showList(arr) {
     return arr.map(event => {
-      return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
+      return <TouchableOpacity key={event.name} onPress={() => this.props.navigation.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
-                                        etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate
+                                        etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
+                                        lastPage: 'ViewEventsWithSearch'
                                         })}>
       <View style={styles.event} >
         {

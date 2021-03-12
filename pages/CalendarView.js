@@ -12,7 +12,6 @@ import { MilToCil } from './HelperFuncs.js';
 const signedUp = {key:'signedUp', color: '#ff7600', selectedDotColor: 'white'};
 const basic = {key:'basic', color: 'gray', selectedDotColor: 'gray'};
 const flagged = {key:'flagged', color: 'red'};
-
 export default class CalendarView extends Component {
   constructor(props) {
     super(props);
@@ -41,7 +40,7 @@ export default class CalendarView extends Component {
 
   showList(arr) {
     return arr.map(event => {
-      return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
+      return <TouchableOpacity  key={event.name} onPress={() => this.props.navigation.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
                                         lastPage: 'CalendarView'
@@ -65,6 +64,7 @@ export default class CalendarView extends Component {
     var startDate = moment(day.year + '-' + day.month + '-'+day.day + ' 00:00:00.00');
     const { data } = await getEventByDay(moment(startDate).format('YYYY-MM-DD'));
     this.setState({dayEvents: data});
+
   }
   async getMonthData(month) {
     var startDate = moment(month.year + '-' + (month.month) + '-01' + ' 00:00:00.00');
@@ -96,9 +96,9 @@ export default class CalendarView extends Component {
     this.setState({
       month: month.month
     });
-    this.getEvents(month);
+    
     this.getMonthData(month);
-
+    this.getEvents(month);
   };
   render() {
     var markedDates = {};
@@ -143,7 +143,7 @@ export default class CalendarView extends Component {
               textMonthFontWeight: 'bold',
               textDayHeaderFontWeight: '500',
               textDayFontSize: 15,
-              textMonthFontSize: 16,
+              textMonthFontSize: 24,
               textDayHeaderFontSize: 16
             }}
             // Initially visible month. Default = Date()

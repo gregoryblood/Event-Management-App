@@ -23,12 +23,15 @@ export default class ViewEvents extends Component {
   async getEvents() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();
-    this.setState({ data });
+    if (data) {
+      this.setState({ data });
+    }
+    
   }
 
   showList(arr) {
     return arr.map(event => {
-      return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
+      return <TouchableOpacity key={event.name} onPress={() => this.props.navigation.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
                                         lastPage: 'ViewEvents'
