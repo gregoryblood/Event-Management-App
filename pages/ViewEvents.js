@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { getEvent,addEventToList } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MilToCil } from './HelperFuncs.js';
 
 export default class ViewEvents extends Component {
   constructor(props) {
@@ -14,12 +15,12 @@ export default class ViewEvents extends Component {
     };
   }
   componentDidMount() {
-    this.getEvent();
+    this.getEvents();
   }
   componentDidUpdate() {    
-    this.getEvent();
+    this.getEvents();
   }
-  async getEvent() {
+  async getEvents() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();
     this.setState({ data });
@@ -40,7 +41,7 @@ export default class ViewEvents extends Component {
           <Text style={styles.titleOrange}>{event.name}</Text>
         }
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
-        <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
+        <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
       </View>
       </TouchableOpacity>
@@ -70,12 +71,12 @@ export default class ViewEvents extends Component {
               
             )
               : //else 
-              (<ActivityIndicator />)
+              (<ActivityIndicator style={{top: '50%'}}/>)
           }
           </React.Fragment>
           
         </ScrollView>
-        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
+        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewEvents'})}>
           <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
         </TouchableOpacity>
       </React.Fragment>
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 60/2,
     zIndex: 0,
-    backgroundColor: 'orange',
+    backgroundColor: '#ff7600',
     margin: 20,
     marginLeft: 'auto',
     padding: 13,
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 22
   },
   titleOrange: {
-    color: "orange",
+    color: '#ff7600',
     fontWeight: 'bold',
     fontSize: 22
   },

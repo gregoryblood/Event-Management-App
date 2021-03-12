@@ -75,7 +75,7 @@ export default class ViewEventsWithSearch extends Component {
               
             )
               : //else 
-              (<ActivityIndicator />)
+              (<ActivityIndicator style={{top: '50%'}}/>)
           }
           </React.Fragment>
           
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     fontSize: 22
   },
   titleOrange: {
-    color: "orange",
+    color: '#ff7600',
     fontWeight: 'bold',
     fontSize: 22
   },

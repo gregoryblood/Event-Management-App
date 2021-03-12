@@ -6,9 +6,10 @@ import {
 import { getEventByTime, getEventByDay } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Calendar } from 'react-native-calendars';
+import { MilToCil } from './HelperFuncs.js';
 
 
-const signedUp = {key:'signedUp', color: 'orange', selectedDotColor: 'white'};
+const signedUp = {key:'signedUp', color: '#ff7600', selectedDotColor: 'white'};
 const basic = {key:'basic', color: 'gray', selectedDotColor: 'gray'};
 const flagged = {key:'flagged', color: 'red'};
 
@@ -53,7 +54,7 @@ export default class CalendarView extends Component {
           <Text style={styles.titleOrange}>{event.name}</Text>
         }
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
-        <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
+        <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
       </View>
       </TouchableOpacity>
@@ -111,7 +112,7 @@ export default class CalendarView extends Component {
     if (this.state.day) {
       markedDates[this.state.day] = {
         selected: true, 
-        selectedColor: 'orange', 
+        selectedColor: '#ff7600', 
         disableTouchEvent: true,
       }
     }
@@ -134,9 +135,9 @@ export default class CalendarView extends Component {
               }
             }}
             theme={{
-              todayTextColor: 'orange',
+              todayTextColor: '#ff7600',
               calendarBackground: '#f2f2f2',
-              selectedDayBackgroundColor: 'orange',
+              selectedDayBackgroundColor: '#ff7600',
               selectedDayTextColor: '#ffffff',
               textDayFontWeight: '600',
               textMonthFontWeight: 'bold',
@@ -204,8 +205,11 @@ export default class CalendarView extends Component {
                 </ScrollView>
             )
               : //else 
-              (<ActivityIndicator />)
+              (<ActivityIndicator style={{top: '50%'}}/>)
           }
+          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'CalendarView'})}>
+            <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
+          </TouchableOpacity>
         </React.Fragment>
     );
   }
@@ -223,7 +227,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 60/2,
     zIndex: 0,
-    backgroundColor: 'orange',
+    backgroundColor: '#ff7600',
     margin: 20,
     marginLeft: 'auto',
     padding: 13,
@@ -262,7 +266,7 @@ const styles = StyleSheet.create({
     fontSize: 22
   },
   titleOrange: {
-    color: "orange",
+    color: '#ff7600',
     fontWeight: 'bold',
     fontSize: 22
   },

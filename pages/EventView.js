@@ -6,7 +6,7 @@ import moment from 'moment';
 import {  addAttendee, getWithSlots, removeAttendee, removeEvent } from '../Client/API/index.js';
 import { Icon } from '@ant-design/react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {MilToCil} from './HelperFuncs'
 
 export default class EventView extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ export default class EventView extends Component {
       doSign: 1,
       isSignedUp: false,
       hasNewData: false,
+      slots: 0,
     };
     this.syncFun = this.syncFun.bind(this);
     this.delFun = this.delFun.bind(this);
@@ -27,20 +28,24 @@ export default class EventView extends Component {
 
   componentDidMount() {
     const {slots} = this.props.route.params;
+    this.setState({slots: slots});
     if (slots > 0) {
       this.setState({isSignedUp: true});
     }
   }
+  
   addToList(id, slots, maxslots){
     //Method will change once login is implemented
     if((slots + 1) != maxslots){
       addAttendee(id);
       this.setState({isSignedUp: true});
+      this.setState({slots: slots+1});
     }
 
   }
   unAddToList(id) {
     removeAttendee(id);
+    this.setState({slots: this.state.slots-1});
     this.setState({isSignedUp: false});
   }
 
@@ -48,16 +53,13 @@ export default class EventView extends Component {
     if(this.state.doSign == 1){
       this.setState({
         doSign: 0,
-        hasNewData: true,
       })
-      this.forceUpdate();
     }
     else{
       this.setState({
         doSign: 1,
-        hasNewData: true,
       })
-      this.forceUpdate();
+
     }
   }
   signDown(){
@@ -71,40 +73,39 @@ export default class EventView extends Component {
   }
 
   delFun(){
-    const {id} = this.props.route.params;
-    removeEvent(id);
-    this.signUp();
+    if (confirm("Are you sure you want to delete this event?\n\nYou will not be able to recover it...")) {
+      const {id, lastPage} = this.props.route.params;
+      removeEvent(id);
+      this.props.navigation.navigate(lastPage);
+    }
+    
   }
 
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
-      <TouchableOpacity style = {styles.optionContainer} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Ionicons name={"md-checkmark"} size = {40} /></Text></TouchableOpacity>
-      <TouchableOpacity style = {styles.optionContainer} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Ionicons name={"md-close"} size = {40} /></Text></TouchableOpacity>
+        <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Ionicons name={"md-checkmark"} size = {40} /></Text></TouchableOpacity>
+        <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Ionicons name={"md-close"} size = {40} /></Text></TouchableOpacity>
       </View>
     );
-
-    //<TouchableOpacity onPress = {this.signDown}><Ionicons style = {styles.signSheetClose} name = {"ios-close"}/></TouchableOpacity>
-    //<Text style = {styles.syncDesc}>You may sync this event to your personal calendar on your mobile device. Tap the button to your calendar.</Text>
-    //<View style = {styles.syncHolder}><Button title = 'Sync Calednar' color = 'orange'></Button></View>
   }
-
+  
   render() {
-      const {id, name, edate, location, description, etime, slots, maxslots, fromMyEvent} = this.props.route.params;
+      const {id, name, edate, location, description, etime, maxslots, lastPage} = this.props.route.params;
     return (
       <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
-          <TouchableOpacity style = {styles.backBox} onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
           <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <Text style = {styles.cardTitle}>{name}</Text>
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
-        <Text style = {styles.cardWhenWhere}>{location} at {etime.slice(0,5)}</Text>
+        <Text style = {styles.cardWhenWhere}>{location} at { MilToCil(etime) }</Text>
         {
           maxslots > 0 ?
-          <Text style = {styles.cardWhenWhere}>{slots}/{maxslots} spots available</Text>
+          <Text style = {styles.cardWhenWhere}>{this.state.slots}/{maxslots} spots available</Text>
           :
           <Text style = {styles.cardWhenWhere}></Text>
         }
@@ -114,7 +115,7 @@ export default class EventView extends Component {
           <Text style={styles.signedUpText}>Leave</Text>
         </TouchableOpacity>
         :
-        <TouchableOpacity onPress={() => this.addToList(id, slots, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
+        <TouchableOpacity onPress={() => this.addToList(id, this.state.slots, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
           <Text style={styles.signUpText}>Sign Up</Text>
         </TouchableOpacity> 
         }
@@ -126,10 +127,7 @@ export default class EventView extends Component {
 
 }
 const styles = StyleSheet.create({
-  syncDesc:{
-    fontSize: 30,
-    textAlign: 'center',
-  },
+
   viewBar:{
     display: 'flex',
     flexDirection: 'row',
@@ -137,29 +135,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   containter: {
-    padding: '4%',
-    position: 'fixed',
-    zIndex: '0',
+    padding: 20,
+    position: 'absolute',
+    zIndex: 0,
     width: '100%',
     height:'100%',
-  },
-  syncHolder:{
-    color: 'black',
-    borderColor: 'black',
-    borderWidth: 2,
-    borderRadius: 5,
-    widht: '80%',
-    marginTop: 'auto',
-    marginBottom: 10,
-    marginRight: 3,
-    marginLeft: 3,
   },
 
   backBox:{
     fontSize: 40,
     color: 'darkgrey',
     width: 45,
-
   },
 
   signSheetClose:{
@@ -191,6 +177,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginTop: 10,
     marginLeft: 3,
+
   },
 
   optionContainer:{
@@ -200,20 +187,42 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
-    display: 'inline',
+    display: 'none',
+  },
+  optionContainerTop:{
+    padding: 10,
+    paddingTop: 5,
+    height: 80,
+    width: '100%',
+    backgroundColor: 'white',
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 1,
+    borderTopLeftRadius: 16, 
+    borderTopRightRadius: 16, 
+  },
+  optionContainerBottom:{
+    padding: 10,
+    paddingTop: 5,
+    height: 80,
+    width: '100%',
+    backgroundColor: 'white',
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 1,
+    borderBottomLeftRadius: 16, 
+    borderBottomRightRadius: 16, 
   },
 
   signSheet:{
-    position: 'fixed',
+    position: 'absolute',
     height: 'auto',
-    top: '5%',
-    left: '20%',
-    right: '15%',
+    top: 80,
+    right: 30,
+    width: 300,
     zIndex: 2,
-    backgroundColor: 'offwhite',
+    backgroundColor: 'white',
     borderColor: 'lightgrey',
     borderWidth: 2,
-    borderRadius: 3,
+    borderRadius: 16,
     
   },
 
@@ -278,10 +287,10 @@ const styles = StyleSheet.create({
   signedUpButton: {
     position: 'absolute',
     bottom: 80,
-    backgroundColor: 'orange',
+    backgroundColor: '#ff7600',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'orange',
+    borderColor: '#ff7600',
     width: '100%',
   },
   signedUpText: {

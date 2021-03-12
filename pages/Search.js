@@ -10,7 +10,7 @@ export default class Search extends Component {
   render() {
     return (
       <MyEventStack.Navigator>
-        <MyEventStack.Screen name="ViewEvents" component={ViewEventsWithSearch} options={{headerShown: false}} />
+        <MyEventStack.Screen name="ViewEventsWithSearch" component={ViewEventsWithSearch} options={{headerShown: false}} />
         <MyEventStack.Screen name="EventView" component={EventView} options={{headerShown: false}}/>
       </MyEventStack.Navigator>
     )
