@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
-import {  addAttendee, getWithSlots, removeAttendee } from '../Client/API/index.js';
+import {  addAttendee, getWithSlots, removeAttendee, removeEvent } from '../Client/API/index.js';
 import { Icon } from '@ant-design/react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -19,7 +19,8 @@ export default class EventView extends Component {
       isSignedUp: false,
       hasNewData: false,
     };
-
+    this.syncFun = this.syncFun.bind(this);
+    this.delFun = this.delFun.bind(this);
     this.signUp = this.signUp.bind(this);
     this.signDown = this.signDown.bind(this);
   }
@@ -44,40 +45,58 @@ export default class EventView extends Component {
   }
 
   signUp(){
-    this.setState({
-      doSign: 0,
-      hasNewData: true
-      
-    });
-    
+    if(this.state.doSign == 1){
+      this.setState({
+        doSign: 0,
+        hasNewData: true,
+      })
+      this.forceUpdate();
+    }
+    else{
+      this.setState({
+        doSign: 1,
+        hasNewData: true,
+      })
+      this.forceUpdate();
+    }
   }
-  
   signDown(){
     this.setState({
-      doSign: 1,
-      hasNewData: true
+      doSign: 1
     });
-    this.forceUpdate();
+  }
+
+  syncFun(){
+    this.signUp();
+  }
+
+  delFun(){
+    const {id} = this.props.route.params;
+    removeEvent(id);
+    this.signUp();
   }
 
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
-        <TouchableOpacity onPress = {this.signDown}><Ionicons style = {styles.signSheetClose} name = {"ios-close"}/></TouchableOpacity>
-        <Text style = {styles.syncDesc}>You may sync this event to your personal calendar on your mobile device. Tap the button to your calendar.</Text>
-        <View style = {styles.syncHolder}><Button title = 'Sync Calednar' color = 'orange'></Button></View>
+      <TouchableOpacity style = {styles.optionContainer} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Ionicons name={"md-checkmark"} size = {40} /></Text></TouchableOpacity>
+      <TouchableOpacity style = {styles.optionContainer} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Ionicons name={"md-close"} size = {40} /></Text></TouchableOpacity>
       </View>
     );
+
+    //<TouchableOpacity onPress = {this.signDown}><Ionicons style = {styles.signSheetClose} name = {"ios-close"}/></TouchableOpacity>
+    //<Text style = {styles.syncDesc}>You may sync this event to your personal calendar on your mobile device. Tap the button to your calendar.</Text>
+    //<View style = {styles.syncHolder}><Button title = 'Sync Calednar' color = 'orange'></Button></View>
   }
 
   render() {
-      const {id, name, edate, location, description, etime, slots, maxslots, lastPage} = this.props.route.params;
+      const {id, name, edate, location, description, etime, slots, maxslots, fromMyEvent} = this.props.route.params;
     return (
       <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
-          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.backBox} onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
           <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <Text style = {styles.cardTitle}>{name}</Text>
@@ -119,6 +138,8 @@ const styles = StyleSheet.create({
   },
   containter: {
     padding: '4%',
+    position: 'fixed',
+    zIndex: '0',
     width: '100%',
     height:'100%',
   },
@@ -127,10 +148,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     borderRadius: 5,
-    width: '80%',
+    widht: '80%',
     marginTop: 'auto',
     marginBottom: 10,
-    marginRight:3,
+    marginRight: 3,
     marginLeft: 3,
   },
 
@@ -158,16 +179,41 @@ const styles = StyleSheet.create({
     
   },
 
+  syncCalendar:{
+    color: 'lime',
+    fontSize: 40,
+    marginTop: 10,
+    marginLeft: 3,
+  },
+
+  deleteEvent:{
+    color: 'tomato',
+    fontSize: 40,
+    marginTop: 10,
+    marginLeft: 3,
+  },
+
+  optionContainer:{
+    paddingTop: 10,
+    height: 80,
+    width: '100%',
+    backgroundColor: 'white',
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 1,
+    display: 'inline',
+  },
+
   signSheet:{
-    height: '75%',
+    position: 'fixed',
+    height: 'auto',
     top: '5%',
-    bottom: '20%',
     left: '20%',
-    right: '20%',
-    backgroundColor: 'lightgrey',
-    borderColor: 'black',
+    right: '15%',
+    zIndex: 2,
+    backgroundColor: 'offwhite',
+    borderColor: 'lightgrey',
     borderWidth: 2,
-    borderRadius: 8,
+    borderRadius: 3,
     
   },
 
