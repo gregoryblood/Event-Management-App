@@ -250,19 +250,19 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   }, 
   cardText:{
-    fontSize: 25,
+    fontSize: 16,
     textAlign: 'left',
   },
   cardDescription:{
     paddingTop: 10,
     textAlign: 'left',
-    fontSize: 25,
+    fontSize: 20,
 
   },
   cardTitle:{
     paddingTop: 10,
     textAlign: 'left',
-    fontSize: 45,
+    fontSize: 26,
 
   },
 
