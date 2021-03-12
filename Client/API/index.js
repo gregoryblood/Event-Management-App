@@ -25,7 +25,7 @@ export const updateMaxSlots = (id, num) =>
 export const getWithSlots = () => 
     axios.get('https://osu-event-server.herokuapp.com/getwithslots/');
 
-//Gets events with slots more that 0 [WILL REMOVE LATER]
+//Search 
 export const searchEvents = (keyword) => 
     axios.get('https://osu-event-server.herokuapp.com/search/' + keyword);
 //Adds event
@@ -34,8 +34,10 @@ export const addEventToList = (name, description, location, edate, etime, slots,
     const data = {name, description, location,edate,etime, slots, maxslots};
     console.log(data);
     //return axios({ method: 'post', url, data });
-  };
-
-//search
+};
+//Get events given a day
+export const getEventByDay = (day) => 
+    axios.get('https://osu-event-server.herokuapp.com/getByDay/'+day);
+//Gets events 
 export const getEventByTime = (start,end) => 
     axios.get('https://osu-event-server.herokuapp.com/getByTime/'+start+'/'+end);

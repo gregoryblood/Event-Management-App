@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import moment from 'moment';
-import { getEventByTime } from '../Client/API/index.js';
+import {
+  View, Text, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, ScrollView
+} from 'react-native';
+import { getEventByTime, getEventByDay } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Calendar } from 'react-native-calendars';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const signedUp = {key:'signedUp', color: 'orange', selectedDotColor: 'white'};
@@ -13,16 +15,16 @@ const flagged = {key:'flagged', color: 'red'};
 export default class CalendarClass extends Component {
   constructor(props) {
     super(props);
-    const date = new Date()
+    const date = new Date();
     this.state = {
       date: date,
-      eventData: [],
-      dayEvent: [],
-      day: date.getFullYear()+'-'+('0'+date.getMonth()).slice(-2)+'-'+('0' + date.getDay()).slice(-2),
+      eventData: {},
+      dayEvents: [],
+      day: date.getFullYear()+'-'+('0'+(date.getMonth() + 1)).slice(-2)+'-'+('0' + date.getDate()).slice(-2),
       month: {
-        'dateString': date.getFullYear()+'-'+('0'+date.getMonth()).slice(-2)+'-'+('0' + date.getDay()).slice(-2),
-        'day': date.getDay(),
-        'month': date.getMonth(),
+        'dateString': date.getFullYear()+'-'+('0'+ (date.getMonth() + 1)).slice(-2)+'-'+('0' + date.getDate()).slice(-2),
+        'day': date.getDate(),
+        'month': date.getMonth()+1,
         'timestamp': 0,
         'year': date.getFullYear(),
       },
@@ -31,17 +33,43 @@ export default class CalendarClass extends Component {
   }
   componentDidMount() {
     this.getMonthData(this.state.month);
+    this.setState({
+      day: this.state.month.dateString
+    });
   }
-  
+
+  showList(arr) {
+    return arr.map(event => {
+      return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
+                                        id: event.id, name: event.name,  location: event.location, description: event.description,
+                                        etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
+                                        fromMyEvent: false
+                                        })}>
+      <View style={styles.event} >
+        {
+          event.slots == 0 ?
+          <Text style={styles.title}>{event.name}</Text>
+          :
+          <Text style={styles.titleOrange}>{event.name}</Text>
+        }
+        <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
+        <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
+        <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
+      </View>
+      </TouchableOpacity>
+    })
+  }
+  async getEvents(day) {
+    //Calls api and will finish when data is loaded
+    var startDate = moment(day.year + '-' + day.month + '-'+day.day + ' 00:00:00.00');
+    const { data } = await getEventByDay(moment(startDate).format('YYYY-MM-DD'));
+    this.setState({dayEvents: data});
+  }
   async getMonthData(month) {
-    //console.log(month);
-    var startDate = moment(month.year + '-' + month.month + '-01' + ' 00:00:00.00');
+    var startDate = moment(month.year + '-' + (month.month) + '-01' + ' 00:00:00.00');
     var endDate = startDate.clone().endOf('month');
     //console.log(startDate.toDate(), moment(startDate).format('YYYY-MM-DD'));
     //console.log(endDate.toDate(), moment(endDate).format('YYYY-MM-DD'));
-    this.setState({
-      day: month.dateString
-    });
     const { data } = await getEventByTime(moment(startDate).format('YYYY-MM-DD'), moment(endDate).format('YYYY-MM-DD'));
 
     if (data)
@@ -58,12 +86,17 @@ export default class CalendarClass extends Component {
     this.setState({
       day: day.dateString
     });
+    this.getEvents(day);
   };
   onMonthChange(month) {
     this.setState({
+      day: {}
+    });
+    this.setState({
       month: month.month
     });
-
+    this.getEvents(month);
+    this.getMonthData(month);
 
   };
   render() {
@@ -75,164 +108,170 @@ export default class CalendarClass extends Component {
       {dots: [basic]};
       //  \''+this.state.eventData[i].edate+'\'
     }
-    markedDates[this.state.day] = {
+    if (this.state.day) {
+      markedDates[this.state.day] = {
         selected: true, 
         selectedColor: 'orange', 
         disableTouchEvent: true,
+      }
     }
     
-    console.log(markedDates);
     return (
       
-      !this.state.eventData ? <span>LoadingWells</span> :
-      <Calendar
-          theme={{
-            todayTextColor: 'orange',
-            calendarBackground: '#f2f2f2',
-            selectedDayBackgroundColor: 'orange',
-            selectedDayTextColor: '#ffffff',
-            textDayFontWeight: '600',
-            textMonthFontWeight: 'bold',
-            textDayHeaderFontWeight: '500',
-            textDayFontSize: 16,
-            textMonthFontSize: 16,
-            textDayHeaderFontSize: 16
-          }}
-          // Initially visible month. Default = Date()
-          current={this.state.date}
-          // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          minDate={'2021-01-01'}
-          // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          maxDate={'2040-12-30'}
-          // Handler which gets executed on day press. Default = undefined
-          onDayPress={(day) => {this.onDayPress(day)}}
-          // Handler which gets executed on day long press. Default = undefined
-          onDayLongPress={(day) => {this.onDayPress(day)}}
-          // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-          monthFormat={'MMMM yyyy'}
-          // Handler which gets executed when visible month changes in calendar. Default = undefined
-          onMonthChange={(month) => {this.onMonthChange(month)}}
-          // Hide month navigation arrows. Default = false
-          hideArrows={false}
-          // Replace default arrows with custom ones (direction can be 'left' or 'right')
-          renderArrow={(direction) => (<Ionicons name={direction == 'left'? 'ios-arrow-back' : 'ios-arrow-forward'}/>)}            // Do not show days of other months in month page. Default = false
-          hideExtraDays={false}
-          // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
-          // day from another month that is visible in calendar page. Default = false
-          disableMonthChange={false}
-          // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
-          firstDay={1}
-          // Hide day names. Default = false
-          hideDayNames={false}
-          // Show week numbers to the left. Default = false
-          showWeekNumbers={false}
-          // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-          onPressArrowLeft={subtractMonth => subtractMonth()}
-          // Handler which gets executed when press arrow icon right. It receive a callback can go next month
-          onPressArrowRight={addMonth => addMonth()}
-          // Disable left arrow. Default = false
-          disableArrowLeft={false}
-          // Disable right arrow. Default = false
-          disableArrowRight={false}
-          // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
-          disableAllTouchEventsForDisabledDays={true}
-          // Replace default month and year title with custom one. the function receive a date as parameter.
-          //renderHeader={(date) => {/*Return JSX}}
-          // Enable the option to swipe between months. Default = false
-          enableSwipeMonths={true}
-          markingType={'multi-dot'}
+      !(this.state.eventData) ? (<ActivityIndicator />) :
+      <React.Fragment>
+        <Calendar
+            style={{
+              paddingBottom: 20,
+              borderBottomWidth: 1, 
+              borderColor: 'gray',
+              shadowColor: "#000000",
+              shadowOpacity: 0.3,
+              shadowRadius: 5,
+              shadowOffset: {
+                height: 1,
+                width: 0
+              }
+            }}
+            theme={{
+              todayTextColor: 'orange',
+              calendarBackground: '#f2f2f2',
+              selectedDayBackgroundColor: 'orange',
+              selectedDayTextColor: '#ffffff',
+              textDayFontWeight: '600',
+              textMonthFontWeight: 'bold',
+              textDayHeaderFontWeight: '500',
+              textDayFontSize: 15,
+              textMonthFontSize: 16,
+              textDayHeaderFontSize: 16
+            }}
+            // Initially visible month. Default = Date()
+            current={this.state.date}
+            // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+            minDate={'2021-01-01'}
+            // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+            maxDate={'2040-12-30'}
+            // Handler which gets executed on day press. Default = undefined
+            onDayPress={(day) => {this.onDayPress(day)}}
+            // Handler which gets executed on day long press. Default = undefined
+            onDayLongPress={(day) => {this.onDayPress(day)}}
+            // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+            monthFormat={'MMMM yyyy'}
+            // Handler which gets executed when visible month changes in calendar. Default = undefined
+            onMonthChange={(month) => {this.onMonthChange(month)}}
+            // Hide month navigation arrows. Default = false
+            hideArrows={false}
+            // Replace default arrows with custom ones (direction can be 'left' or 'right')
+            renderArrow={(direction) => (<Ionicons name={direction == 'left'? 'ios-arrow-back' : 'ios-arrow-forward'}/>)}            // Do not show days of other months in month page. Default = false
+            hideExtraDays={false}
+            // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
+            // day from another month that is visible in calendar page. Default = false
+            disableMonthChange={false}
+            // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+            firstDay={1}
+            // Hide day names. Default = false
+            hideDayNames={false}
+            // Show week numbers to the left. Default = false
+            showWeekNumbers={false}
+            // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+            onPressArrowLeft={subtractMonth => subtractMonth()}
+            // Handler which gets executed when press arrow icon right. It receive a callback can go next month
+            onPressArrowRight={addMonth => addMonth()}
+            // Disable left arrow. Default = false
+            disableArrowLeft={false}
+            // Disable right arrow. Default = false
+            disableArrowRight={false}
+            // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
+            disableAllTouchEventsForDisabledDays={true}
+            // Replace default month and year title with custom one. the function receive a date as parameter.
+            //renderHeader={(date) => {/*Return JSX}}
+            // Enable the option to swipe between months. Default = false
+            enableSwipeMonths={true}
+            markingType={'multi-dot'}
 
-          markedDates={markedDates}
-        />
+            markedDates={markedDates}
+          /> 
+          { //If data then display api otherwise loading indicator
+            this.state.dayEvents ? ( //if data
+              <ScrollView showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}>
+                  <React.Fragment>
+                        <View style={styles.eventbox}>
+                          { this.state.dayEvents && this.showList(this.state.dayEvents)}
+                        </View>
+                  </React.Fragment>
+                  
+                </ScrollView>
+            )
+              : //else 
+              (<ActivityIndicator />)
+          }
+        </React.Fragment>
     );
   }
   
 }
 
-/*
-        <Agenda
-          // The list of items that have to be displayed in agenda. If you want to render item as empty date
-          // the value of date key has to be an empty array []. If there exists no value for date key it is
-          // considered that the date in question is not yet loaded
-          items={{
-            '2021-03-08': [{name: 'item 1 - any js object'}],
-            '2012-05-23': [{name: 'item 2 - any js object', height: 80}],
-            '2012-05-24': [],
-            '2012-05-25': [{name: 'item 3 - any js object'}, {name: 'any js object'}]
-          }}
-          // Callback that gets called when items for a certain month should be loaded (month became visible)
-          loadItemsForMonth={(month) => {console.log('trigger items loading')}}
-          // Callback that fires when the calendar is opened or closed
-          onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
-          // Callback that gets called on day press
-          onDayPress={(day)=>{console.log('day pressed')}}
-          // Callback that gets called when day changes while scrolling agenda list
-          onDayChange={(day)=>{console.log('day changed')}}
-          // Initially selected day
-          selected={this.state.date}
-          // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          minDate={'2021-01-01'}
-          // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          maxDate={'2050-12-30'}
-          // Max amount of months allowed to scroll to the past. Default = 50
-          pastScrollRange={50}
-          // Max amount of months allowed to scroll to the future. Default = 50
-          futureScrollRange={50}
-          // Specify how each item should be rendered in agenda
-          renderItem={this.renderItem.bind(this)}
-          // Specify how each date should be rendered. day can be undefined if the item is not first in that day.
-          renderDay={(day, item) => {return (<View />);}}
-          // Specify how empty date content with no items should be rendered
-          renderEmptyDate={this.renderEmptyDate.bind(this)}
-          // Specify how agenda knob should look like
-          renderKnob={() => {return (<View>Knob</View>);}}
-          // Specify what should be rendered instead of ActivityIndicator
-          renderEmptyData = {() => {return (<View />);}}
-          // Specify your item comparison function for increased performance
-          rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
-          // Hide knob button. Default = false
-          hideKnob={false}
-          // By default, agenda dates are marked if they have at least one item, but you can override this if needed
-          markedDates={{
-            '2012-05-16': {selected: true, marked: true},
-            '2012-05-17': {marked: true},
-            '2012-05-18': {disabled: true}
-          }}
-          // If disabledByDefault={true} dates flagged as not disabled will be enabled. Default = false
-          disabledByDefault={true}
-          // If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality. Make sure to also set the refreshing prop correctly.
-          onRefresh={() => console.log('refreshing...')}
-          // Set this true while waiting for new data from a refresh
-          refreshing={false}
-          // Add a custom RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView.
-          refreshControl={null}
-          // Agenda theme
-          theme={{
-            todayTextColor: 'orange',
-            //calendarBackground: '#f2f2f2',
-            selectedDayBackgroundColor: 'orange',
-            selectedDayTextColor: '#ffffff',
-            textDayFontWeight: '600',
-            textMonthFontWeight: 'bold',
-            textDayHeaderFontWeight: '500',
-            textDayFontSize: 16,
-            textMonthFontSize: 16,
-            textDayHeaderFontSize: 16,
+const styles = StyleSheet.create({
+  icon: {
+    textAlign: 'center',
+    marginTop: -5
+  },
+  createbutton:{
+    position: 'fixed',
+    width: 60,
+    height: 60,
+    borderRadius: 60/2,
+    zIndex: 0,
+    backgroundColor: 'orange',
+    margin: 20,
+    marginLeft: 'auto',
+    padding: 13,
+    position: 'absolute',
+    bottom: 5,
+    right: 10,
+  },
+  container: {
 
-            agendaDayTextColor: 'yellow',
-            agendaDayNumColor: 'green',
-            agendaTodayColor: 'red',
-            agendaKnobColor: 'blue'
-          }}
-
-        />
-        <TouchableOpacity onPress={() => fromMyEvent ? this.props.navigation.navigate('ViewMyEvents') : this.props.navigation.navigate('ViewEvents')} 
-            style={{ flex: 1, textAlign: 'right', position: 'absolute', right: 0, top: 0, zIndex: 2}}>
-          <View style={{ margin: 12 }}>
-            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 10, backgroundColor: "#ff9900", padding: 6,  border: '1px solid #ff9900', borderTopRightRadius: 8, borderBottomRightRadius: 8 }}><Ionicons name={"ios-calendar"} size={30} color={"#fff"} /></View>
-            <View style={{ overflow: 'none', zIndex: 1, position: 'absolute', top: 10, right: 45, backgroundColor: "#fff", padding: 6,  border: '1px solid #ff9900', borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }}><Ionicons name={"ios-list"} size={30} color={"#666"} /></View>
-          </View>
-        </TouchableOpacity>
-
-        
-*/
+  },
+  eventbox: {
+    flexDirection: "column",
+    flex: 1,
+    width: '100%',
+    position: 'absolute',
+    top: '50%', 
+    height: '100%'
+  },
+  calendar: {
+    position: 'absolute',
+    top: 10,
+    right: 10, 
+  },
+  event: {
+    flexDirection: "column",
+    //height: 100,
+    padding: 20,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    borderStyle: 'solid'
+  },
+  title: {
+    color: "black",
+    fontWeight: 'bold',
+    fontSize: 22
+  },
+  titleOrange: {
+    color: "orange",
+    fontWeight: 'bold',
+    fontSize: 22
+  },
+  description: {
+    fontSize: 16
+  },
+  location: {
+    fontSize: 16,
+    fontStyle: "italic",
+    color: 'gray'
+  },
+});

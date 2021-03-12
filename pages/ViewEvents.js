@@ -77,6 +77,7 @@ export default class ViewEvents extends Component {
   }
 
 }
+
 const styles = StyleSheet.create({
   icon: {
     textAlign: 'center',
