@@ -5,7 +5,7 @@ import {
 import { getEvent,addEventToList } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { MilToCil } from './HelperFuncs.js';
-
+//blah
 export default class ViewEvents extends Component {
   constructor(props) {
     super(props);
