@@ -27,6 +27,7 @@ export default class EventView extends Component {
   }
 
   componentDidMount() {
+
     const {slots} = this.props.route.params;
     this.setState({slots: slots});
     if (slots > 0) {
