@@ -3,7 +3,7 @@ import { View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {Feather} from '@expo/vector-icons';
 import MyEvents from './pages/MyEvents';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
@@ -19,18 +19,18 @@ export default function App() {
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
                   if (route.name === 'Explore') {
-                    iconName = 'ios-add-circle-outline';
+                    iconName = 'list';
                   } else if (route.name === 'MyEvents') {
-                    iconName = 'ios-list';
+                    iconName = 'bookmark';
                   }
                   else if (route.name === 'Search') {
-                    iconName = 'ios-search';
+                    iconName = 'search';
                   }
                   else if (route.name === 'Calendar') {
-                    iconName = 'ios-calendar';
+                    iconName = 'calendar';
                   }
                   // You can return any component that you like here!
-                  return <Ionicons name={iconName} size={35} color={color} />;
+                  return <Feather name={iconName} size={25} color={color} />;
                 },
               })}
               tabBarOptions={{

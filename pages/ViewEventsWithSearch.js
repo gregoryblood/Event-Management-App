@@ -2,7 +2,9 @@ import React, { Component, } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
+import {MilToCil} from './HelperFuncs';
 import { getEvent, searchEvents } from '../Client/API/index.js';
+import { ProgressBar, Colors } from 'react-native-paper';
 
 export default class ViewEventsWithSearch extends Component {
   constructor(props) {
@@ -58,8 +60,9 @@ export default class ViewEventsWithSearch extends Component {
           <Text style={styles.titleOrange}>{event.name}</Text>
         }
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
-        <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
+        <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
+        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
       </View>
       </TouchableOpacity>
     })
@@ -102,7 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     position: 'absolute',
-    height: '100%'
   },
   event: {
     flexDirection: "column",

@@ -5,6 +5,7 @@ import {
 import { getWithSlots } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { MilToCil } from './HelperFuncs.js';
+import { ProgressBar, Colors } from 'react-native-paper';
 
 export default class ViewMyEvents extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export default class ViewMyEvents extends Component {
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
         <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
+        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
       </View>
       </TouchableOpacity>
     })
@@ -102,7 +104,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     position: 'absolute',
-    height: '100%'
   },
   calendar: {
     position: 'absolute',

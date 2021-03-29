@@ -5,13 +5,14 @@ import {
 } from 'react-native';
 import { getEventByTime, getEventByDay } from '../Client/API/index.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Calendar } from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import { MilToCil } from './HelperFuncs.js';
-
+import { ProgressBar, Colors } from 'react-native-paper';
 
 const signedUp = {key:'signedUp', color: '#ff7600', selectedDotColor: 'white'};
 const basic = {key:'basic', color: 'gray', selectedDotColor: 'gray'};
 const flagged = {key:'flagged', color: 'red'};
+
 export default class CalendarView extends Component {
   constructor(props) {
     super(props);
@@ -55,6 +56,7 @@ export default class CalendarView extends Component {
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
         <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
+        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
       </View>
       </TouchableOpacity>
     })

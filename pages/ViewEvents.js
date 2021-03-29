@@ -3,9 +3,10 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
 import { getEvent,addEventToList } from '../Client/API/index.js';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Feather} from '@expo/vector-icons';
 import { MilToCil } from './HelperFuncs.js';
-//blah
+import { ProgressBar, Colors } from 'react-native-paper';
+
 export default class ViewEvents extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +47,7 @@ export default class ViewEvents extends Component {
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
         <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
+        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
       </View>
       </TouchableOpacity>
     })
@@ -80,7 +82,7 @@ export default class ViewEvents extends Component {
           
         </ScrollView>
         <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewEvents'})}>
-          <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
+          <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
         </TouchableOpacity>
       </React.Fragment>
     )
@@ -91,7 +93,7 @@ export default class ViewEvents extends Component {
 const styles = StyleSheet.create({
   icon: {
     textAlign: 'center',
-    marginTop: -5
+    marginTop: -3
   },
   createbutton:{
     position: 'fixed',
@@ -106,6 +108,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 5,
     right: 10,
+    textAlign:'center',
   },
   container: {
 
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     position: 'absolute',
-    height: '100%'
+    
   },
   calendar: {
     position: 'absolute',
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
   },
   event: {
     flexDirection: "column",
-    //height: 100,
+    //height: 125,
     padding: 20,
     borderWidth: 0,
     borderBottomWidth: 1,
