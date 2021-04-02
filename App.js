@@ -37,10 +37,9 @@ export default function App() {
                 activeTintColor: '#ff7600',
                 inactiveTintColor: 'gray',
               }}>
-        
         <Tab.Screen name="MyEvents" component={MyEvents} options={{title: ' '}}/>
-        <Tab.Screen name="Calendar" component={Calendar} options={{title: ' '}}/>
         <Tab.Screen name="Explore" component={Explore} options={{title: ' '}}/>
+        <Tab.Screen name="Calendar" component={Calendar} options={{title: ' '}}/>
         <Tab.Screen name="Search" component={Search} options={{title: ' '}}/>
       </Tab.Navigator>
     </NavigationContainer>

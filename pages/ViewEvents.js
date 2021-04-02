@@ -4,8 +4,7 @@ import {
 } from 'react-native';
 import { getEvent,addEventToList } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
-import { MilToCil } from './HelperFuncs.js';
-import { ProgressBar, Colors } from 'react-native-paper';
+import { EventList } from './Components/EventList';
 
 export default class ViewEvents extends Component {
   constructor(props) {
@@ -18,7 +17,9 @@ export default class ViewEvents extends Component {
   componentDidMount() {
     this.getEvents();
   }
-
+  componentDidUpdate() {    
+    this.getEvents();
+  }
   async getEvents() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();
@@ -26,29 +27,6 @@ export default class ViewEvents extends Component {
       this.setState({ data });
     }
     
-  }
-
-  showList(arr) {
-    return arr.map(event => {
-      return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
-                                        id: event.id, name: event.name,  location: event.location, description: event.description,
-                                        etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
-                                        lastPage: 'ViewEvents'
-                                        })}>
-      <View style={styles.event} >
-        {
-          event.slots == 0 ?
-          <Text style={styles.title}>{event.name}</Text>
-          :
-          <Text style={styles.titleOrange}>{event.name}</Text>
-        }
-        <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
-        <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
-        <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
-        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
-      </View>
-      </TouchableOpacity>
-    })
   }
 
   render() {
@@ -68,7 +46,7 @@ export default class ViewEvents extends Component {
               <React.Fragment>
 
                 <View style={styles.eventbox}>
-                  {data && this.showList(this.state.data)}
+                  {data && EventList(this.props.navigation, 'ViewEvents', this.state.data, 'default')}
                 </View>
               </React.Fragment>
               
@@ -108,9 +86,7 @@ const styles = StyleSheet.create({
     right: 10,
     textAlign:'center',
   },
-  container: {
 
-  },
   eventbox: {
     flexDirection: "column",
     flex: 1,
@@ -118,38 +94,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     
   },
-  calendar: {
-    position: 'absolute',
-    top: 10,
-    right: 10, 
-  },
-  event: {
-    flexDirection: "column",
-    //height: 125,
-    padding: 20,
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    borderStyle: 'solid'
-  },
-  title: {
-    color: "black",
-    fontWeight: 'bold',
-    fontSize: 22
-  },
-  titleOrange: {
-    color: '#ff7600',
-    fontWeight: 'bold',
-    fontSize: 22
-  },
-  description: {
-    fontSize: 16
-  },
-  location: {
-    fontSize: 16,
-    fontStyle: "italic",
-    color: 'gray'
-  },
+
+
 });
 
 /*
