@@ -35,6 +35,13 @@ export const addEventToList = (name, description, location, edate, etime, slots,
     console.log(data);
     return axios({ method: 'post', url, data });
 };
+//Edits an event
+export const editEvent = (id, name, description, location, edate, etime, slots, maxslots) => {
+    const url = `https://osu-event-server.herokuapp.com/edit/`;
+    const data = {id, name, description, location,edate,etime, slots, maxslots};
+    console.log(data);
+    return axios({ method: 'post', url, data });
+};
 //Get events given a day
 export const getEventByDay = (day) => 
     axios.get('https://osu-event-server.herokuapp.com/getByDay/'+day);
