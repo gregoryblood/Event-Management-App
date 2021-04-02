@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
 import { getWithSlots } from '../Client/API/index.js';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Feather} from '@expo/vector-icons';
 import { MilToCil } from './HelperFuncs.js';
 import { ProgressBar, Colors } from 'react-native-paper';
 
@@ -18,9 +18,6 @@ export default class ViewMyEvents extends Component {
   componentDidMount() {
     this.getEvent();
   }
-  componentDidUpdate() {    
-    this.getEvent();
-  }
   async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getWithSlots();
@@ -29,7 +26,7 @@ export default class ViewMyEvents extends Component {
 
   showList(arr) {
     return arr.map(event => {
-      return <TouchableOpacity key={event.name} onPress={() => this.props.navigation.navigate('EventView', { 
+      return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
                                         lastPage: 'ViewMyEvents'
@@ -72,7 +69,7 @@ export default class ViewMyEvents extends Component {
           
         </ScrollView>
         <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
-          <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
+          <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
         </TouchableOpacity>
       </React.Fragment>
     )

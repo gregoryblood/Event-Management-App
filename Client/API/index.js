@@ -1,4 +1,5 @@
 import axios from 'axios'; //API Getter
+import { v4 as uuidv4 } from 'uuid'; //Creates unique IDs
 
 //Gets all events
 export const getEvent = () => 
@@ -29,9 +30,10 @@ export const getWithSlots = () =>
 export const searchEvents = (keyword) => 
     axios.get('https://osu-event-server.herokuapp.com/search/' + keyword);
 //Adds event
-export const addEventToList = (name, description, location, edate, etime, slots, maxslots) => {
+export const addEventToList = (name, description, location, edate, etime, slots, maxslots, author) => {
     const url = `https://osu-event-server.herokuapp.com/add/`;
-    const data = {name, description, location,edate,etime, slots, maxslots};
+    const id = uuidv4();
+    const data = {id, name, description, location, edate, etime, slots, maxslots, author};
     console.log(data);
     return axios({ method: 'post', url, data });
 };
@@ -39,7 +41,7 @@ export const addEventToList = (name, description, location, edate, etime, slots,
 export const editEvent = (id, name, description, location, edate, etime, slots, maxslots) => {
     const url = `https://osu-event-server.herokuapp.com/edit/`;
     const data = {id, name, description, location,edate,etime, slots, maxslots};
-    console.log(data);
+    //console.log(data);
     return axios({ method: 'post', url, data });
 };
 //Get events given a day
