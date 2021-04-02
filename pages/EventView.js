@@ -4,8 +4,7 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import {  addAttendee, getWithSlots, removeAttendee, removeEvent } from '../Client/API/index.js';
-import { Icon } from '@ant-design/react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Feather} from '@expo/vector-icons';
 import {MilToCil} from './HelperFuncs'
 
 export default class EventView extends Component {
@@ -37,7 +36,7 @@ export default class EventView extends Component {
   
   addToList(id, slots, maxslots){
     //Method will change once login is implemented
-    if((slots + 1) != maxslots){
+    if(slots != maxslots){
       addAttendee(id);
       this.setState({isSignedUp: true});
       this.setState({slots: slots+1});
@@ -85,8 +84,8 @@ export default class EventView extends Component {
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
-        <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Ionicons name={"md-checkmark"} size = {40} /></Text></TouchableOpacity>
-        <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Ionicons name={"md-close"} size = {40} /></Text></TouchableOpacity>
+        <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Feather name={"check-circle"} size = {40} /></Text></TouchableOpacity>
+        <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
       </View>
     );
   }
@@ -98,8 +97,8 @@ export default class EventView extends Component {
         <React.Fragment>{this.signForm()}</React.Fragment>
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
-          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Ionicons name={"ios-arrow-back"} size={42} color={'gray'} /></TouchableOpacity>
-          <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Ionicons name={"md-more"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Feather name={"more-vertical"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <Text style = {styles.cardTitle}>{name}</Text>
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
@@ -184,33 +183,36 @@ const styles = StyleSheet.create({
   optionContainer:{
     paddingTop: 10,
     height: 80,
-    width: '100%',
+    width: 800,
     backgroundColor: 'white',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
     display: 'none',
+    
   },
   optionContainerTop:{
     padding: 10,
     paddingTop: 5,
     height: 80,
-    width: '100%',
     backgroundColor: 'white',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
     borderTopLeftRadius: 16, 
     borderTopRightRadius: 16, 
+    width: '100%',
+    textAlign: 'center'
   },
   optionContainerBottom:{
     padding: 10,
     paddingTop: 5,
     height: 80,
-    width: '100%',
     backgroundColor: 'white',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
     borderBottomLeftRadius: 16, 
     borderBottomRightRadius: 16, 
+    width: '100%',
+    textAlign: 'center'
   },
 
   signSheet:{
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
     height: 'auto',
     top: 80,
     right: 30,
-    width: 300,
+    width: 350,
     zIndex: 2,
     backgroundColor: 'white',
     borderColor: 'lightgrey',

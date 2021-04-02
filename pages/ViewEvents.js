@@ -15,11 +15,18 @@ export default class ViewEvents extends Component {
     };
   }
   componentDidMount() {
-    this.getEvents();
+        //This will update when naved back to
+        const unsubscribe = this.props.navigation.addListener('focus', () => {
+          this.getEvents();
+        });
+        return () => {
+          // Clear setInterval in case of screen unmount
+          clearTimeout(interval);
+          // Unsubscribe for the focus Listener
+          unsubscribe;
+        };
   }
-  componentDidUpdate() {    
-    this.getEvents();
-  }
+
   async getEvents() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();

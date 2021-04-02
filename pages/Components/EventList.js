@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { ProgressBar, Colors } from 'react-native-paper';
 import {MilToCil} from '../HelperFuncs'
+import {Feather} from '@expo/vector-icons';
 
 export function EventList(nav, from, arr, theAuthor) {
     return arr.map(event => {
@@ -13,6 +14,11 @@ export function EventList(nav, from, arr, theAuthor) {
                                         lastPage: from
                                         })}>
       <View style={styles.event} >
+        {event.author == 'undefined' ?
+        <View style={styles.icon} />
+        :
+        <View/>
+        }
         {event.slots > 0 ? 
         <Text style={styles.titleOrange}>{event.name}</Text>
         :
@@ -22,13 +28,22 @@ export function EventList(nav, from, arr, theAuthor) {
         <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
         <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
+        
       </View>
       </TouchableOpacity>
     })
 }
 
 const styles = StyleSheet.create({
-    
+    icon: {
+      position: 'absolute',
+      right: 20,
+      top: 20,
+      backgroundColor: 'orange',
+      borderRadius: '50%',
+      height: 25,
+      width: 25,
+    },
     event: {
       flexDirection: "column",
       //height: 125,
