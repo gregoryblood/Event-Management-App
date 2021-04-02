@@ -4,7 +4,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
 import { getEventByTime, getEventByDay } from '../Client/API/index.js';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Feather} from '@expo/vector-icons';
 import {Calendar} from 'react-native-calendars';
 import { EventList } from './Components/EventList';
 
@@ -154,7 +154,7 @@ export default class CalendarView extends Component {
             // Hide month navigation arrows. Default = false
             hideArrows={false}
             // Replace default arrows with custom ones (direction can be 'left' or 'right')
-            renderArrow={(direction) => (<Ionicons size={42} color={'gray'} name={direction == 'left'? 'ios-arrow-back' : 'ios-arrow-forward'}/>)}            // Do not show days of other months in month page. Default = false
+            renderArrow={(direction) => (<Feather size={42} color={'gray'} name={direction == 'left'? 'arrow-left' : 'arrow-right'}/>)}            // Do not show days of other months in month page. Default = false
             hideExtraDays={false}
             // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
             // day from another month that is visible in calendar page. Default = false
@@ -199,7 +199,7 @@ export default class CalendarView extends Component {
               (<ActivityIndicator style={{top: '75%'}}/>)
           }
           <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'CalendarView'})}>
-            <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
+            <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>
         </React.Fragment>
     );

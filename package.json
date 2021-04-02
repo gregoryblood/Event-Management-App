@@ -11,7 +11,7 @@
     "dependencies": "0.0.1",
     "expo": "^40.0.0",
     "expo-calendar": "^9.0.0",
-    "expo-cli": "^4.3.2",
+    "expo-cli": "^4.3.4",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -24,7 +24,7 @@
     "react-native-paper": "^4.7.2",
     "react-native-reanimated": "~1.13.0",
     "react-native-screens": "~2.15.2",
-    "react-native-web": "~0.13.12",
+    "react-native-web": "^0.15.5",
     "react-time-picker": "^4.2.0",
     "uuid": "^3.4.0"
   },
