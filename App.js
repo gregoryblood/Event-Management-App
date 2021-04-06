@@ -8,6 +8,7 @@ import MyEvents from './pages/MyEvents';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
 import Calendar from './pages/Calendar';
+import './pages/global.js';
 
 const Tab = createBottomTabNavigator();
 

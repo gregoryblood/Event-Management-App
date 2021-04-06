@@ -29,6 +29,8 @@ export default class CreateEvent extends Component {
 
   //Adds object to Events  //addToEvents = async () =>
   addToEvents = async () => {
+    if (user.type === 'student')
+      return;
     const { name, description, location, maxslots, author } = this.state;
     if (String(name).length > 3
         && String(description).length > 3

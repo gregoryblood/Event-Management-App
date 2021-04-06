@@ -198,9 +198,14 @@ export default class CalendarView extends Component {
               : //else 
               (<ActivityIndicator style={{top: '75%'}}/>)
           }
-          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'CalendarView'})}>
-            <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
-          </TouchableOpacity>
+          {
+            user.type != 'student' ? 
+            <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
+              <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
+            </TouchableOpacity>
+            :
+            <View/>
+          }
         </React.Fragment>
     );
   }

@@ -6,7 +6,6 @@ import { getWithSlots } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import { EventList } from './Components/EventList';
 
-
 export default class ViewMyEvents extends Component {
   constructor(props) {
     super(props);
@@ -56,14 +55,20 @@ export default class ViewMyEvents extends Component {
               
             )
               : //else 
-              (<ActivityIndicator style={{top: '50%'}}/>)
+              (<ActivityIndicator style={{position: 'absolute', top: '50%'}}/>)
           }
           </React.Fragment>
           
         </ScrollView>
-        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
-          <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
-        </TouchableOpacity>
+        {
+          user.type != 'student' ? 
+          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
+            <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
+          </TouchableOpacity>
+          :
+          <View/>
+        }
+        
       </React.Fragment>
     )
   }

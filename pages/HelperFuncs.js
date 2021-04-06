@@ -1,4 +1,3 @@
-
 export function MilToCil(time) {
     time = time.split(" ")[0];  // Remove GMT+...... from time
     time = time.replace(/:\d\d([ ap]|$)/,'$1'); // remove seconds from time
