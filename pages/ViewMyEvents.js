@@ -55,7 +55,7 @@ export default class ViewMyEvents extends Component {
               
             )
               : //else 
-              (<ActivityIndicator style={{position: 'absolute', top: '50%'}}/>)
+              (<ActivityIndicator style={{ top: '50%'}}/>)
           }
           </React.Fragment>
           
