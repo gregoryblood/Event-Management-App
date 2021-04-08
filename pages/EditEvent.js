@@ -3,16 +3,17 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, Platform
 } from 'react-native';
 import moment, { min } from 'moment';
-import { addEventToList } from '../Client/API/index.js';
+import { editEvent } from '../Client/API/index.js';
 import {DateTimePick} from './DateTimePick'
 import {Feather} from '@expo/vector-icons';
 
 
-export default class CreateEvent extends Component {
+export default class EditEvent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: '', 
       name: '',
       description: '',
       location: '',
@@ -20,24 +21,36 @@ export default class CreateEvent extends Component {
       eTime: '',
       slots: 0,
       maxslots: 0,
-      author: "default",
     };
   }
 
+  componentDidMount () {
+    const {id, name, edate, location, description, etime, slots, maxslots, lastPage} = this.props.route.params;
+
+    this.setState({
+      id: id,
+      name: name,
+      description: description,
+      location: location,
+      eDate: edate,
+      eTime: etime,
+      slots: slots,
+      maxslots: maxslots,
+    });
+
+  }
   updateField = (field) => (text) => {
     this.setState({ [field]: text });
   }
 
-  //Adds object to Events  //addToEvents = async () =>
-  addToEvents = async () => {
+  //Edits an event //addToEvents = async () =>
+  editEvent = async () => {
     if (user.type === 'student')
       return;
-    const { name, description, location, maxslots, author } = this.state;
+    const { name, description, location, slots, maxslots } = this.state;
     if (String(name).length > 3
         && String(description).length > 3
         && String(location).length > 3
-        //&& String(date).length > 3
-        //&& String(time).length > 3
         ) {
       const date = new Date();
       let hours = date.getHours();
@@ -45,22 +58,33 @@ export default class CreateEvent extends Component {
       let seconds = date.getSeconds();
       const eDate = date.getFullYear()+'-'+('0'+ (date.getMonth() + 1)).slice(-2)+'-'+('0'+ (date.getDate())).slice(-2)+'T00:00:00.000Z'
       let eTime = hours + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
-      await addEventToList(name, description, location, eDate, eTime, 0, parseInt(maxslots), author);
-      const {lastPage} = this.props.route.params;
-      this.props.navigation.navigate(lastPage);
+      await editEvent(this.props.route.params.id, name, description, location, eDate, eTime, parseInt(slots), parseInt(maxslots));
+      const {lastPage, id} = this.props.route.params;
+      this.props.navigation.navigate(lastPage, {
+          id: id,
+          name: name,
+          edate: eDate,
+          location: location,
+          description: description,
+          etime: eTime,
+          slots: slots,
+          maxslots: maxslots,
+      });
     }
     else {
       alert("Not enough information")
     }
   }
   render() {
+    const { name, edate, location, description, etime, maxslots, lastPage} = this.props.route.params;
+
     return (
-      <React.Fragment  >
+      <React.Fragment>
         <View style ={styles.viewBar}>
-          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(this.props.route.params.lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <View style={styles.formstyle}>
-          <TextInput placeholder='Event Name' onChangeText={this.updateField('name')}
+          <TextInput placeholder={name} onChangeText={this.updateField('name')}
             style={styles.formInput} type="text"/>
             
           <View style={styles.inline}>
@@ -71,26 +95,25 @@ export default class CreateEvent extends Component {
                 <Text style={styles.buttonText}>Time</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity  onPress={console.log("Pressed Date")}
+            <TouchableOpacity onPress={console.log("Pressed Date")}
               style={styles.formInputDate} type="Date">
               <Text style={styles.buttonText}>Date</Text>
             </TouchableOpacity>
 
           </View>
-          <TextInput placeholder='Location' onChangeText={this.updateField('location')}
+          <TextInput placeholder={location} onChangeText={this.updateField('location')}
             style={styles.formInput} type="text"/>
-          <TextInput multiline allowFontScaling
-          numberOfLines={3} editable maxLength={300} placeholder='Description' onChangeText={this.updateField('description')}
+          <TextInput  multiline allowFontScaling
+          numberOfLines={3} editable maxLength={300} placeholder={description} onChangeText={this.updateField('description')}
             style={styles.formInputDescription} type="text"/>
           
           
-          <TextInput placeholder='Max Slots' onChangeText={this.updateField('maxslots')}
+          <TextInput  placeholder={maxslots} onChangeText={this.updateField('maxslots')}
             style={styles.formInput} type="text"/>
           
-          <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
-            <Text style={styles.finishCreateText}>Publish</Text>
+          <TouchableOpacity onPress={this.editEvent} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
+            <Text style={styles.finishCreateText}>Save Changes</Text>
           </TouchableOpacity>
-
         </View>
       </React.Fragment>
     )

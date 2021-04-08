@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import * as Calendar from 'expo-calendar';
 
-export default function App() {
+export default function Calendar() {
   useEffect(() => {
     (async () => {
         //Check calendar access
@@ -47,4 +47,9 @@ async function createCalendar() {
     accessLevel: Calendar.CalendarAccessLevel.OWNER,
   });
   console.log(`Your new calendar ID is: ${newCalendarID}`);
+}
+
+export function addEvent(name, time, location, length) {
+  console.log("==Event added!");
+  
 }

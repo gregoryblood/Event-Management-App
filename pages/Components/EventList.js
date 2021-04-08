@@ -11,10 +11,10 @@ export function EventList(nav, from, arr, theAuthor) {
       return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
-                                        lastPage: from
+                                        lastPage: from, owned: (event.author != 'student' ? true : false)
                                         })}>
       <View style={styles.event} >
-        {event.author == 'undefined' ?
+        {event.author != 'student' ?
         <View style={styles.icon} />
         :
         <View/>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       right: 20,
       top: 20,
-      backgroundColor: 'orange',
+      backgroundColor: '#ff9900',
       borderRadius: '50%',
       height: 25,
       width: 25,

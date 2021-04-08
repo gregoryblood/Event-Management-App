@@ -37,10 +37,6 @@ export default class ViewEvents extends Component {
   }
 
   render() {
-    const {hasNewData} = this.props.route.params;
-    if (hasNewData) {
-      this.forceUpdate();
-    }
     const data = this.state.data;
     return (
       <React.Fragment>
@@ -66,7 +62,7 @@ export default class ViewEvents extends Component {
         </ScrollView>
         {
           user.type != 'student' ? 
-          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
+          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewEvents'})}>
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>
           :

@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
-import {  addAttendee, getWithSlots, removeAttendee, removeEvent } from '../Client/API/index.js';
+import {  addAttendee, getAEvent, removeAttendee, removeEvent } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import {MilToCil} from './HelperFuncs'
 
@@ -24,16 +24,27 @@ export default class EventView extends Component {
     this.signUp = this.signUp.bind(this);
     this.signDown = this.signDown.bind(this);
   }
-
   componentDidMount() {
+    //Get One Event * Update current information
+    /*This will update when naved back to
+    const unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.GetAEvent();
+    });
+    return () => {
+      // Clear setInterval in case of screen unmount
+      clearTimeout(interval);
+      // Unsubscribe for the focus Listener
+      unsubscribe;
+    };
+    */
 
+    // [Bowen] Here is what's currently being used for did sign up
     const {slots} = this.props.route.params;
     this.setState({slots: slots});
     if (slots > 0) {
       this.setState({isSignedUp: true});
     }
   }
-  
   addToList(id, slots, maxslots){
     //Method will change once login is implemented
     if(slots != maxslots){
@@ -41,14 +52,12 @@ export default class EventView extends Component {
       this.setState({isSignedUp: true});
       this.setState({slots: slots+1});
     }
-
   }
   unAddToList(id) {
     removeAttendee(id);
     this.setState({slots: this.state.slots-1});
     this.setState({isSignedUp: false});
   }
-
   signUp(){
     if(this.state.doSign == 1){
       this.setState({
@@ -59,7 +68,6 @@ export default class EventView extends Component {
       this.setState({
         doSign: 1,
       })
-
     }
   }
   signDown(){
@@ -67,20 +75,16 @@ export default class EventView extends Component {
       doSign: 1
     });
   }
-
   syncFun(){
     this.signUp();
   }
-
   delFun(){
     if (confirm("Are you sure you want to delete this event?\n\nYou will not be able to recover it...")) {
       const {id, lastPage} = this.props.route.params;
       removeEvent(id);
       this.props.navigation.navigate(lastPage);
     }
-    
   }
-
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
@@ -91,7 +95,7 @@ export default class EventView extends Component {
   }
   
   render() {
-      const {id, name, edate, location, description, etime, maxslots, lastPage} = this.props.route.params;
+      const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
     return (
       <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
@@ -110,16 +114,32 @@ export default class EventView extends Component {
           <Text style = {styles.cardWhenWhere}></Text>
         }
         <Text style = {styles.cardDescription}>{description}</Text>
-        {this.state.isSignedUp ? 
-        <TouchableOpacity onPress={() => this.unAddToList(id)} style={styles.signedUpButton} color = '#ff9900' title="Submit Event" >
-          <Text style={styles.signedUpText}>Leave</Text>
-        </TouchableOpacity>
-        :
-        <TouchableOpacity onPress={() => this.addToList(id, this.state.slots, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
-          <Text style={styles.signUpText}>Sign Up</Text>
-        </TouchableOpacity> 
+        {owned ? 
+          <TouchableOpacity style={styles.editbutton} title="Edit Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('EditEvent', 
+              {
+                lastPage: 'EventView', 
+                id: id,
+                name: name,
+                edate: edate,
+                location: location,
+                description: description,
+                etime: etime,
+                slots: slots,
+                maxslots: maxslots,
+              }
+            )}>
+            <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
+          </TouchableOpacity>
+          :
+          this.state.isSignedUp ? 
+          <TouchableOpacity onPress={() => this.unAddToList(id)} style={styles.signedUpButton} color = '#ff9900' title="Submit Event" >
+            <Text style={styles.signedUpText}>Leave</Text>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity onPress={() => this.addToList(id, this.state.slots, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
+            <Text style={styles.signUpText}>Sign Up</Text>
+          </TouchableOpacity> 
         }
-        
         </View>  
       </View>
     )
@@ -127,13 +147,32 @@ export default class EventView extends Component {
 
 }
 const styles = StyleSheet.create({
-
+  icon: {
+    textAlign: 'center',
+    marginTop: -3
+  },
   viewBar:{
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
   },
+  editbutton:{
+    position: 'fixed',
+    width: 60,
+    height: 60,
+    borderRadius: 60/2,
+    zIndex: 0,
+    backgroundColor: '#ff7600',
+    margin: 0,
+    marginLeft: 'auto',
+    padding: 13,
+    position: 'absolute',
+    bottom: 5,
+    right: 10,
+    textAlign:'center',
+  },
+
   containter: {
     padding: 20,
     position: 'absolute',

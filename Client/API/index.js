@@ -38,13 +38,13 @@ export const addEventToList = (name, description, location, edate, etime, slots,
     const url = `https://osu-event-server.herokuapp.com/add/`;
     const id = uuidv4();
     const data = {id, name, description, location, edate, etime, slots, maxslots, author};
-    console.log(data);
+    //console.log(data);
     return axios({ method: 'post', url, data });
 };
 //Edits an event
 export const editEvent = (id, name, description, location, edate, etime, slots, maxslots) => {
     const url = `https://osu-event-server.herokuapp.com/edit/`;
-    const data = {id, name, description, location,edate,etime, slots, maxslots};
+    const data = {id, name, description, location, edate, etime, slots, maxslots};
     //console.log(data);
     return axios({ method: 'post', url, data });
 };
