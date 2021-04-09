@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   editbutton:{
-    position: 'fixed',
     width: 60,
     height: 60,
     borderRadius: 60/2,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -17,7 +17,12 @@ import firebaseConfig from './firebaseConfig';
 
 
 const Tab = createBottomTabNavigator();
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+var firebaseApp = firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebaseApp = firebase.initializeApp({});
+}else {
+  firebaseApp = firebase.app(); // if already initialized, use that one
+}
 
 const firebaseAppAuth = firebaseApp.auth();
 const providers = {
@@ -25,7 +30,8 @@ const providers = {
 };
 
 function App({ user, signOut, signInWithGoogle }) {
-  console.log(user);
+  if (user) 
+    console.log(user.email);
   return ( 
     user ? 
       <NavigationContainer style={{ flex: 1}}>
@@ -59,7 +65,13 @@ function App({ user, signOut, signInWithGoogle }) {
           <Tab.Screen name="Search" component={Search} options={{title: ' '}}/>
         </Tab.Navigator>
       </NavigationContainer>
-      : <button onClick={signInWithGoogle}>Sign in with Google</button>
+      : 
+      <View style={styles.loginArea}>
+        <TouchableOpacity style={styles.loginButton} onPress={signInWithGoogle}>
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+      
 );
 }
 
@@ -67,6 +79,29 @@ export default withFirebaseAuth({
   providers,
   firebaseAppAuth,
 })(App);
+const styles = StyleSheet.create({ 
+  loginArea: {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+  },
+  loginButton: {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: '#ff7600',
+    borderRadius: 16,
+    height: 100,
+    width: 200,
+    position: 'absolute',
+    margin: 'auto'
+  },
+  loginText: {
+    color: 'white',
+    fontSize: 32,
+
+  }
+});
 /*
 <StatusBar
         barStyle='light-content'
