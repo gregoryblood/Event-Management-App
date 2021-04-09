@@ -3,11 +3,12 @@ import { View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {Feather} from '@expo/vector-icons';
 import MyEvents from './pages/MyEvents';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
 import Calendar from './pages/Calendar';
+import './pages/global.js';
 
 import withFirebaseAuth from 'react-with-firebase-auth';
 import { firebase } from '@firebase/app'
@@ -22,7 +23,6 @@ const firebaseAppAuth = firebaseApp.auth();
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
-
 
 function App({ user, signOut, signInWithGoogle }) {
   console.log(user);
@@ -60,7 +60,7 @@ function App({ user, signOut, signInWithGoogle }) {
         </Tab.Navigator>
       </NavigationContainer>
       : <button onClick={signInWithGoogle}>Sign in with Google</button>
-  );
+);
 }
 
 export default withFirebaseAuth({

@@ -3,7 +3,8 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
 import { getEvent,addEventToList } from '../Client/API/index.js';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Feather} from '@expo/vector-icons';
+import { EventList } from './Components/EventList';
 
 export default class ViewEvents extends Component {
   constructor(props) {
@@ -14,44 +15,28 @@ export default class ViewEvents extends Component {
     };
   }
   componentDidMount() {
-    this.getEvent();
-  }
-  componentDidUpdate() {    
-    this.getEvent();
-  }
-  async getEvent() {
-    //Calls api and will finish when data is loaded
-    const { data } = await getEvent();
-    this.setState({ data });
+        //This will update when naved back to
+        const unsubscribe = this.props.navigation.addListener('focus', () => {
+          this.getEvents();
+        });
+        return () => {
+          // Clear setInterval in case of screen unmount
+          clearTimeout(interval);
+          // Unsubscribe for the focus Listener
+          unsubscribe;
+        };
   }
 
-  showList(arr) {
-    return arr.map(event => {
-      return <TouchableOpacity key={event.id} onPress={() => this.props.navigation.navigate('EventView', { 
-                                        id: event.id, name: event.name,  location: event.location, description: event.description,
-                                        etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
-                                        lastPage: 'ViewEvents'
-                                        })}>
-      <View style={styles.event} >
-        {
-          event.slots == 0 ?
-          <Text style={styles.title}>{event.name}</Text>
-          :
-          <Text style={styles.titleOrange}>{event.name}</Text>
-        }
-        <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
-        <Text style={styles.location}>{event.location} at {event.etime.slice(0,5)}</Text>
-        <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
-      </View>
-      </TouchableOpacity>
-    })
+  async getEvents() {
+    //Calls api and will finish when data is loaded
+    const { data } = await getEvent();
+    if (data) {
+      this.setState({ data });
+    }
+    
   }
 
   render() {
-    const {hasNewData} = this.props.route.params;
-    if (hasNewData) {
-      this.forceUpdate();
-    }
     const data = this.state.data;
     return (
       <React.Fragment>
@@ -64,20 +49,25 @@ export default class ViewEvents extends Component {
               <React.Fragment>
 
                 <View style={styles.eventbox}>
-                  {data && this.showList(this.state.data)}
+                  {data && EventList(this.props.navigation, 'ViewEvents', this.state.data, 'default')}
                 </View>
               </React.Fragment>
               
             )
               : //else 
-              (<ActivityIndicator />)
+              (<ActivityIndicator style={{ top: '50%'}}/>)
           }
           </React.Fragment>
           
         </ScrollView>
-        <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent')}>
-          <Ionicons style={styles.icon} name={'ios-add'} size={45} color={'white'} />
-        </TouchableOpacity>
+        {
+          user.type != 'student' ? 
+          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewEvents'})}>
+            <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
+          </TouchableOpacity>
+          :
+          <View/>
+        }
       </React.Fragment>
     )
   }
@@ -87,7 +77,7 @@ export default class ViewEvents extends Component {
 const styles = StyleSheet.create({
   icon: {
     textAlign: 'center',
-    marginTop: -5
+    marginTop: -3
   },
   createbutton:{
     position: 'fixed',
@@ -95,56 +85,25 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 60/2,
     zIndex: 0,
-    backgroundColor: 'orange',
+    backgroundColor: '#ff7600',
     margin: 20,
     marginLeft: 'auto',
     padding: 13,
     position: 'absolute',
     bottom: 5,
     right: 10,
+    textAlign:'center',
   },
-  container: {
 
-  },
   eventbox: {
     flexDirection: "column",
     flex: 1,
     width: '100%',
     position: 'absolute',
-    height: '100%'
+    
   },
-  calendar: {
-    position: 'absolute',
-    top: 10,
-    right: 10, 
-  },
-  event: {
-    flexDirection: "column",
-    //height: 100,
-    padding: 20,
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    borderStyle: 'solid'
-  },
-  title: {
-    color: "black",
-    fontWeight: 'bold',
-    fontSize: 22
-  },
-  titleOrange: {
-    color: "orange",
-    fontWeight: 'bold',
-    fontSize: 22
-  },
-  description: {
-    fontSize: 16
-  },
-  location: {
-    fontSize: 16,
-    fontStyle: "italic",
-    color: 'gray'
-  },
+
+
 });
 
 /*
