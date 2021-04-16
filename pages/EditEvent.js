@@ -45,7 +45,7 @@ export default class EditEvent extends Component {
 
   //Edits an event //addToEvents = async () =>
   editEvent = async () => {
-    if (user.type === 'student')
+    if (gUser.type === 'student')
       return;
     const { name, description, location, slots, maxslots } = this.state;
     if (String(name).length > 3

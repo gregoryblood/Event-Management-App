@@ -61,7 +61,7 @@ export default class ViewEvents extends Component {
           
         </ScrollView>
         {
-          user.type != 'student' ? 
+          gUser.type != 'student' ? 
           <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewEvents'})}>
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>

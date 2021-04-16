@@ -3,9 +3,11 @@ import { v4 as uuidv4 } from 'uuid'; //Creates unique IDs
 
 //Gets user's affiliation to the school (student or !student)
 export const getUser = (email) => {
-    const url = 'https://osu-event-server.herokuapp.com/login';
-    const data = {url};
-    return axios({ method: 'get', url, data });
+    const url = 'https://osu-event-server.herokuapp.com/login/';
+    const data = { email };
+
+    //console.log(data);
+    return axios({ method: 'post', url, data });
 }
 
 
