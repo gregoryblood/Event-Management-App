@@ -6,7 +6,7 @@ import { ProgressBar, Colors } from 'react-native-paper';
 import {MilToCil} from '../HelperFuncs'
 import {Feather} from '@expo/vector-icons';
 
-export function EventList(nav, from, arr, theAuthor) {
+export function EventList(nav, from, arr) {
     return arr.map(event => {
       return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
