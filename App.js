@@ -31,7 +31,8 @@ const providers = {
 
 function App({ user, signOut, signInWithGoogle }) {
   if (user) 
-    gUser.email = user.email;
+    console.log(user.email);
+    global.user = user
   return ( 
     user ? 
       <NavigationContainer style={{ flex: 1}}>
