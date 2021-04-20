@@ -6,20 +6,20 @@ import { ProgressBar, Colors } from 'react-native-paper';
 import {MilToCil} from '../HelperFuncs'
 import {Feather} from '@expo/vector-icons';
 
-export function EventList(nav, from, arr) {
+export function EventList(nav, from, arr, theAuthor) {
     return arr.map(event => {
       return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
-                                        etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
-                                        lastPage: from, owned: (event.author == gUser.email ? true : false)
+                                        etime: event.etime, maxslots: event.maxslots, slots: event.author?JSON.parse(event.author).length:0, edate: event.edate,
+                                        lastPage: from,author:event.author?JSON.parse(event.author):[],
                                         })}>
       <View style={styles.event} >
-        {event.author == gUser.email ?
+        {event.author ?
         <View style={styles.icon} />
         :
         <View/>
         }
-        {event.slots > 0 ? 
+        {event.author.length > 0 ? 
         <Text style={styles.titleOrange}>{event.name}</Text>
         :
         <Text style={styles.title}>{event.name}</Text>
@@ -27,7 +27,7 @@ export function EventList(nav, from, arr) {
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
         <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
         <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
-        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
+        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.author.length/event.maxslots} color={Colors.orange800} />
         
       </View>
       </TouchableOpacity>
