@@ -12,6 +12,9 @@ export default class EventView extends Component {
     super(props);
 
     this.state = {
+      owned:false,
+      authorLength:0,
+      author:[],
       data: null,
       eventList: 0,
       doSign: 1,
@@ -25,6 +28,25 @@ export default class EventView extends Component {
     this.signDown = this.signDown.bind(this);
   }
   componentDidMount() {
+    const { author } = this.props.route.params;
+    console.log(author)
+    console.log([...author])
+    this.setState({
+      authorLength:author.length,
+      author:[...author]
+    })
+    let isHave = false;
+    if(author && author.length && Array.isArray(author)){
+      author.forEach(element => {
+        if(element.email == global.user.email && element.name == global.user.displayName){
+          isHave =true
+        }
+});
+    }
+    console.log("isHave:"+isHave)
+    console.log(global.user)
+    console.log(global.user.email)
+    console.log(global.user.displayName)
     //Get One Event * Update current information
     /*This will update when naved back to
     const unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -39,23 +61,29 @@ export default class EventView extends Component {
     */
 
     // [Bowen] Here is what's currently being used for did sign up
-    const {slots} = this.props.route.params;
-    this.setState({slots: slots});
-    if (slots > 0) {
+    // const {slots} = this.props.route.params;
+    console.log("author.type:"+typeof author)
+    console.log("author.length:"+author.length)
+    this.setState({slots:  author.length});
+    if ( author.length > 0 && isHave) {
       this.setState({isSignedUp: true});
     }
   }
   addToList(id, slots, maxslots){
+    // const { author } = this.props.route.params;
     //Method will change once login is implemented
     if(slots != maxslots){
-      addAttendee(id);
-      this.setState({isSignedUp: true});
+      var authorData =  [...this.state.author]
+      authorData.push({email:global.user.email,name:global.user.displayName})
+      addAttendee(id,global.user.email,global.user.displayName,this.state.author? [...this.state.author]:[]);
+      this.setState({isSignedUp: true,author:authorData});
       this.setState({slots: slots+1});
     }
   }
   unAddToList(id) {
-    removeAttendee(id);
-    this.setState({slots: this.state.slots-1});
+    var authorData = this.state.author.filter(element=>element.email != global.user.email && element.name != global.user.displayName)
+    removeAttendee(id,authorData);
+    this.setState({slots: this.state.slots-1,author:authorData});
     this.setState({isSignedUp: false});
   }
   signUp(){
@@ -95,7 +123,7 @@ export default class EventView extends Component {
   }
   
   render() {
-      const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
+      const {id, name, edate, location, description, etime, maxslots, slots,lastPage,} = this.props.route.params;
     return (
       <View style ={styles.containter}>
         <React.Fragment>{this.signForm()}</React.Fragment>
@@ -114,7 +142,7 @@ export default class EventView extends Component {
           <Text style = {styles.cardWhenWhere}></Text>
         }
         <Text style = {styles.cardDescription}>{description}</Text>
-        {owned ? 
+        {/* {this.state.owned ? 
           <TouchableOpacity style={styles.editbutton} title="Edit Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('EditEvent', 
               {
                 lastPage: 'EventView', 
@@ -130,8 +158,8 @@ export default class EventView extends Component {
             )}>
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>
-          :
-          this.state.isSignedUp ? 
+          : */}
+        {  this.state.isSignedUp ? 
           <TouchableOpacity onPress={() => this.unAddToList(id)} style={styles.signedUpButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.signedUpText}>Leave</Text>
           </TouchableOpacity>
@@ -139,7 +167,13 @@ export default class EventView extends Component {
           <TouchableOpacity onPress={() => this.addToList(id, this.state.slots, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.signUpText}>Sign Up</Text>
           </TouchableOpacity> 
-        }
+  }
+  {
+    this.state.author.map((item)=>(
+      <div>{item.email} -  {item.name}</div>
+    ))
+  }
+        {/* } */}
         </View>  
       </View>
     )
