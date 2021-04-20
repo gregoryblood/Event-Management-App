@@ -3,11 +3,9 @@ import { v4 as uuidv4 } from 'uuid'; //Creates unique IDs
 
 //Gets user's affiliation to the school (student or !student)
 export const getUser = (email) => {
-    const url = 'https://osu-event-server.herokuapp.com/login/';
-    const data = { email };
-
-    //console.log(data);
-    return axios({ method: 'post', url, data });
+    const url = 'https://osu-event-server.herokuapp.com/login';
+    const data = {url};
+    return axios({ method: 'get', url, data });
 }
 
 
@@ -24,11 +22,13 @@ export const getAEvent = (id) =>
 export const getCount = () => 
     axios.get('https://osu-event-server.herokuapp.com/count');
 //Adds Attendee
-export const addAttendee = (id) => 
-    axios.get('https://osu-event-server.herokuapp.com/addattendee/'+id);
+export const addAttendee = (id,email,name,array) => {
+    array.push({'email':email,'name':name})
+   return axios.get('http://localhost:8888/addattendee/'+id+"/"+JSON.stringify(array));
+}
 //Remove Attendee
-export const removeAttendee = (id) => 
-    axios.get('https://osu-event-server.herokuapp.com/removeattendee/'+id);
+export const removeAttendee = (id,array) => 
+    axios.get('http://localhost:8888/addattendee/'+id+"/"+JSON.stringify(array));
 //Updates the max slots of an event
 export const updateMaxSlots = (id, num) => 
     axios.get('https://osu-event-server.herokuapp.com/updatemaxslots/'+id+'/'+num);
