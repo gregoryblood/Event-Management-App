@@ -199,7 +199,7 @@ export default class CalendarView extends Component {
               (<ActivityIndicator style={{top: '75%'}}/>)
           }
           {
-            gUser.type != 'student' ? 
+            user.type != 'student' ? 
             <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
               <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
             </TouchableOpacity>

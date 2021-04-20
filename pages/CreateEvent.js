@@ -30,9 +30,9 @@ export default class CreateEvent extends Component {
 
   //Adds object to Events  //addToEvents = async () =>
   addToEvents = async () => {
-    if (gUser.type === 'student')
+    if (user.type === 'student')
       return;
-    const { name, description, location, maxslots } = this.state;
+    const { name, description, location, maxslots, author } = this.state;
     if (String(name).length > 3
         && String(description).length > 3
         && String(location).length > 3
@@ -45,7 +45,7 @@ export default class CreateEvent extends Component {
       let seconds = date.getSeconds();
       const eDate = date.getFullYear()+'-'+('0'+ (date.getMonth() + 1)).slice(-2)+'-'+('0'+ (date.getDate())).slice(-2)+'T00:00:00.000Z'
       let eTime = hours + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
-      await addEventToList(name, description, location, eDate, eTime, 0, parseInt(maxslots), gUser.email);
+      await addEventToList(name, description, location, eDate, eTime, 0, parseInt(maxslots), author);
       const {lastPage} = this.props.route.params;
       this.props.navigation.navigate(lastPage);
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
-import { getUser, getWithSlots } from '../Client/API/index.js';
+import { getWithSlots } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import { EventList } from './Components/EventList';
 
@@ -11,16 +11,13 @@ export default class ViewMyEvents extends Component {
     super(props);
     this.state = {
       data: null,
+
     };
   }
   componentDidMount() {
-    
     //This will update when naved back to
     const unsubscribe = this.props.navigation.addListener('focus', () => {
       this.getEvent();
-      if (gUser.type === 'none') {
-        this.getUserData();
-      }
     });
     return () => {
       // Clear setInterval in case of screen unmount
@@ -28,22 +25,12 @@ export default class ViewMyEvents extends Component {
       // Unsubscribe for the focus Listener
       unsubscribe;
     };
-    
-  }
-  async getUserData() {
-    try {
-      const { data } = await getUser(gUser.email);
-      gUser.type = data;
-    }
-    catch(e) {
-      alert("Get user failed");
-    }
-    var onid = gUser.email.substr(0, gUser.email.indexOf('@')); 
-    gUser.onid = onid;
   }
   async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getWithSlots();
+
+    console.log("数据：",data)
     this.setState({ data });
   }
   
@@ -54,7 +41,6 @@ export default class ViewMyEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-
         <ScrollView showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
           <React.Fragment>
@@ -76,7 +62,7 @@ export default class ViewMyEvents extends Component {
           
         </ScrollView>
         {
-          gUser.type != 'student' ? 
+          user.type != 'student' ? 
           <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>
