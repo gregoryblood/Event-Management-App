@@ -76,6 +76,7 @@ export default class EventView extends Component {
     removeAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
     this.setState({
       slots: this.state.slots-1, 
+      signedup:signedupData,
       issignedup: false
     });
   }
