@@ -3,9 +3,11 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "build:ios": "expo build:ios",
     "web": "expo start --web",
-    "start": "react-native start"
+    "start": "expo start",
+    "build:ios": "expo build:ios",
+    "build:android": "expo build:android",
+    "build:web": "expo build:web"
   },
   "dependencies": {
     "@ant-design/react-native": "^4.0.5",
@@ -44,5 +46,6 @@
   "devDependencies": {
     "@babel/core": "^7.9.0"
   },
-  "private": true
+  "private": true,
+  "homepage": "/web-build"
 }
