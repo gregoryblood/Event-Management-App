@@ -12,72 +12,78 @@ export default class EventView extends Component {
     super(props);
 
     this.state = {
+      menu: false,
+      signedup:[],
       data: null,
       eventList: 0,
-      doSign: 1,
-      isSignedUp: false,
+      issignedup: false,
       hasNewData: false,
       slots: 0,
     };
-    this.syncFun = this.syncFun.bind(this);
     this.delFun = this.delFun.bind(this);
-    this.signUp = this.signUp.bind(this);
-    this.signDown = this.signDown.bind(this);
+    this.syncFun = this.syncFun.bind(this);
+    this.openMenu = this.openMenu.bind(this);
   }
   componentDidMount() {
-    //Get One Event * Update current information
-    /*This will update when naved back to
-    const unsubscribe = this.props.navigation.addListener('focus', () => {
-      this.GetAEvent();
-    });
-    return () => {
-      // Clear setInterval in case of screen unmount
-      clearTimeout(interval);
-      // Unsubscribe for the focus Listener
-      unsubscribe;
-    };
-    */
+    const { signedup } = this.props.route.params;
+    //If users have signed up
+    if (signedup) {
+      this.setState({
+        signedup: [...signedup]
+      });
+      //Check to see if user is on event list
+      let isHave = false;
+      if(signedup && signedup.length && Array.isArray(signedup)){
+        signedup.forEach(element => {
+          if(element.email == global.user.email && element.name == global.user.displayName){
+            isHave = true;
+          }
+        });
+      }
+      if (isHave) {
+        this.setState({issignedup: true});
+      }
 
-    // [Bowen] Here is what's currently being used for did sign up
-    const {slots} = this.props.route.params;
-    this.setState({slots: slots});
-    if (slots > 0) {
-      this.setState({isSignedUp: true});
     }
+
+    this.setState({
+      slots: this.props.route.params.slots
+    });
+
+    //Remove later
+    if (this.props.route.params.slots > 0) {
+      this.setState({
+        issignedup: true
+      });
+    }
+    
   }
-  addToList(id, slots, maxslots){
-    //Method will change once login is implemented
-    if(slots != maxslots){
-      addAttendee(id);
-      this.setState({isSignedUp: true});
-      this.setState({slots: slots+1});
+  addToList(id, maxslots){
+    if(this.state.slots != maxslots){
+      const signedupData =  [...this.state.signedup];
+      signedupData.push({email:gUser.email, name:gUser.onid});
+      addAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
+      this.setState({
+        issignedup: true,
+        signedup:signedupData,
+        slots: this.state.slots+1
+      });
     }
   }
   unAddToList(id) {
-    removeAttendee(id);
-    this.setState({slots: this.state.slots-1});
-    this.setState({isSignedUp: false});
-  }
-  signUp(){
-    if(this.state.doSign == 1){
-      this.setState({
-        doSign: 0,
-      })
-    }
-    else{
-      this.setState({
-        doSign: 1,
-      })
-    }
-  }
-  signDown(){
+    const signedupData =  [...this.state.signedup];
+    signedupData.push({email:gUser.email, name:gUser.onid});
+    removeAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
     this.setState({
-      doSign: 1
+      slots: this.state.slots-1, 
+      issignedup: false
     });
   }
-  syncFun(){
-    this.signUp();
+  //Sync the user's calendar
+  syncFun() {
+    //Calendar part
   }
+  //Delete the event being viewed
   delFun(){
     if (confirm("Are you sure you want to delete this event?\n\nYou will not be able to recover it...")) {
       const {id, lastPage} = this.props.route.params;
@@ -93,16 +99,27 @@ export default class EventView extends Component {
       </View>
     );
   }
-  
+  openMenu() {
+    this.setState({
+      menu: !this.state.menu
+    });
+  }
   render() {
-      const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
+    const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
     return (
       <View style ={styles.containter}>
-        <React.Fragment>{this.signForm()}</React.Fragment>
+        {this.state.menu ? 
+        <View style = {styles.signSheet}>
+          <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Feather name={"check-circle"} size = {40} /></Text></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
+        </View>
+        :
+        <View/>
+        }
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
           <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
-          <TouchableOpacity style = {styles.optionBox} onPress={this.signUp}><Feather name={"more-vertical"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionBox} onPress={this.openMenu}><Feather name={"more-vertical"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <Text style = {styles.cardTitle}>{name}</Text>
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
@@ -131,12 +148,12 @@ export default class EventView extends Component {
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>
           :
-          this.state.isSignedUp ? 
-          <TouchableOpacity onPress={() => this.unAddToList(id)} style={styles.signedUpButton} color = '#ff9900' title="Submit Event" >
-            <Text style={styles.signedUpText}>Leave</Text>
+          this.state.issignedup ? 
+          <TouchableOpacity onPress={() => this.unAddToList(id)} style={styles.signedupButton} color = '#ff9900' title="Submit Event" >
+            <Text style={styles.signedupText}>Leave</Text>
           </TouchableOpacity>
           :
-          <TouchableOpacity onPress={() => this.addToList(id, this.state.slots, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
+          <TouchableOpacity onPress={() => this.addToList(id, maxslots)} style={styles.signUpButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.signUpText}>Sign Up</Text>
           </TouchableOpacity> 
         }
@@ -325,7 +342,7 @@ const styles = StyleSheet.create({
     paddingBottom: 70,
     width: '100%',
   },
-  signedUpButton: {
+  signedupButton: {
     position: 'absolute',
     bottom: 80,
     backgroundColor: '#ff7600',
@@ -334,7 +351,7 @@ const styles = StyleSheet.create({
     borderColor: '#ff7600',
     width: '100%',
   },
-  signedUpText: {
+  signedupText: {
     textAlign: 'center',
     color: 'white',
     fontSize: 40,

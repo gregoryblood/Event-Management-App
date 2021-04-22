@@ -23,12 +23,22 @@ export const getAEvent = (id) =>
 //Gets number of events
 export const getCount = () => 
     axios.get('https://osu-event-server.herokuapp.com/count');
+
 //Adds Attendee
-export const addAttendee = (id) => 
-    axios.get('https://osu-event-server.herokuapp.com/addattendee/'+id);
+export const addAttendee = (id,email,name,array) => {
+    array.push({'email':email,'name':name})
+    const url = 'https://osu-event-server.herokuapp.com/addattendee/'+id+"/";
+    const data = JSON.stringify(array);
+    return axios({ method: 'get', url, data });
+}
 //Remove Attendee
-export const removeAttendee = (id) => 
-    axios.get('https://osu-event-server.herokuapp.com/removeattendee/'+id);
+export const removeAttendee = (id,email,name,array) => {
+    array.push({'email':email,'name':name})
+    const url = 'https://osu-event-server.herokuapp.com/removeattendee/'+id+"/";
+    const data = JSON.stringify(array);
+    return axios({ method: 'get', url, data });
+}
+
 //Updates the max slots of an event
 export const updateMaxSlots = (id, num) => 
     axios.get('https://osu-event-server.herokuapp.com/updatemaxslots/'+id+'/'+num);

@@ -11,7 +11,7 @@ export function EventList(nav, from, arr) {
       return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
-                                        lastPage: from, owned: (event.author == gUser.email ? true : false)
+                                        lastPage: from, owned: (event.author == gUser.email ? true : false), signedup: event.signedup
                                         })}>
       <View style={styles.event} >
         {event.author == gUser.email ?
