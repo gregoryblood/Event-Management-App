@@ -29,13 +29,16 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
-async function getUserData(email) {
+async function getUserData(email, isValid) {
   try {
     const { data } = await getUser(email);
     gUser.type = data;
+    isValid = true;
+    return isValid; 
   }
   catch(e) {
-    alert("Failed to login");
+    isValid = false;
+    return isValid; 
   }
   const onid = gUser.email.substr(0, gUser.email.indexOf('@')); 
   gUser.onid = onid;
@@ -44,9 +47,12 @@ async function getUserData(email) {
 function App({ user, signOut, signInWithGoogle }) {
   const [loggedIn, setLoggedIn] = useState(false);
   if (user) {
-    getUserData(user.email).then(() => {
+    var isValid = false;//if user appears in db
+    getUserData(user.email, isValid).then(() => {
       gUser.email = user.email;
       setLoggedIn(true);
+      if (isValid === false) 
+        signOut;
     });
   }
     
