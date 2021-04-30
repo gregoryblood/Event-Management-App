@@ -45,17 +45,17 @@ export default class EditEvent extends Component {
 
   //Edits an event //addToEvents = async () =>
   editEvent = async () => {
-    if (gUser.type === 'student')
-      return;
-    const { name, description, location, maxslots, slots } = this.state;
-    var { eDate, eTime } = this.state;
+    const { name, description, location, slots } = this.state;
+    var { eDate, eTime, maxslots } = this.state;
 
     //If unaltered date and time, adjust due to formatting
     if (eDate.length == 24)
       eDate = eDate.substr(0, 10);
     if (eTime.length == 8)
       eTime = eTime.substr(0, 5);
-
+    if (maxslots==='') {
+      maxslots = 0;
+    }
     
     if (String(name).length >= 3
         && String(location).length >= 3

@@ -19,7 +19,7 @@ export default class CreateEvent extends Component {
       eDate: '',
       eTime: '',
       slots: 0,
-      maxslots: '',
+      maxslots: 0,
       author: "default",
     };
   }
@@ -30,14 +30,16 @@ export default class CreateEvent extends Component {
 
   //Adds object to Events  //addToEvents = async () =>
   addToEvents = async () => {
-    if (gUser.type === 'student')
-      return;
-    const { name, description, location, maxslots, eDate, eTime } = this.state;
+    const { name, description, location, eDate, eTime } = this.state;
+    var {maxslots} = this.state;
+    if (maxslots==='') {
+      maxslots = 0;
+    }
     if (String(name).length >= 3
         && String(location).length >= 3
         && String(eDate).length == 10
         && String(eTime).length == 5
-        && maxslots.valueOf() >= 0
+        && parseInt(maxslots) >= 0 
         ) 
     {
       //Makes sure date input are all numbers

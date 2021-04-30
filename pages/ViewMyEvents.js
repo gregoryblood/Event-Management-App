@@ -11,6 +11,7 @@ export default class ViewMyEvents extends Component {
     super(props);
     this.state = {
       data: null,
+      isAdmin: false
     };
   }
   componentDidMount() {
@@ -34,6 +35,8 @@ export default class ViewMyEvents extends Component {
     try {
       const { data } = await getUser(gUser.email);
       gUser.type = data;
+      if (data !== 'Student') 
+        this.setState({isAdmin: true});
     }
     catch(e) {
       alert("Get user failed");
@@ -76,7 +79,7 @@ export default class ViewMyEvents extends Component {
           
         </ScrollView>
         {
-          gUser.type != 'student' ? 
+          this.state.isAdmin ? 
           <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>
