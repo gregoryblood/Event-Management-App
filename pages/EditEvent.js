@@ -17,7 +17,7 @@ export default class EditEvent extends Component {
       name: '',
       description: '',
       location: '',
-      eDate: new Date(),
+      eDate: '',
       eTime: '',
       slots: 0,
       maxslots: 0,
@@ -47,32 +47,54 @@ export default class EditEvent extends Component {
   editEvent = async () => {
     if (gUser.type === 'student')
       return;
-    const { name, description, location, slots, maxslots } = this.state;
-    if (String(name).length > 3
-        && String(description).length > 3
-        && String(location).length > 3
-        ) {
-      const date = new Date();
-      let hours = date.getHours();
-      let minutes = date.getMinutes();
-      let seconds = date.getSeconds();
-      const eDate = date.getFullYear()+'-'+('0'+ (date.getMonth() + 1)).slice(-2)+'-'+('0'+ (date.getDate())).slice(-2)+'T00:00:00.000Z'
-      let eTime = hours + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
-      await editEvent(this.props.route.params.id, name, description, location, eDate, eTime, parseInt(slots), parseInt(maxslots));
+    const { name, description, location, maxslots, slots } = this.state;
+    var { eDate, eTime } = this.state;
+    //If unaltered date and time, adjust due to formatting
+    if (eDate.length == 24)
+      eDate = eDate.substr(0, 10);
+    if (eTime.length == 8)
+      eTime = eTime.substr(0, 5);
+
+    
+    if (String(name).length >= 3
+        && String(location).length >= 3
+        && String(eDate).length == 10
+        && String(eTime).length == 5
+        ) 
+    {
+      //Gets Date from string after checking ranges (Not perfect for days)
+      if (eDate.substr(5, 2).valueOf() > 12 || eDate.substr(8, 2).valueOf() > 31) {
+        alert("Date Range is Incorrect");
+        return;
+      }
+      const date = eDate.substr(0, 4)+'-'+eDate.substr(5, 2)+'-'+eDate.substr(8, 2)+'T00:00:00.000Z';
+      //Gets time from string after checking ranges
+      if (eTime.substr(0, 2).valueOf() > 23 || eTime.substr(3, 2).valueOf() > 59) {
+        alert("Invalid time of the day");
+        return;
+      }
+      const time = eTime.substr(0, 2) + ':' + eTime.substr(3, 2) + ':' + '00';
+      try {
+        await editEvent(this.props.route.params.id, name, description, location, date, time, parseInt(slots), parseInt(maxslots));
+      }
+      catch(e) {
+        alert("Invalid day of the month");
+        return;
+      }
       const {lastPage, id} = this.props.route.params;
       this.props.navigation.navigate(lastPage, {
-          id: id,
-          name: name,
-          edate: eDate,
-          location: location,
-          description: description,
-          etime: eTime,
-          slots: slots,
-          maxslots: maxslots,
-      });
+        id: id,
+        name: name,
+        edate: eDate,
+        location: location,
+        description: description,
+        etime: eTime,
+        slots: slots,
+        maxslots: maxslots,
+    });
     }
     else {
-      alert("Not enough information")
+      alert("Check information again");
     }
   }
   render() {
@@ -84,31 +106,30 @@ export default class EditEvent extends Component {
           <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <View style={styles.formstyle}>
-          <TextInput placeholder={name} onChangeText={this.updateField('name')}
+          <TextInput placeholder='Event Name' defaultValue={name} onChangeText={this.updateField('name')}
             style={styles.formInput} type="text"/>
             
           <View style={styles.inline}>
             {//<DateTimePick/>
             }
-            <TouchableOpacity onPress={console.log("Pressed Time")}
-              style={styles.formInputTime} type="Time">
-                <Text style={styles.buttonText}>Time</Text>
-            </TouchableOpacity>
+            <TextInput placeholder='HH:MM' defaultValue={etime.substr(0, 5)} onChangeText={this.updateField('eTime')}
+              style={styles.formInputTime} maxLength={5}>
+            </TextInput>
 
-            <TouchableOpacity onPress={console.log("Pressed Date")}
-              style={styles.formInputDate} type="Date">
-              <Text style={styles.buttonText}>Date</Text>
-            </TouchableOpacity>
+            <TextInput placeholder='YYYY-MM-DD' defaultValue={edate.substr(0, 10)}  onChangeText={this.updateField('eDate')}
+              style={styles.formInputDate} maxLength={10}>
+            </TextInput>
+
 
           </View>
-          <TextInput placeholder={location} onChangeText={this.updateField('location')}
+          <TextInput placeholder='Location' defaultValue={location} onChangeText={this.updateField('location')}
             style={styles.formInput} type="text"/>
           <TextInput  multiline allowFontScaling
-          numberOfLines={3} editable maxLength={300} placeholder={description} onChangeText={this.updateField('description')}
+          numberOfLines={3} editable maxLength={300} placeholder='Description' defaultValue={description} onChangeText={this.updateField('description')}
             style={styles.formInputDescription} type="text"/>
           
           
-          <TextInput  placeholder={maxslots} onChangeText={this.updateField('maxslots')}
+          <TextInput  defaultValue={maxslots} onChangeText={this.updateField('maxslots')}
             style={styles.formInput} type="text"/>
           
           <TouchableOpacity onPress={this.editEvent} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >

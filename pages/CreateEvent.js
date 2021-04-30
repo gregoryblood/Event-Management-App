@@ -16,10 +16,10 @@ export default class CreateEvent extends Component {
       name: '',
       description: '',
       location: '',
-      eDate: new Date(),
+      eDate: '',
       eTime: '',
       slots: 0,
-      maxslots: 0,
+      maxslots: '',
       author: "default",
     };
   }
@@ -32,25 +32,38 @@ export default class CreateEvent extends Component {
   addToEvents = async () => {
     if (gUser.type === 'student')
       return;
-    const { name, description, location, maxslots } = this.state;
-    if (String(name).length > 3
-        && String(description).length > 3
-        && String(location).length > 3
-        //&& String(date).length > 3
-        //&& String(time).length > 3
-        ) {
-      const date = new Date();
-      let hours = date.getHours();
-      let minutes = date.getMinutes();
-      let seconds = date.getSeconds();
-      const eDate = date.getFullYear()+'-'+('0'+ (date.getMonth() + 1)).slice(-2)+'-'+('0'+ (date.getDate())).slice(-2)+'T00:00:00.000Z'
-      let eTime = hours + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
-      await addEventToList(name, description, location, eDate, eTime, 0, parseInt(maxslots), gUser.email);
+    const { name, description, location, maxslots, eDate, eTime } = this.state;
+    if (String(name).length >= 3
+        && String(location).length >= 3
+        && String(eDate).length == 10
+        && String(eTime).length == 5
+        && maxslots.valueOf() >= 0
+        ) 
+    {
+      //Gets Date from string after checking ranges (Not perfect for days)
+      if (eDate.substr(5, 2).valueOf() > 12 || eDate.substr(8, 2).valueOf() > 31) {
+        alert("Date Range is Incorrect");
+        return;
+      }
+      const date = eDate.substr(0, 4)+'-'+eDate.substr(5, 2)+'-'+eDate.substr(8, 2)+'T00:00:00.000Z';
+      //Gets time from string after checking ranges
+      if (eTime.substr(0, 2).valueOf() > 23 || eTime.substr(3, 2).valueOf() > 59) {
+        alert("Invalid time of the day");
+        return;
+      }
+      const time = eTime.substr(0, 2) + ':' + eTime.substr(3, 2) + ':' + '00';
+      try {
+        await addEventToList(name, description, location, date, time, 0, parseInt(maxslots), gUser.email);
+      }
+      catch(e) {
+        alert("Invalid day of the month");
+        return;
+      }
       const {lastPage} = this.props.route.params;
       this.props.navigation.navigate(lastPage);
     }
     else {
-      alert("Not enough information")
+      alert("Check information again");
     }
   }
   render() {
@@ -66,15 +79,13 @@ export default class CreateEvent extends Component {
           <View style={styles.inline}>
             {//<DateTimePick/>
             }
-            <TouchableOpacity onPress={console.log("Pressed Time")}
-              style={styles.formInputTime} type="Time">
-                <Text style={styles.buttonText}>Time</Text>
-            </TouchableOpacity>
+            <TextInput placeholder='HH:MM' onChangeText={this.updateField('eTime')}
+              style={styles.formInputTime} maxLength={5}>
+            </TextInput>
 
-            <TouchableOpacity  onPress={console.log("Pressed Date")}
-              style={styles.formInputDate} type="Date">
-              <Text style={styles.buttonText}>Date</Text>
-            </TouchableOpacity>
+            <TextInput placeholder='YYYY-MM-DD' onChangeText={this.updateField('eDate')}
+              style={styles.formInputDate} maxLength={10}>
+            </TextInput>
 
           </View>
           <TextInput placeholder='Location' onChangeText={this.updateField('location')}
@@ -85,7 +96,7 @@ export default class CreateEvent extends Component {
           
           
           <TextInput placeholder='Max Slots' onChangeText={this.updateField('maxslots')}
-            style={styles.formInput} type="text"/>
+            style={styles.formInput} type="text" allowFontScaling={10}/>
           
           <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.finishCreateText}>Publish</Text>
