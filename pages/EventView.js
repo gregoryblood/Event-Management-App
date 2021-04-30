@@ -5,7 +5,9 @@ import {
 import moment from 'moment';
 import {  addAttendee, getAEvent, removeAttendee, removeEvent } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
-import {MilToCil} from './HelperFuncs'
+import {MilToCil} from './HelperFuncs';
+import App from '../App.js';
+import withFirebaseAuth from '../App.js';
 
 export default class EventView extends Component {
   constructor(props) {
@@ -106,13 +108,15 @@ export default class EventView extends Component {
     });
   }
   render() {
+    //const {signOut} = this.
     const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
     return (
       <View style ={styles.containter}>
         {this.state.menu ? 
         <View style = {styles.signSheet}>
           <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Feather name={"check-circle"} size = {40} /></Text></TouchableOpacity>
-          <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionContainer} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.delFun}><Text style = {styles.logout}>Sign Out <Feather name={"log-out"} size = {40} /></Text></TouchableOpacity>
         </View>
         :
         <View/>
@@ -236,14 +240,22 @@ const styles = StyleSheet.create({
 
   },
 
+  logout:{
+    color: 'orange',
+    fontSize: 40,
+    marginTop: 10,
+    marginLeft: 3,
+  },
+
   optionContainer:{
-    paddingTop: 10,
+    padding: 10,
+    paddingTop: 5,
     height: 80,
-    width: 800,
     backgroundColor: 'white',
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
-    display: 'none',
+    width: '100%',
+    textAlign: 'center'
     
   },
   optionContainerTop:{

@@ -55,7 +55,7 @@ function App({ user, signOut, signInWithGoogle }) {
         signOut;
     });
   }
-    
+  
   return ( 
     loggedIn ? 
       <NavigationContainer style={{ flex: 1}}>
