@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>59510543816-5regudg91o0tks6593b4jgkovfbe1hpl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.59510543816-5regudg91o0tks6593b4jgkovfbe1hpl</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB-Wnb9o8_-aEk8SkZxjYMQUh4mDXN3VoM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>59510543816</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.gregor476.Event-Management-App</string>
+	<key>PROJECT_ID</key>
+	<string>osu-event-planner-9109a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>osu-event-planner-9109a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:59510543816:ios:2d9cc68232c56d8acd5cfd</string>
+</dict>
+</plist>

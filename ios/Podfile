@@ -7,7 +7,7 @@ platform :ios, '11.0'
 target 'EventManagementApp' do
   use_unimodules!
   config = use_native_modules!
-
+  pod 'Firebase/Analytics'
   use_react_native!(:path => config["reactNativePath"])
 
   if !ENV['CI']
