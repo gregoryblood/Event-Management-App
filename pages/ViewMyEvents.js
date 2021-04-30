@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
-import { getUser, getWithSlots } from '../Client/API/index.js';
+import { getWithSlots } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import { EventList } from './Components/EventList';
 
@@ -11,7 +11,6 @@ export default class ViewMyEvents extends Component {
     super(props);
     this.state = {
       data: null,
-      isAdmin: false
     };
   }
   componentDidMount() {
@@ -19,9 +18,6 @@ export default class ViewMyEvents extends Component {
     //This will update when naved back to
     const unsubscribe = this.props.navigation.addListener('focus', () => {
       this.getEvent();
-      if (gUser.type === 'none') {
-        this.getUserData();
-      }
     });
     return () => {
       // Clear setInterval in case of screen unmount
@@ -31,19 +27,7 @@ export default class ViewMyEvents extends Component {
     };
     
   }
-  async getUserData() {
-    try {
-      const { data } = await getUser(gUser.email);
-      gUser.type = data;
-      if (data !== 'Student') 
-        this.setState({isAdmin: true});
-    }
-    catch(e) {
-      alert("Get user failed");
-    }
-    var onid = gUser.email.substr(0, gUser.email.indexOf('@')); 
-    gUser.onid = onid;
-  }
+
   async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getWithSlots();
@@ -79,7 +63,7 @@ export default class ViewMyEvents extends Component {
           
         </ScrollView>
         {
-          this.state.isAdmin ? 
+          gUser.type !== 'Student' ? 
           <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>

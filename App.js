@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,7 +9,7 @@ import Explore from './pages/Explore';
 import Search from './pages/Search';
 import Calendar from './pages/Calendar';
 import './pages/global.js';
-
+import { getUser } from './Client/API/index.js';
 import withFirebaseAuth from 'react-with-firebase-auth';
 import { firebase } from '@firebase/app'
 import 'firebase/auth';
@@ -29,11 +29,29 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
+async function getUserData(email) {
+  try {
+    const { data } = await getUser(email);
+    gUser.type = data;
+  }
+  catch(e) {
+    alert("Failed to login");
+  }
+  const onid = gUser.email.substr(0, gUser.email.indexOf('@')); 
+  gUser.onid = onid;
+}
+
 function App({ user, signOut, signInWithGoogle }) {
-  if (user) 
-    gUser.email = user.email;
+  const [loggedIn, setLoggedIn] = useState(false);
+  if (user) {
+    getUserData(user.email).then(() => {
+      gUser.email = user.email;
+      setLoggedIn(true);
+    });
+  }
+    
   return ( 
-    user ? 
+    loggedIn ? 
       <NavigationContainer style={{ flex: 1}}>
         <Tab.Navigator
                 screenOptions={({ route }) => ({
