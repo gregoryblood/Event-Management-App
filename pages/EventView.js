@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity
 } from 'react-native';
 import moment from 'moment';
-import {  addAttendee, getAEvent, removeAttendee, removeEvent } from '../Client/API/index.js';
+import {  addAttendee, getAEvent, getAttendee, removeAttendee, removeEvent } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import {MilToCil} from './HelperFuncs'
 
@@ -25,8 +25,11 @@ export default class EventView extends Component {
     this.openMenu = this.openMenu.bind(this);
   }
   componentDidMount() {
-    const { signedup } = this.props.route.params;
+    
+    const { id } = this.props.route.params;
+    this.getList(id);
     //If users have signed up
+    /*
     if (signedup) {
       this.setState({
         signedup: [...signedup]
@@ -37,16 +40,20 @@ export default class EventView extends Component {
         signedup.forEach(element => {
           if(element.email == global.user.email && element.name == global.user.displayName){
             isHave = true;
+            console.log("isHave")
           }
         });
       }
       if (isHave) {
         this.setState({issignedup: true});
       }
-
+      
+   
     }
+    */
 
     this.setState({
+      
       slots: this.props.route.params.slots
     });
 
@@ -55,30 +62,44 @@ export default class EventView extends Component {
       this.setState({
         issignedup: true
       });
-    }
-    
+    }    
   }
-  addToList(id, maxslots){
+
+  async getList(id){
+    const {data} = await getAttendee(id);
+    this.setState({
+      signedup:data
+    });
+  }
+
+ async addToList(id, maxslots){
     if(this.state.slots != maxslots){
       const signedupData =  [...this.state.signedup];
       signedupData.push({email:gUser.email, name:gUser.onid});
-      addAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
+     await  addAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
+    //console.log(data);
       this.setState({
         issignedup: true,
-        signedup:signedupData,
+        //signedup: data,//signedupData,
         slots: this.state.slots+1
       });
+      console.log(this.state.signedup);
+      await this.getList(id);
+
     }
   }
-  unAddToList(id) {
+ async unAddToList(id) {
     const signedupData =  [...this.state.signedup];
     signedupData.push({email:gUser.email, name:gUser.onid});
-    removeAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
+    const {data} = await removeAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
+    //console.log(signedupData);
     this.setState({
       slots: this.state.slots-1, 
-      signedup:signedupData,
+      //signedup:data,//signedupData,
       issignedup: false
     });
+    //onsole.log(this.state.signedup);
+    await this.getList(id);
   }
   //Sync the user's calendar
   syncFun() {
@@ -105,8 +126,12 @@ export default class EventView extends Component {
       menu: !this.state.menu
     });
   }
+
   render() {
     const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
+    const data = this.state.signedup;
+    //console.log(data);
+    //console.log(this.state.signedup);
     return (
       <View style ={styles.containter}>
         {this.state.menu ? 
@@ -132,6 +157,22 @@ export default class EventView extends Component {
           <Text style = {styles.cardWhenWhere}></Text>
         }
         <Text style = {styles.cardDescription}>{description}</Text>
+
+        {
+          data?         
+          <ul>
+          {
+            data.map((item,index)=>{
+              return(
+                <li>{item.email} - {item.name}</li>
+              )
+            })
+          }
+        </ul>       
+          :
+          <Text>no members</Text>
+        }
+
         {owned ? 
           <TouchableOpacity style={styles.editbutton} title="Edit Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('EditEvent', 
               {
