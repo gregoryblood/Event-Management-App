@@ -66,7 +66,7 @@ export default class ViewEventsWithSearch extends Component {
             data ? ( //if data
               <React.Fragment>
                 <View style={styles.eventbox}>
-                  {data && EventList(this.props.navigation, 'ViewEventsWithSearch', this.state.data, 'default')}
+                  {data && EventList(this.props.navigation, 'ViewEventsWithSearch', this.state.data, true)}
                 </View>
               </React.Fragment>
               

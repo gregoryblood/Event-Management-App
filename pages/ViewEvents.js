@@ -48,7 +48,7 @@ export default class ViewEvents extends Component {
               <React.Fragment>
 
                 <View style={styles.eventbox}>
-                  {data && EventList(this.props.navigation, 'ViewEvents', this.state.data, 'default')}
+                  {data && EventList(this.props.navigation, 'ViewEvents', this.state.data, true)}
                 </View>
               </React.Fragment>
               

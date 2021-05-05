@@ -1,8 +1,8 @@
 import axios from 'axios'; //API Getter
 import { v4 as uuidv4 } from 'uuid'; //Creates unique IDs
 
-//const baseUrl = 'https://osu-event-server.herokuapp.com/';
-const baseUrl = 'http://localhost:8888/';
+const baseUrl = 'https://osu-event-server.herokuapp.com/';
+//const baseUrl = 'http://localhost:8888/';
 
 //Gets user's affiliation to the school (student or !student)
 export const getUser = (email) => {
@@ -28,23 +28,27 @@ export const getCount = () =>
     axios.get(baseUrl+ 'count');
 
 //Adds Attendee
-export const addAttendee = (id,email,name,array) => {
-    array.push({'email':email,'name':name})
+export const addAttendee = (id,email,name) => {
     const url = baseUrl+ 'addattendee/'+id+"/"+email+"/" +name+"/";//
-    const data = JSON.stringify(array);
+    const data = JSON.stringify(id, email, name);
     return axios({ method: 'get', url, data });
 }
 //Remove Attendee
-export const removeAttendee = (id,email,name,array) => {
-    array.push({'email':email,'name':name})
+export const removeAttendee = (id,email,name) => {
+    
     const url = baseUrl+ 'removeattendee/'+id+"/"+email+"/" +name+"/";//+email+"/" +name+"/"
     console.log(url);
-    const data = JSON.stringify(array);
+    const data = JSON.stringify(id, email, name);
     return axios({ method: 'get', url, data });
 }
 //Get Attendee List 
 export const getAttendee = (id) => {
-    const url = baseUrl + 'getattendee/' + id +'/';
+    const url = baseUrl + 'getattendee/' + id;
+    return axios({method: 'get', url});
+}
+//Gets the user's events
+export const getMyEvents = (email) => {
+    const url = baseUrl + 'getmyevents/'+email;
     return axios({method: 'get', url});
 }
 //Updates the max slots of an event

@@ -6,20 +6,25 @@ import { ProgressBar, Colors } from 'react-native-paper';
 import {MilToCil} from '../HelperFuncs'
 import {Feather} from '@expo/vector-icons';
 
-export function EventList(nav, from, arr) {
+export function EventList(nav, from, arr, showAll) {
     return arr.map(event => {
+      const ismine = Object.values(gUser.events).some(e => e.eventsid == event.id)
       return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
                                         lastPage: from, owned: (event.author == gUser.email ? true : false), signedup: event.signedup
                                         })}>
-      <View style={styles.event} >
+      {
+        (showAll || ismine) && 
+        <View style={styles.event} >
         {event.author == gUser.email ?
         <View style={styles.icon} />
         :
         <View/>
         }
-        {event.slots > 0 ? 
+        {
+          ismine
+         ? 
         <Text style={styles.titleOrange}>{decodeURIComponent(event.name)}</Text>
         :
         <Text style={styles.title}>{decodeURIComponent(event.name)}</Text>
@@ -35,6 +40,8 @@ export function EventList(nav, from, arr) {
         <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
         
       </View>
+      }
+      
       </TouchableOpacity>
     })
 }

@@ -36,7 +36,6 @@ async function getUserData(email, isValid) {
     
     //Can set youself as admin here
     gUser.type = 'Admin';
-
     isValid = true;
     return isValid; 
   }
@@ -44,8 +43,7 @@ async function getUserData(email, isValid) {
     isValid = false;
     return isValid; 
   }
-  const onid = gUser.email.substr(0, gUser.email.indexOf('@')); 
-  gUser.onid = onid;
+  
 }
 
 function App({ user, signOut, signInWithGoogle }) {
@@ -54,6 +52,7 @@ function App({ user, signOut, signInWithGoogle }) {
     var isValid = false;//if user appears in db
     getUserData(user.email, isValid).then(() => {
       gUser.email = user.email;
+      gUser.onid = gUser.email.substr(0, gUser.email.indexOf('@'));
       setLoggedIn(true);
       if (isValid === false) 
         signOut;

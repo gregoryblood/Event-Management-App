@@ -2,7 +2,7 @@ import React, { Component, } from 'react'
 import {
   View, Text, StyleSheet, TouchableOpacity
 } from 'react-native';
-import {  addAttendee,removeAttendee, removeEvent } from '../Client/API/index.js';
+import {  addAttendee,removeAttendee, removeEvent, getAttendee } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import {MilToCil} from './HelperFuncs';
 
@@ -76,14 +76,14 @@ export default class EventView extends Component {
     if(this.state.slots != maxslots){
       const signedupData =  [...this.state.signedup];
       signedupData.push({email:gUser.email, name:gUser.onid});
-     await  addAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
+     await  addAttendee(id, gUser.email, gUser.onid);
     //console.log(data);
       this.setState({
         issignedup: true,
         //signedup: data,//signedupData,
         slots: this.state.slots+1
       });
-      console.log(this.state.signedup);
+      //console.log(this.state.signedup);
       await this.getList(id);
 
     }
@@ -91,7 +91,7 @@ export default class EventView extends Component {
  async unAddToList(id) {
     const signedupData =  [...this.state.signedup];
     signedupData.push({email:gUser.email, name:gUser.onid});
-    const {data} = await removeAttendee(id, gUser.email, gUser.onid, this.state.signedup? [...this.state.signedup]:[]);
+    const {data} = await removeAttendee(id, gUser.email, gUser.onid);
     //console.log(signedupData);
     this.setState({
       slots: this.state.slots-1, 

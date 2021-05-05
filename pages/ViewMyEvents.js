@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
-import { getWithSlots } from '../Client/API/index.js';
+import { getEvent, getMyEvents } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import { EventList } from './Components/EventList';
 
@@ -14,10 +14,11 @@ export default class ViewMyEvents extends Component {
     };
   }
   componentDidMount() {
-    
     //This will update when naved back to
     const unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.getMyEvents();
       this.getEvent();
+      
     });
     return () => {
       // Clear setInterval in case of screen unmount
@@ -25,17 +26,16 @@ export default class ViewMyEvents extends Component {
       // Unsubscribe for the focus Listener
       unsubscribe;
     };
-    
   }
-
   async getEvent() {
     //Calls api and will finish when data is loaded
-    const { data } = await getWithSlots();
+    const { data } = await getEvent();
     this.setState({ data });
   }
-  
-
-
+  async getMyEvents() {
+    const {data} = await getMyEvents(gUser.email);
+    gUser.events = data;
+  }
   render() {
 
     const data = this.state.data;
@@ -48,13 +48,10 @@ export default class ViewMyEvents extends Component {
           { //If data then display api otherwise loading indicator
             data ? ( //if data
               <React.Fragment>
-
                 <View style={styles.eventbox}>
-                  {data && EventList(this.props.navigation, 'ViewMyEvents', this.state.data, 'default')}
+                  {data && EventList(this.props.navigation, 'ViewMyEvents', this.state.data, false)}
                 </View>
-                
               </React.Fragment>
-              
             )
               : //else 
               (<ActivityIndicator style={{ top: '50%'}}/>)
