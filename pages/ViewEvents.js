@@ -40,7 +40,6 @@ export default class ViewEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-
         <ScrollView showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
           <React.Fragment>
@@ -58,15 +57,12 @@ export default class ViewEvents extends Component {
               (<ActivityIndicator style={{ top: '50%'}}/>)
           }
           </React.Fragment>
-          
         </ScrollView>
         {
-          gUser.type !== 'Student' ? 
+          gUser.type !== 'Student' &&
           <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewEvents'})}>
             <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
           </TouchableOpacity>
-          :
-          <View/>
         }
       </React.Fragment>
     )

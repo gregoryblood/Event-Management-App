@@ -33,6 +33,10 @@ async function getUserData(email, isValid) {
   try {
     const { data } = await getUser(email);
     gUser.type = data;
+    
+    //Can set youself as admin here
+    gUser.type = 'Admin';
+
     isValid = true;
     return isValid; 
   }

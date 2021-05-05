@@ -53,6 +53,9 @@ export const searchEvents = (keyword) =>
 export const addEventToList = (name, description, location, edate, etime, slots, maxslots, author) => {
     const url = `https://osu-event-server.herokuapp.com/add/`;
     const id = uuidv4();
+    const encName = encodeURIComponent(name),
+    encDescription = encodeURIComponent(description),
+    encLocation = encodeURIComponent(location);
     const data = {id, name, description, location, edate, etime, slots, maxslots, author};
     //console.log(data);
     return axios({ method: 'post', url, data });

@@ -20,13 +20,18 @@ export function EventList(nav, from, arr) {
         <View/>
         }
         {event.slots > 0 ? 
-        <Text style={styles.titleOrange}>{event.name}</Text>
+        <Text style={styles.titleOrange}>{decodeURIComponent(event.name)}</Text>
         :
-        <Text style={styles.title}>{event.name}</Text>
+        <Text style={styles.title}>{decodeURIComponent(event.name)}</Text>
         }
         <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
-        <Text style={styles.location}>{event.location} at {MilToCil(event.etime)}</Text>
-        <Text style={styles.description}>{event.description.length > 50 ? event.description.slice(0,50) + "..." : event.description}</Text>
+        <Text style={styles.location}>{decodeURIComponent(event.location)} at {MilToCil(event.etime)}</Text>
+        <Text style={styles.description}>{
+          decodeURIComponent(event.description.length) > 50 ? 
+            decodeURIComponent(event.description).slice(0,50) + "..." 
+            : 
+            decodeURIComponent(event.description)
+        }</Text>
         <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
         
       </View>
