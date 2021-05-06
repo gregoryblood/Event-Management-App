@@ -8,7 +8,7 @@ import {Feather} from '@expo/vector-icons';
 
 export function EventList(nav, from, arr, showAll) {
     return arr.map(event => {
-      const ismine = Object.values(gUser.events).some(e => e.eventsid == event.id)
+      const ismine = gUser.events.some(e => e.eventsid == event.id)
       return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
                                         id: event.id, name: event.name,  location: event.location, description: event.description,
                                         etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,

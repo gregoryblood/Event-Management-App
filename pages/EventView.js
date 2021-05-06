@@ -28,32 +28,7 @@ export default class EventView extends Component {
     
     const { id } = this.props.route.params;
     this.getList(id);
-    //If users have signed up
-    /*
-    if (signedup) {
-      this.setState({
-        signedup: [...signedup]
-      });
-      //Check to see if user is on event list
-      let isHave = false;
-      if(signedup && signedup.length && Array.isArray(signedup)){
-        signedup.forEach(element => {
-          if(element.email == global.user.email && element.name == global.user.displayName){
-            isHave = true;
-            console.log("isHave")
-          }
-        });
-      }
-      if (isHave) {
-        this.setState({issignedup: true});
-      }
-      
-   
-    }
-    */
-
     this.setState({
-      
       slots: this.props.route.params.slots
     });
 
@@ -74,31 +49,25 @@ export default class EventView extends Component {
 
  async addToList(id, maxslots){
     if(this.state.slots != maxslots){
-      const signedupData =  [...this.state.signedup];
-      signedupData.push({email:gUser.email, name:gUser.onid});
-     await  addAttendee(id, gUser.email, gUser.onid);
-    //console.log(data);
+      const email = gUser.email, onid = gUser.onid;
+      gUser.events.push({eventsid: id, email, onid});
+      await  addAttendee(id, email, onid);
       this.setState({
         issignedup: true,
-        //signedup: data,//signedupData,
         slots: this.state.slots+1
       });
-      //console.log(this.state.signedup);
       await this.getList(id);
-
     }
   }
  async unAddToList(id) {
-    const signedupData =  [...this.state.signedup];
-    signedupData.push({email:gUser.email, name:gUser.onid});
-    const {data} = await removeAttendee(id, gUser.email, gUser.onid);
-    //console.log(signedupData);
+    const email = gUser.email, onid = gUser.onid;
+    const i = gUser.events.findIndex( element => element.eventsid == id);
+    gUser.events.splice(i, 1);
+    await removeAttendee(id, email, onid);
     this.setState({
       slots: this.state.slots-1, 
-      //signedup:data,//signedupData,
       issignedup: false
     });
-    //onsole.log(this.state.signedup);
     await this.getList(id);
   }
   //Sync the user's calendar
@@ -128,11 +97,7 @@ export default class EventView extends Component {
   }
 
   render() {
-    //const {signOut} = this.
     const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
-    const data = this.state.signedup;
-    //console.log(data);
-    //console.log(this.state.signedup);
     return (
       <View style ={styles.containter}>
         {this.state.menu ? 

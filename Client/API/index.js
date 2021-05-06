@@ -35,9 +35,7 @@ export const addAttendee = (id,email,name) => {
 }
 //Remove Attendee
 export const removeAttendee = (id,email,name) => {
-    
     const url = baseUrl+ 'removeattendee/'+id+"/"+email+"/" +name+"/";//+email+"/" +name+"/"
-    console.log(url);
     const data = JSON.stringify(id, email, name);
     return axios({ method: 'get', url, data });
 }

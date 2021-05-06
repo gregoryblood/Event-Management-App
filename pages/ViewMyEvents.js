@@ -14,11 +14,10 @@ export default class ViewMyEvents extends Component {
     };
   }
   componentDidMount() {
+    this.getMyEvents();
     //This will update when naved back to
     const unsubscribe = this.props.navigation.addListener('focus', () => {
-      this.getMyEvents();
-      this.getEvent();
-      
+      this.getEvent(); 
     });
     return () => {
       // Clear setInterval in case of screen unmount
@@ -34,7 +33,9 @@ export default class ViewMyEvents extends Component {
   }
   async getMyEvents() {
     const {data} = await getMyEvents(gUser.email);
-    gUser.events = data;
+    gUser.events = Object.values(data);
+    console.log(gUser.events);
+
   }
   render() {
 
