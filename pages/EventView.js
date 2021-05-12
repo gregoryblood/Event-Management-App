@@ -21,6 +21,7 @@ export default class EventView extends Component {
       slots: 0,
     };
     this.delFun = this.delFun.bind(this);
+    this.signOut = this.signOut.bind(this);
     this.syncFun = this.syncFun.bind(this);
     this.openMenu = this.openMenu.bind(this);
   }
@@ -82,6 +83,10 @@ export default class EventView extends Component {
       this.props.navigation.navigate(lastPage);
     }
   }
+  //Signs user out 
+  signOut() {
+    alert("User Signed Out");
+  }
   signForm(){
     if(this.state.doSign == 0) return(
       <View style = {styles.signSheet}>
@@ -100,16 +105,14 @@ export default class EventView extends Component {
     const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
     return (
       <View style ={styles.containter}>
-        {this.state.menu ? 
+        {this.state.menu && 
         <View style = {styles.signSheet}>
           <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Feather name={"check-circle"} size = {40} /></Text></TouchableOpacity>
           {owned && 
             <TouchableOpacity style = {styles.optionContainer} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
           }
-          <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.delFun}><Text style = {styles.logout}>Sign Out <Feather name={"log-out"} size = {40} /></Text></TouchableOpacity>
+          <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.signOut}><Text style = {styles.logout}>Sign Out <Feather name={"log-out"} size = {40} /></Text></TouchableOpacity>
         </View>
-        :
-        <View/>
         }
         <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
@@ -217,7 +220,7 @@ const styles = StyleSheet.create({
   },
 
   syncCalendar:{
-    color: 'lime',
+    color: 'gray',
     fontSize: 40,
     marginTop: 10,
     marginLeft: 3,

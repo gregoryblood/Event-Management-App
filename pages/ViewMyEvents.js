@@ -34,7 +34,6 @@ export default class ViewMyEvents extends Component {
   async getMyEvents() {
     const {data} = await getMyEvents(gUser.email);
     gUser.events = Object.values(data);
-    console.log(gUser.events);
 
   }
   render() {

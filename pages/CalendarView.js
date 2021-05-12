@@ -16,13 +16,16 @@ export default class CalendarView extends Component {
   constructor(props) {
     super(props);
     const date = new Date();
+    console.log (date.toString());
     this.state = {
       date: date,
       eventData: {},
       dayEvents: [],
       day: null,
       month: {
-        'dateString': date.getFullYear()+'-'+('0'+ (date.getMonth() + 1)).slice(-2)+'-'+('0' + date.getDate()).slice(-2),
+        'dateString': date.getFullYear()+'/'+
+          ('0' + (date.getMonth() + 1)).slice(-2)+'/'+
+          ('0' + date.getDate()).slice(-2),
         'day': date.getDate(),
         'month': date.getMonth()+1,
         'timestamp': 0,

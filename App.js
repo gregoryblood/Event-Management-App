@@ -29,33 +29,41 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
-async function getUserData(email, isValid) {
+async function getUserData(email) {
   try {
     const { data } = await getUser(email);
-    gUser.type = data;
     
+    if (!data || data.meta.totalResults == 0) {
+      showError = true;
+      return;
+    }
+
+    gUser.type = data.data[0].attributes.primaryAffiliation;
     //Can set youself as admin here
     gUser.type = 'Admin';
+
     isValid = true;
     return isValid; 
   }
   catch(e) {
-    isValid = false;
-    return isValid; 
+    return; 
   }
   
 }
-
+var isValid = false;
+var showError = false;
 function App({ user, signOut, signInWithGoogle }) {
   const [loggedIn, setLoggedIn] = useState(false);
   if (user) {
-    var isValid = false;//if user appears in db
-    getUserData(user.email, isValid).then(() => {
-      gUser.email = user.email;
-      gUser.onid = gUser.email.substr(0, gUser.email.indexOf('@'));
-      setLoggedIn(true);
-      if (isValid === false) 
+    getUserData(user.email).then(() => {
+      if (isValid == true) {
+        gUser.email = user.email;
+        gUser.onid = gUser.email.substr(0, gUser.email.indexOf('@'));
+        setLoggedIn(true);
+      }
+      else {
         signOut;
+      }
     });
   }
   
@@ -95,7 +103,13 @@ function App({ user, signOut, signInWithGoogle }) {
       : 
       <View style={styles.loginArea}>
         <TouchableOpacity style={styles.loginButton} onPress={signInWithGoogle}>
+          <Text style={styles.title1}>OSU</Text>
+          <Text style={styles.title2}>Events</Text>
+
           <Text style={styles.loginText}>Login</Text>
+          {showError && 
+          <Text style={styles.errorText}>Not an Oregon State Account</Text>
+          }
         </TouchableOpacity>
       </View>
       
@@ -126,7 +140,40 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'white',
     fontSize: 32,
-
+  },
+  errorText: {
+    zIndex: -1,
+    bottom: -225,
+    fontSize: 22,
+    color: 'tomato',
+    textAlign: 'center',
+    width: 300,
+    height: 200,
+    position: 'absolute',
+    margin: 'auto',
+    marginTop: 40
+  },
+  title1: {
+    zIndex: -1,
+    bottom: 0,
+    fontSize: 64,
+    textAlign: 'center',
+    width: 300,
+    height: 325,
+    position: 'absolute',
+    margin: 'auto',
+    marginTop: 40
+  },
+  title2: {
+    zIndex: -1,
+    bottom: 0,
+    fontSize: 64,
+    textAlign: 'center',
+    width: 300,
+    height: 250,
+    position: 'absolute',
+    margin: 'auto',
+    marginTop: 40
   }
 });
 /*
