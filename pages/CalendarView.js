@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import moment from 'moment';
 import {
-  View, Text, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, ScrollView
+  View, Text, StyleSheet, ActivityIndicator, Alert, TouchableOpacity, ScrollView
 } from 'react-native';
 import { getEventByTime, getEventByDay } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import {Calendar} from 'react-native-calendars';
 import { EventList } from './Components/EventList';
 
-const signedUp = {key:'signedUp', color: '#ff7600', selectedDotColor: 'white'};
+const signedUp = {key:'signedUp', color: 'gray', selectedDotColor: 'white'};
 const basic = {key:'basic', color: 'gray', selectedDotColor: 'gray'};
 const flagged = {key:'flagged', color: 'red'};
 
@@ -16,7 +16,7 @@ export default class CalendarView extends Component {
   constructor(props) {
     super(props);
     const date = new Date();
-    console.log (date.toString());
+    
     this.state = {
       date: date,
       eventData: {},
@@ -26,18 +26,18 @@ export default class CalendarView extends Component {
         'dateString': date.getFullYear()+'/'+
           ('0' + (date.getMonth() + 1)).slice(-2)+'/'+
           ('0' + date.getDate()).slice(-2),
-        'day': date.getDate(),
-        'month': date.getMonth()+1,
+        'day': ('0' + date.getDate()).slice(-2), 
+        'month': ('0' + (date.getMonth() + 1)).slice(-2),
         'timestamp': 0,
         'year': date.getFullYear(),
       },
 
     };
-  }
+  } 
   componentDidMount() {
-    //This will update when naved back to
+
+    //This will update when naved back to 
     const unsubscribe = this.props.navigation.addListener('focus', () => {
-      
       this.setState({
         day: null,
         dayEvents: []
@@ -56,19 +56,24 @@ export default class CalendarView extends Component {
   async getEvents(day) {
     //Calls api and will finish when data is loaded
     var startDate = moment(day.year + '-' + day.month + '-'+day.day + ' 00:00:00.00');
+    
     const { data } = await getEventByDay(moment(startDate).format('YYYY-MM-DD'));
     this.setState({dayEvents: data});
-
   }
   async getMonthData(month) {
     var startDate = moment(month.year + '-' + (month.month) + '-01' + ' 00:00:00.00');
     var endDate = startDate.clone().endOf('month');
     //console.log(startDate.toDate(), moment(startDate).format('YYYY-MM-DD'));
     //console.log(endDate.toDate(), moment(endDate).format('YYYY-MM-DD'));
-    const { data } = await getEventByTime(moment(startDate).format('YYYY-MM-DD'), moment(endDate).format('YYYY-MM-DD'));
+    var res = {};
+    try {
+      res = await getEventByTime(moment(startDate).format('YYYY-MM-DD'), moment(endDate).format('YYYY-MM-DD'));
+    }catch(e) {
+      console.error(e);
+    }
     
-    if (data)
-      this.setState({ eventData: data });
+    if (res.data)
+      this.setState({ eventData: res.data });
     //console.log(this.state.eventData);
   }
 
@@ -80,7 +85,8 @@ export default class CalendarView extends Component {
     this.setState({
       day: day.dateString
     });
-    this.getEvents(day);
+    if (this.state.day != 'Invalid Date')
+      this.getEvents(day);
   };
   onMonthChange(month) {
     this.setState({
@@ -117,6 +123,7 @@ export default class CalendarView extends Component {
       <React.Fragment>
         <Calendar
             style={{
+              paddingTop: 0,
               paddingBottom: 20,
               borderBottomWidth: 1, 
               borderColor: 'gray',

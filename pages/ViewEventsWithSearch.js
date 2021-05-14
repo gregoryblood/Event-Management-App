@@ -46,7 +46,7 @@ export default class ViewEventsWithSearch extends Component {
     this.setState({ data });
   }
   async searchEvents() {
-    const { data } = await searchEvents(this.state.search);
+    const { data } = await searchEvents(this.state.search.toUpperCase());
     if (data) {
       this.setState({ data: data });
     }
@@ -63,14 +63,12 @@ export default class ViewEventsWithSearch extends Component {
                     showsHorizontalScrollIndicator={false}>
           <React.Fragment>
           { //If data then display api otherwise loading indicator
-            data ? ( //if data
+            data ? //if data
               <React.Fragment>
                 <View style={styles.eventbox}>
                   {data && EventList(this.props.navigation, 'ViewEventsWithSearch', this.state.data, true)}
                 </View>
               </React.Fragment>
-              
-            )
               : //else 
               (<ActivityIndicator style={{top: '50%'}}/>)
           }
@@ -89,6 +87,7 @@ const styles = StyleSheet.create({
   },
   eventbox: {
     flexDirection: "column",
+    //paddingTop: 30,
     flex: 1,
     width: '100%',
     position: 'absolute',

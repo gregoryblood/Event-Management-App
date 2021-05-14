@@ -59,8 +59,10 @@ const styles = StyleSheet.create({
     event: {
       flexDirection: "column",
       //height: 125,
+      //marginTop: -1,
       padding: 20,
       borderWidth: 0,
+      //borderTopWidth: 1,
       borderBottomWidth: 1,
       borderColor: 'gray',
       borderStyle: 'solid'

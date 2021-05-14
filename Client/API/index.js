@@ -63,9 +63,6 @@ export const searchEvents = (keyword) =>
 export const addEventToList = (name, description, location, edate, etime, slots, maxslots, author) => {
     const url = baseUrl+ 'add/';
     const id = uuidv4();
-    const encName = encodeURIComponent(name),
-    encDescription = encodeURIComponent(description),
-    encLocation = encodeURIComponent(location);
     const data = {id, name, description, location, edate, etime, slots, maxslots, author};
     //console.log(data);
     return axios({ method: 'post', url, data });
@@ -75,7 +72,7 @@ export const editEvent = (id, name, description, location, edate, etime, slots, 
     const url = baseUrl+ 'edit/';
     const data = {id, name, description, location, edate, etime, slots, maxslots};
     //console.log(data);
-    return axios({ method: 'post', url, data });
+    return axios({ method: 'put', url, data });
 };
 //Get events given a day
 export const getEventByDay = (day) => 

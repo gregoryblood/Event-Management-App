@@ -44,5 +44,5 @@
     "@babel/core": "^7.9.0"
   },
   "private": true,
-  "homepage": "/web-build"
+  "homepage": "https://osu-events.github.io/"
 }

@@ -6,6 +6,8 @@ import {  addAttendee,removeAttendee, removeEvent, getAttendee } from '../Client
 import {Feather} from '@expo/vector-icons';
 import {MilToCil} from './HelperFuncs';
 
+import { firebase } from '@firebase/app'
+import 'firebase/auth';
 
 export default class EventView extends Component {
   constructor(props) {
@@ -50,25 +52,26 @@ export default class EventView extends Component {
 
  async addToList(id, maxslots){
     if(this.state.slots != maxslots){
-      const email = gUser.email, onid = gUser.onid;
-      gUser.events.push({eventsid: id, email, onid});
-      await  addAttendee(id, email, onid);
       this.setState({
         issignedup: true,
         slots: this.state.slots+1
       });
+      const email = gUser.email, onid = gUser.onid;
+      gUser.events.push({eventsid: id, email, onid});
+      await  addAttendee(id, email, onid);
       await this.getList(id);
     }
   }
  async unAddToList(id) {
-    const email = gUser.email, onid = gUser.onid;
-    const i = gUser.events.findIndex( element => element.eventsid == id);
-    gUser.events.splice(i, 1);
-    await removeAttendee(id, email, onid);
     this.setState({
       slots: this.state.slots-1, 
       issignedup: false
     });
+    const email = gUser.email, onid = gUser.onid;
+    const i = gUser.events.findIndex( element => element.eventsid == id);
+    gUser.events.splice(i, 1);
+    await removeAttendee(id, email, onid);
+
     await this.getList(id);
   }
   //Sync the user's calendar
@@ -85,7 +88,11 @@ export default class EventView extends Component {
   }
   //Signs user out 
   signOut() {
-    alert("User Signed Out");
+    firebase.auth().signOut().then(() => {
+      window.location.href = '/';
+    }).catch((error) => {
+      alert("Could not sign out");
+    });
   }
   signForm(){
     if(this.state.doSign == 0) return(
@@ -123,10 +130,8 @@ export default class EventView extends Component {
         <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
         <Text style = {styles.cardWhenWhere}>{location} at { MilToCil(etime) }</Text>
         {
-          maxslots > 0 ?
+          maxslots > 0 &&
           <Text style = {styles.cardWhenWhere}>{this.state.slots}/{maxslots} spots available</Text>
-          :
-          <Text style = {styles.cardWhenWhere}></Text>
         }
         <Text style = {styles.cardDescription}>{description}</Text>
 
@@ -168,6 +173,7 @@ const styles = StyleSheet.create({
     marginTop: -3
   },
   viewBar:{
+    //paddingTop: 25,
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
@@ -280,9 +286,10 @@ const styles = StyleSheet.create({
   signSheet:{
     position: 'absolute',
     height: 'auto',
-    top: 80,
-    right: 30,
-    width: 350,
+    top: 90,
+    right: 20,
+    width: '100%',
+    maxWidth: 350,
     zIndex: 2,
     backgroundColor: 'white',
     borderColor: 'lightgrey',
@@ -294,6 +301,7 @@ const styles = StyleSheet.create({
   optionBox:{
     alignSelf: 'flex-end',
     margin: 0,
+    marginRight: -20,
     zIndex: 1,
     paddingRight: 20, 
     paddingLeft: 20, 
@@ -333,7 +341,7 @@ const styles = StyleSheet.create({
 
   signUpButton: {
     position: 'absolute',
-    bottom: 80,
+    bottom: 0,
     backgroundColor: 'white',
     borderRadius: 16,
     borderWidth: 1,
@@ -351,7 +359,7 @@ const styles = StyleSheet.create({
   },
   signedupButton: {
     position: 'absolute',
-    bottom: 80,
+    bottom: 0,
     backgroundColor: '#ff7600',
     borderRadius: 16,
     borderWidth: 1,

@@ -41,7 +41,6 @@ export default class ViewMyEvents extends Component {
     const data = this.state.data;
     return (
       <React.Fragment>
-
         <ScrollView showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
           <React.Fragment>
@@ -96,6 +95,7 @@ const styles = StyleSheet.create({
 
   eventbox: {
     flexDirection: "column",
+    //paddingTop: 30,
     flex: 1,
     width: '100%',
     position: 'absolute',

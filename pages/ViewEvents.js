@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
 
   eventbox: {
     flexDirection: "column",
+    //paddingTop: 30,
     flex: 1,
     width: '100%',
     position: 'absolute',

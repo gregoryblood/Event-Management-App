@@ -58,7 +58,7 @@ export default class EditEvent extends Component {
     }
     
     if (String(name).length >= 3
-        && String(location).length >= 3
+        && String(location).length >= 2
         && String(eDate).length == 10
         && String(eTime).length == 5
         ) 

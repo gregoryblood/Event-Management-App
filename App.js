@@ -62,7 +62,12 @@ function App({ user, signOut, signInWithGoogle }) {
         setLoggedIn(true);
       }
       else {
-        signOut;
+        firebase.auth().signOut().then(() => {
+          alert("Not an email associated with OSU");
+          window.location.href = '/';
+        }).catch((error) => {
+          alert("Could not sign out");
+        });
       }
     });
   }
@@ -128,6 +133,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     flex: 1, 
+    
     justifyContent: 'center', 
     alignItems: 'center', 
     backgroundColor: '#ff7600',

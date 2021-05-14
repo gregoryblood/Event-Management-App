@@ -1,10 +1,14 @@
 import React, { Component, useState, } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, Platform
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Button,
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
-import moment, { min } from 'moment';
 import { addEventToList } from '../Client/API/index.js';
-import {DateTimePick} from './DateTimePick'
 import {Feather} from '@expo/vector-icons';
 
 
@@ -36,7 +40,6 @@ export default class CreateEvent extends Component {
       maxslots = 0;
     }
     if (String(name).length >= 3
-        && String(location).length >= 3
         && String(eDate).length == 10
         && String(eTime).length == 5
         && parseInt(maxslots) >= 0 
