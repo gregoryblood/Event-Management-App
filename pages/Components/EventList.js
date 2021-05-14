@@ -8,42 +8,45 @@ import {Feather} from '@expo/vector-icons';
 
 export function EventList(nav, from, arr, showAll) {
     return arr.map(event => {
-      const ismine = gUser.events.some(e => e.eventsid == event.id)
-      return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
-                                        id: event.id, name: event.name,  location: event.location, description: event.description,
-                                        etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
-                                        lastPage: from, owned: (event.author == gUser.email ? true : false), signedup: event.signedup
-                                        })}>
-      {
-        (showAll || ismine) && 
-        <View style={styles.event} >
-        {event.author == gUser.email ?
-        <View style={styles.icon} />
-        :
-        <View/>
-        }
+      if (gUser.events) {
+        const ismine = gUser.events.some(e => e.eventsid == event.id)
+        return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
+                                          id: event.id, name: event.name,  location: event.location, description: event.description,
+                                          etime: event.etime, maxslots: event.maxslots, slots: event.slots, edate: event.edate,
+                                          lastPage: from, owned: (event.author == gUser.email ? true : false), signedup: event.signedup
+                                          })}>
         {
-          ismine
-         ? 
-        <Text style={styles.titleOrange}>{decodeURIComponent(event.name)}</Text>
-        :
-        <Text style={styles.title}>{decodeURIComponent(event.name)}</Text>
+          (showAll || ismine) && 
+          <View style={styles.event} >
+          {event.author == gUser.email ?
+          <View style={styles.icon} />
+          :
+          <View/>
+          }
+          {
+            ismine
+          ? 
+          <Text style={styles.titleOrange}>{decodeURIComponent(event.name)}</Text>
+          :
+          <Text style={styles.title}>{decodeURIComponent(event.name)}</Text>
+          }
+          <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
+          <Text style={styles.location}>{decodeURIComponent(event.location)} at {MilToCil(event.etime)}</Text>
+          <Text style={styles.description}>{
+            decodeURIComponent(event.description.length) > 50 ? 
+              decodeURIComponent(event.description).slice(0,50) + "..." 
+              : 
+              decodeURIComponent(event.description)
+          }</Text>
+          <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
+          
+        </View>
         }
-        <Text style={styles.location}>{event.edate.slice(0, 10)}</Text>
-        <Text style={styles.location}>{decodeURIComponent(event.location)} at {MilToCil(event.etime)}</Text>
-        <Text style={styles.description}>{
-          decodeURIComponent(event.description.length) > 50 ? 
-            decodeURIComponent(event.description).slice(0,50) + "..." 
-            : 
-            decodeURIComponent(event.description)
-        }</Text>
-        <ProgressBar visible={event.maxslots > 0 ? true : false} progress={event.slots/event.maxslots} color={Colors.orange800} />
         
-      </View>
+        </TouchableOpacity>
       }
-      
-      </TouchableOpacity>
     })
+      
 }
 
 const styles = StyleSheet.create({
