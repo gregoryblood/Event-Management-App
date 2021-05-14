@@ -1,4 +1,6 @@
 # Event-Management-App
+**Link**<br>
+https://osu-events.github.io/
 
 **About**<br>
 An app for OSU for students to view and sign-up for events
