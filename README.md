@@ -13,7 +13,7 @@ Administrators are also able to create and manage events for the students to sig
 Headers for creating an event.
 
 **Current Bugs**<br>
-On Safari, selecting a date on the calendar does not send a correct date.
+On Safari, selecting a date on the calendar does not send a correct date.<br>
 Calendar can cause a crash.
 
 **Screenshots**
