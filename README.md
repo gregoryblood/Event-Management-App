@@ -14,6 +14,7 @@ Headers for creating an event.
 
 **Current Bugs**<br>
 On Safari, selecting a date on the calendar does not send a correct date.
+Calendar can cause a crash.
 
 **Screenshots**
 
