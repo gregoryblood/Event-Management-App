@@ -10,7 +10,7 @@ The OSU Events App is built to help Oregon State University students to explore 
 Administrators are also able to create and manage events for the students to sign up for. 
 
 **Incoming Features**<br>
--Headers for creating an event.
+-Headers on the form for creating/editing an event.
 
 **Current Bugs**<br>
 -On Safari, selecting a date on the calendar does not send a correct date.<br>
