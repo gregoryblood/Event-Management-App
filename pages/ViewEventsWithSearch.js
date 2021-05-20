@@ -2,15 +2,17 @@ import React, { Component, } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import { getEvent, searchEvents } from '../Client/API/index.js';
 import { EventList} from './Components/EventList';
+import {Feather} from '@expo/vector-icons';
 
 export default class ViewEventsWithSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
-      search: null,
+      search: '',
     };
   }
   componentDidMount() {
@@ -50,11 +52,7 @@ export default class ViewEventsWithSearch extends Component {
     if (data) {
       this.setState({ data: data });
     }
-      
   }
-
-
-
   render() {
     const data = this.state.data;
     return (
@@ -73,13 +71,20 @@ export default class ViewEventsWithSearch extends Component {
               (<ActivityIndicator style={{top: '50%'}}/>)
           }
           </React.Fragment>
-          
         </ScrollView>
-        <TextInput style={styles.searchbar} onChangeText={this.updateField('search')} placeholder={'Search'}></TextInput>
+        {
+          gUser.type !== 'Student' &&
+          <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewEventsWithSearch'})}>
+            <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
+          </TouchableOpacity>
+        }
+        <Searchbar placeholder= "Search Here..."
+          onChangeText={this.updateField('search')}
+          value={this.state.search}
+        />
       </React.Fragment>
     )
   }
-
 }
 const styles = StyleSheet.create({
   container: {
@@ -92,12 +97,30 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
   },
-
   searchbar: {
     backgroundColor: 'white',
     padding: 30,
     fontSize: 30,
     borderTopWidth: 1,
     borderColor: 'gray'
-  }
+  },
+  icon: {
+    textAlign: 'center',
+    marginTop: -3
+  },
+  createbutton:{
+    position: 'fixed',
+    width: 60,
+    height: 60,
+    borderRadius: 60/2,
+    zIndex: 0,
+    backgroundColor: '#ff7600',
+    margin: 20,
+    marginLeft: 'auto',
+    padding: 13,
+    position: 'absolute',
+    bottom: 35,
+    right: 10,
+    textAlign:'center',
+  },
 });

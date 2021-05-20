@@ -14,7 +14,6 @@ export default class Search extends Component {
         <MyEventStack.Screen name="ViewEventsWithSearch" component={ViewEventsWithSearch} options={{headerShown: false}} />
         <MyEventStack.Screen name="EventView" component={EventView} options={{headerShown: false}}/>
         <MyEventStack.Screen name="EditEvent" component={EditEvent} options={{headerShown: false}} />
-
       </MyEventStack.Navigator>
     )
   }

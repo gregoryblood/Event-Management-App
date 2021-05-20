@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
-import { getEvent, getMyEvents } from '../Client/API/index.js';
+import { getEvent, getMyEvents, getMyOwnedEvents } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import { EventList } from './Components/EventList';
 
@@ -11,6 +11,7 @@ export default class ViewMyEvents extends Component {
     super(props);
     this.state = {
       data: null,
+      readyToLoad: false,
     };
   }
   componentDidMount() {
@@ -32,23 +33,28 @@ export default class ViewMyEvents extends Component {
     this.setState({ data });
   }
   async getMyEvents() {
-    const {data} = await getMyEvents(gUser.email);
+    var {data} = await getMyEvents(gUser.email);
+    const owned = (await getMyOwnedEvents(gUser.email)).data;
+    owned.forEach(e => {
+      data.push({eventsid: e.id});
+    });
+    
     gUser.events = Object.values(data);
-
+    this.setState({readyToLoad: true});
   }
   render() {
-
-    const data = this.state.data;
+    //To prevent gUser.events being empty
+    const readyToLoad = this.state.readyToLoad; 
     return (
       <React.Fragment>
         <ScrollView showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
           <React.Fragment>
           { //If data then display api otherwise loading indicator
-            data ? ( //if data
+            readyToLoad ? ( //if data
               <React.Fragment>
                 <View style={styles.eventbox}>
-                  {data && EventList(this.props.navigation, 'ViewMyEvents', this.state.data, false)}
+                  {readyToLoad && EventList(this.props.navigation, 'ViewMyEvents', this.state.data, false)}
                 </View>
               </React.Fragment>
             )
@@ -56,7 +62,6 @@ export default class ViewMyEvents extends Component {
               (<ActivityIndicator style={{ top: '50%'}}/>)
           }
           </React.Fragment>
-          
         </ScrollView>
         {
           gUser.type !== 'Student' ? 
@@ -66,11 +71,9 @@ export default class ViewMyEvents extends Component {
           :
           <View/>
         }
-        
       </React.Fragment>
     )
   }
-
 }
 const styles = StyleSheet.create({
   icon: {
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     padding: 13,
     position: 'absolute',
-    bottom: 5,
+    bottom: 35,
     right: 10,
     textAlign:'center',
   },

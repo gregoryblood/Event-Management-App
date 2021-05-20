@@ -2,11 +2,9 @@ import React, { Component, useState, } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, Platform
 } from 'react-native';
-import moment, { min } from 'moment';
 import { editEvent } from '../Client/API/index.js';
-import {DateTimePick} from './DateTimePick'
 import {Feather} from '@expo/vector-icons';
-
+import { Input } from 'react-native-elements';
 
 export default class EditEvent extends Component {
   constructor(props) {
@@ -124,33 +122,52 @@ export default class EditEvent extends Component {
         <View style ={styles.viewBar}>
           <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
-        <View style={styles.formstyle}>
-          <TextInput placeholder='Event Name' defaultValue={name} onChangeText={this.updateField('name')}
-            style={styles.formInput} type="text"/>
-            
+        <View style={styles.formstyle}>  
+          <Input
+            placeholder=''
+            defaultValue={name}
+            onChangeText={this.updateField('name')}
+            label="Event Name"
+          />
+          
           <View style={styles.inline}>
-            {//<DateTimePick/>
-            }
-            <TextInput placeholder='HH:MM' defaultValue={etime.substr(0, 5)} onChangeText={this.updateField('eTime')}
-              style={styles.formInputTime} maxLength={5}>
-            </TextInput>
+            <Input
+              placeholder='HH:MM'
+              defaultValue={etime}
+              onChangeText={this.updateField('etime')}
+              label="Time (24 Hour)"
+              maxLength={5}
+              containerStyle={styles.formInputTime}
+            />
 
-            <TextInput placeholder='YYYY-MM-DD' defaultValue={edate.substr(0, 10)}  onChangeText={this.updateField('eDate')}
-              style={styles.formInputDate} maxLength={10}>
-            </TextInput>
-
+            <Input
+              placeholder='YYYY-MM-DD'
+              defaultValue={edate.substr(0, 10)}
+              onChangeText={this.updateField('edate')}
+              label="Date"
+              maxLength={10}
+              containerStyle={styles.formInputDate}
+            />
 
           </View>
-          <TextInput placeholder='Location' defaultValue={location} onChangeText={this.updateField('location')}
-            style={styles.formInput} type="text"/>
-          <TextInput  multiline allowFontScaling
-          numberOfLines={3} editable maxLength={300} placeholder='Description' defaultValue={description} onChangeText={this.updateField('description')}
-            style={styles.formInputDescription} type="text"/>
-          
-          
-          <TextInput  defaultValue={maxslots} onChangeText={this.updateField('maxslots')}
-            style={styles.formInput} type="text"/>
-          
+          <Input
+            placeholder=''
+            defaultValue={location}
+            onChangeText={this.updateField('location')}
+            label="Location"
+          />
+          <Input
+            placeholder=''
+            defaultValue={description}
+            onChangeText={this.updateField('description')}
+            label="Description"
+          />
+          <Input
+            placeholder='Leave Blank for Unlimited'
+            defaultValue={maxslots}
+            onChangeText={this.updateField('maxslots')}
+            label="Max Attendees"
+          />
           <TouchableOpacity onPress={this.editEvent} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.finishCreateText}>Save Changes</Text>
           </TouchableOpacity>
@@ -158,7 +175,6 @@ export default class EditEvent extends Component {
       </React.Fragment>
     )
   }
-
 }
 const styles = StyleSheet.create({
   icon: {
@@ -188,7 +204,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10, 
     borderColor: 'gray',
-    fontSize: 35,
+    fontSize: 30,
     width: '100%',
   },
   inline: {
@@ -204,32 +220,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10, 
     borderColor: 'gray',
-    fontSize: 20,
+    fontSize: 18,
     width: '100%',
-    
   },
   formInputTime: {
-    marginBottom: 20,
-    paddingLeft: 10,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderRadius: 10, 
-    borderColor: 'gray',
-    fontSize: 35,
-    height: 50, 
-    width: '45%',
+    width: '50%',
   },
   formInputDate: {
-    marginBottom: 20,
-    paddingLeft: 10,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderRadius: 10, 
-    borderColor: 'gray',
-    fontSize: 35,
-    height: 50,
-    marginLeft: 'auto',
-    width: '45%',
+    width: '50%',
   },
   buttonText: {
     fontSize: 35,

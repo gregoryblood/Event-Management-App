@@ -15,8 +15,8 @@ import { firebase } from '@firebase/app'
 import 'firebase/auth';
 import firebaseConfig from './firebaseConfig';
 
-
 const Tab = createBottomTabNavigator();
+//Firebase set up
 var firebaseApp = firebase.initializeApp(firebaseConfig);
 if (!firebase.apps.length) {
   firebaseApp = firebase.initializeApp({});
@@ -29,6 +29,7 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
+//Logs the user in and grabs relevent information
 async function getUserData(email) {
   try {
     const { data } = await getUser(email);
@@ -37,9 +38,10 @@ async function getUserData(email) {
       showError = true;
       return;
     }
-
+    //Grabs if student or admin
     gUser.type = data.data[0].attributes.primaryAffiliation;
-    //Can set youself as admin here
+
+    //Can set youself as admin here[DELETE FOR RELEASE]
     gUser.type = 'Admin';
 
     isValid = true;
@@ -50,11 +52,11 @@ async function getUserData(email) {
   }
   
 }
-var isValid = false;
-var showError = false;
-function App({ user, signOut, signInWithGoogle }) {
+var isValid = false; //Var for if email is ONID
+var showError = false; //[old] shows error for user if email is wrong
+function App({ user,  signInWithGoogle }) {
   const [loggedIn, setLoggedIn] = useState(false);
-  if (user) {
+  if (user) { //If logged in, pull email.
     getUserData(user.email).then(() => {
       if (isValid == true) {
         gUser.email = user.email;
@@ -73,7 +75,7 @@ function App({ user, signOut, signInWithGoogle }) {
   }
   
   return ( 
-    loggedIn ? 
+    loggedIn ? //If logged in, go to navigation, else show login button
       <NavigationContainer style={{ flex: 1}}>
         <Tab.Navigator
                 screenOptions={({ route }) => ({
@@ -95,13 +97,13 @@ function App({ user, signOut, signInWithGoogle }) {
                   },
                 })}
                 tabBarOptions={{
-                  activeTintColor: 'orange',
+                  activeTintColor: '#ff7600',
                   inactiveTintColor: 'gray',
                 }}>
           
           <Tab.Screen name="MyEvents" component={MyEvents} options={{title: ' '}}/>
           <Tab.Screen name="Calendar" component={Calendar} options={{title: ' '}}/>
-          <Tab.Screen name="Explore" component={Explore} options={{title: ' '}}/>
+          {/*<Tab.Screen name="Explore" component={Explore} options={{title: ' '}}/>*/}
           <Tab.Screen name="Search" component={Search} options={{title: ' '}}/>
         </Tab.Navigator>
       </NavigationContainer>
@@ -133,7 +135,6 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     flex: 1, 
-    
     justifyContent: 'center', 
     alignItems: 'center', 
     backgroundColor: '#ff7600',

@@ -4,5 +4,4 @@ global.gUser = {
     type: 'none', //Student or not student
     onid: 'none', //Onid username
     email: 'none', //Email
-    events: {} //Events they're signed up for
 };

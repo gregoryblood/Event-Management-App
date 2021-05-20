@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { addEventToList } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
+import { Input } from 'react-native-elements';
 
 
 export default class CreateEvent extends Component {
@@ -96,40 +97,52 @@ export default class CreateEvent extends Component {
           <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(this.props.route.params.lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
         <View style={styles.formstyle}>
-          <TextInput placeholder='Event Name' onChangeText={this.updateField('name')}
-            style={styles.formInput} type="text"/>
-            
+        <Input
+            placeholder=''
+            onChangeText={this.updateField('name')}
+            label="Event Name"
+          />
+          
           <View style={styles.inline}>
-            {//<DateTimePick/>
-            }
-            <TextInput placeholder='HH:MM' onChangeText={this.updateField('eTime')}
-              style={styles.formInputTime} maxLength={5}>
-            </TextInput>
+            <Input
+              placeholder='HH:MM'
+              onChangeText={this.updateField('etime')}
+              label="Time (24 Hour)"
+              maxLength={5}
+              containerStyle={styles.formInputTime}
+            />
 
-            <TextInput placeholder='YYYY-MM-DD' onChangeText={this.updateField('eDate')}
-              style={styles.formInputDate} maxLength={10}>
-            </TextInput>
+            <Input
+              placeholder='YYYY-MM-DD'
+              onChangeText={this.updateField('edate')}
+              label="Date"
+              maxLength={10}
+              containerStyle={styles.formInputDate}
+            />
 
           </View>
-          <TextInput placeholder='Location' onChangeText={this.updateField('location')}
-            style={styles.formInput} type="text"/>
-          <TextInput multiline allowFontScaling
-          numberOfLines={3} editable maxLength={300} placeholder='Description' onChangeText={this.updateField('description')}
-            style={styles.formInputDescription} type="text"/>
-          
-          
-          <TextInput placeholder='Max Slots' onChangeText={this.updateField('maxslots')}
-            style={styles.formInput} type="text" allowFontScaling={10}/>
-          
+          <Input
+            placeholder=''
+            onChangeText={this.updateField('location')}
+            label="Location"
+          />
+          <Input
+            placeholder=''
+            onChangeText={this.updateField('description')}
+            label="Description"
+          />
+          <Input
+            placeholder='Leave Blank for Unlimited'
+            onChangeText={this.updateField('maxslots')}
+            label="Max Attendees"
+          />
           <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.finishCreateText}>Publish</Text>
           </TouchableOpacity>
-
         </View>
       </React.Fragment>
     )
   }
-
 }
 const styles = StyleSheet.create({
   icon: {
@@ -159,7 +172,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10, 
     borderColor: 'gray',
-    fontSize: 35,
+    fontSize: 30,
     width: '100%',
   },
   inline: {
@@ -175,35 +188,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10, 
     borderColor: 'gray',
-    fontSize: 20,
+    fontSize: 18,
     width: '100%',
-    
   },
   formInputTime: {
-    marginBottom: 20,
-    paddingLeft: 10,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderRadius: 10, 
-    borderColor: 'gray',
-    fontSize: 35,
-    height: 50, 
-    width: '45%',
+    width: '50%',
   },
   formInputDate: {
-    marginBottom: 20,
-    paddingLeft: 10,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderRadius: 10, 
-    borderColor: 'gray',
-    fontSize: 35,
-    height: 50,
-    marginLeft: 'auto',
-    width: '45%',
+    width: '50%',
   },
   buttonText: {
-    fontSize: 35,
+    fontSize: 30,
     color: 'grey',
   },
 

@@ -12,8 +12,6 @@ export const getUser = (email) => {
     //console.log(data);
     return axios({ method: 'post', url, data });
 }
-
-
 //Gets all events
 export const getEvent = () => 
     axios.get(baseUrl);
@@ -47,6 +45,11 @@ export const getAttendee = (id) => {
 //Gets the user's events
 export const getMyEvents = (email) => {
     const url = baseUrl + 'getmyevents/'+email;
+    return axios({method: 'get', url});
+}
+//Gets the user's owned events
+export const getMyOwnedEvents = (email) => {
+    const url = baseUrl + 'getmyownedevents/'+email;
     return axios({method: 'get', url});
 }
 //Updates the max slots of an event
