@@ -6,7 +6,8 @@ import {
   ActivityIndicator,
   Button,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import { addEventToList } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
@@ -97,6 +98,13 @@ export default class CreateEvent extends Component {
     }
   }
   render() {
+    const {
+      width: SCREEN_WIDTH,
+    } = Dimensions.get('window');
+    var fontSize = 15;
+    if (SCREEN_WIDTH > 400) {
+      fontSize = 26;
+    }
     return (
       <React.Fragment  >
         <View style ={styles.viewBar}>
@@ -104,9 +112,9 @@ export default class CreateEvent extends Component {
         </View>
         <View style={styles.formstyle}>
         <Input
-            placeholder=''
+            placeholder='Event Name'
             onChangeText={this.updateField('name')}
-            label="Event Name"
+            style={{fontSize: fontSize}}
           />
           
           <View style={styles.inline}>
@@ -116,7 +124,9 @@ export default class CreateEvent extends Component {
               label="Time (24 Hr)"
               maxLength={5}
               containerStyle={styles.formInputTime}
-            />
+              style={{fontSize: fontSize}}
+              labelStyle={{fontSize: fontSize/1.5}}
+              />
 
             <Input
               placeholder='YYYY-MM-DD'
@@ -124,23 +134,28 @@ export default class CreateEvent extends Component {
               label="Date"
               maxLength={10}
               containerStyle={styles.formInputDate}
-            />
+              style={{fontSize: fontSize}}
+              labelStyle={{fontSize: fontSize/1.5}}
+              />
 
           </View>
           <Input
-            placeholder=''
+            adjustsFontSizeToFit 
+            placeholder='Location'
             onChangeText={this.updateField('location')}
-            label="Location"
+            style={{fontSize: fontSize}}
           />
           <Input
-            placeholder=''
+            placeholder='Description'
             onChangeText={this.updateField('description')}
-            label="Description"
+            style={{fontSize: fontSize}}
           />
           <Input
             placeholder='Leave Blank for Unlimited'
             onChangeText={this.updateField('maxslots')}
             label="Max Attendees"
+            style={{fontSize: fontSize}}
+            labelStyle={{fontSize: fontSize/1.5}}
           />
           <TouchableOpacity onPress={this.addToEvents} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.finishCreateText}>Publish</Text>
@@ -161,6 +176,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
+    marginBottom: 20,
   },
   formstyle: {
     flex: 1,

@@ -1,6 +1,6 @@
 import React, { Component, useState, } from 'react'
 import {
-  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, Platform
+  View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, Platform, Dimensions
 } from 'react-native';
 import { editEvent } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
@@ -116,7 +116,13 @@ export default class EditEvent extends Component {
   }
   render() {
     const { name, edate, location, description, etime, maxslots, lastPage} = this.props.route.params;
-
+    const {
+      width: SCREEN_WIDTH,
+    } = Dimensions.get('window');
+    var fontSize = 15;
+    if (SCREEN_WIDTH > 400) {
+      fontSize = 26;
+    }
     return (
       <React.Fragment>
         <View style ={styles.viewBar}>
@@ -124,10 +130,11 @@ export default class EditEvent extends Component {
         </View>
         <View style={styles.formstyle}>  
           <Input
-            placeholder=''
+            placeholder='Event Name'
             defaultValue={name}
             onChangeText={this.updateField('name')}
-            label="Event Name"
+            style={{fontSize: fontSize}}
+
           />
           
           <View style={styles.inline}>
@@ -138,6 +145,9 @@ export default class EditEvent extends Component {
               label="Time (24 Hr)"
               maxLength={5}
               containerStyle={styles.formInputTime}
+              style={{fontSize: fontSize}}
+              labelStyle={{fontSize: fontSize/1.5}}
+
             />
             <Input
               placeholder='YYYY-MM-DD'
@@ -146,25 +156,33 @@ export default class EditEvent extends Component {
               label="Date"
               maxLength={10}
               containerStyle={styles.formInputDate}
+              style={{fontSize: fontSize}}
+              labelStyle={{fontSize: fontSize/1.5}}
+
             />
           </View>
           <Input
-            placeholder=''
+            placeholder='Location'
             defaultValue={location}
             onChangeText={this.updateField('location')}
-            label="Location"
+            style={{fontSize: fontSize}}
+
           />
           <Input
-            placeholder=''
+            placeholder='Description'
             defaultValue={description}
             onChangeText={this.updateField('description')}
-            label="Description"
+            style={{fontSize: fontSize}}
+
           />
           <Input
             placeholder='Leave Blank for Unlimited'
             defaultValue={maxslots}
             onChangeText={this.updateField('maxslots')}
             label="Max Attendees"
+            style={{fontSize: fontSize}}
+            labelStyle={{fontSize: fontSize/1.5}}
+
           />
           <TouchableOpacity onPress={this.editEvent} style={styles.finishCreateButton} color = '#ff9900' title="Submit Event" >
             <Text style={styles.finishCreateText}>Save Changes</Text>
