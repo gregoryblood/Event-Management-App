@@ -133,13 +133,12 @@ export default class EditEvent extends Component {
           <View style={styles.inline}>
             <Input
               placeholder='HH:MM'
-              defaultValue={etime}
+              defaultValue={etime.substr(0, 5)}
               onChangeText={this.updateField('etime')}
-              label="Time (24 Hour)"
+              label="Time (24 Hr)"
               maxLength={5}
               containerStyle={styles.formInputTime}
             />
-
             <Input
               placeholder='YYYY-MM-DD'
               defaultValue={edate.substr(0, 10)}
@@ -148,7 +147,6 @@ export default class EditEvent extends Component {
               maxLength={10}
               containerStyle={styles.formInputDate}
             />
-
           </View>
           <Input
             placeholder=''
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
   formstyle: {
     flex: 1,
     alignItems: 'center',
-    width: '75%',
+    width: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
     justifyContent: 'center',

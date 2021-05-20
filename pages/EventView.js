@@ -149,7 +149,7 @@ export default class EventView extends Component {
                 maxslots: maxslots,
               }
             )}>
-            <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
+            <Feather style={styles.icon} name={'edit-3'} size={35} color={'white'} />
           </TouchableOpacity>
           :
           this.state.issignedup ? 
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   editbutton:{
+    position: 'fixed',
     width: 60,
     height: 60,
     borderRadius: 60/2,
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     padding: 13,
     position: 'absolute',
-    bottom: 5,
+    bottom: 18,
     right: 10,
     textAlign:'center',
   },

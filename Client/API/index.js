@@ -68,6 +68,7 @@ export const addEventToList = (name, description, location, edate, etime, slots,
     const id = uuidv4();
     const data = {id, name, description, location, edate, etime, slots, maxslots, author};
     //console.log(data);
+    
     return axios({ method: 'post', url, data });
 };
 //Edits an event

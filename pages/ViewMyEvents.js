@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import {
   View, Text, StyleSheet, ActivityIndicator, Button, TextInput, TouchableOpacity, ScrollView
 } from 'react-native';
-import { getEvent, getMyEvents, getMyOwnedEvents } from '../Client/API/index.js';
+import { getEvent, getMyEvents, getMyOwnedEvents, searchEvents } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
 import { EventList } from './Components/EventList';
+import {SearchBar} from 'react-native-elements';
 
 export default class ViewMyEvents extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export default class ViewMyEvents extends Component {
     this.state = {
       data: null,
       readyToLoad: false,
+      search: '',
     };
   }
   componentDidMount() {
@@ -27,10 +29,30 @@ export default class ViewMyEvents extends Component {
       unsubscribe;
     };
   }
+  updateField = (field) => (text) => {
+    text = text.replace(/\W/g, ''); //Strips all non letter/number characters
+    if (text != this.state.search) {
+      this.setState({ [field]: text }, () => {
+        if (this.state.search != '') {
+          //console.log(this.state.search);
+          this.searchEvents();
+        }
+        else {
+          this.getEvent();
+        }
+      });
+    }
+  }
   async getEvent() {
     //Calls api and will finish when data is loaded
     const { data } = await getEvent();
     this.setState({ data });
+  }
+  async searchEvents() {
+    const { data } = await searchEvents(this.state.search.toUpperCase());
+    if (data) {
+      this.setState({ data: data });
+    }
   }
   async getMyEvents() {
     var {data} = await getMyEvents(gUser.email);
@@ -47,6 +69,7 @@ export default class ViewMyEvents extends Component {
     const readyToLoad = this.state.readyToLoad; 
     return (
       <React.Fragment>
+
         <ScrollView showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
           <React.Fragment>
@@ -63,6 +86,14 @@ export default class ViewMyEvents extends Component {
           }
           </React.Fragment>
         </ScrollView>
+        <SearchBar placeholder= "Search Here..."
+          onChangeText={this.updateField('search')}
+          value={this.state.search}
+          lightTheme={true}
+          style={styles.searchbar}
+          inputContainerStyle={styles.searchbarcontainer}
+          containerStyle={{backgroundColor: 'white'}}
+        />
         {
           gUser.type !== 'Student' ? 
           <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
@@ -91,7 +122,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     padding: 13,
     position: 'absolute',
-    bottom: 35,
+    bottom: 18,
     right: 10,
     textAlign:'center',
   },
@@ -103,7 +134,14 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
   },
-
+  searchbar: {
+    backgroundColor: 'white',
+    borderColor: 'white'
+  },
+  searchbarcontainer: {
+    backgroundColor: 'white',
+    borderColor: 'white'
+  }
 });
 
 /*

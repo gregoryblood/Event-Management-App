@@ -76,13 +76,19 @@ export default class CreateEvent extends Component {
         return;
       }
       const time = eTime.substr(0, 2) + ':' + eTime.substr(3, 2) + ':' + '00';
+      var data;
       try {
-        await addEventToList(name, description, location, date, time, 0, parseInt(maxslots), gUser.email);
+        data = await addEventToList(name, description, location, date, time, 0, parseInt(maxslots), gUser.email);
       }
       catch(e) {
         alert("Invalid day of the month");
         return;
       }
+      //Add new event to user's owned events
+      const obj = JSON.parse(data.config.data);
+      if (data)
+        gUser.events.push({eventsid: obj.id});
+      //Navigate back
       const {lastPage} = this.props.route.params;
       this.props.navigation.navigate(lastPage);
     }
@@ -106,15 +112,15 @@ export default class CreateEvent extends Component {
           <View style={styles.inline}>
             <Input
               placeholder='HH:MM'
-              onChangeText={this.updateField('etime')}
-              label="Time (24 Hour)"
+              onChangeText={this.updateField('eTime')}
+              label="Time (24 Hr)"
               maxLength={5}
               containerStyle={styles.formInputTime}
             />
 
             <Input
               placeholder='YYYY-MM-DD'
-              onChangeText={this.updateField('edate')}
+              onChangeText={this.updateField('eDate')}
               label="Date"
               maxLength={10}
               containerStyle={styles.formInputDate}
@@ -159,7 +165,7 @@ const styles = StyleSheet.create({
   formstyle: {
     flex: 1,
     alignItems: 'center',
-    width: '75%',
+    width: '90%',
     marginLeft: 'auto',
     marginRight: 'auto',
     justifyContent: 'center',
