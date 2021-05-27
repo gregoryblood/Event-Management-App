@@ -1,9 +1,17 @@
 import React from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet
+  View, Text, TouchableOpacity, StyleSheet, Dimensions
 } from 'react-native';
 import {MilToCil} from '../HelperFuncs'
 import { LinearProgress } from 'react-native-elements';
+
+const {
+  width: SCREEN_WIDTH,
+} = Dimensions.get('window');
+var fontSize = 20;
+if (SCREEN_WIDTH > 400) {
+  fontSize = 26;
+}
 
 export function EventList(nav, from, arr, showAll) {
   if (!arr)
@@ -14,6 +22,7 @@ export function EventList(nav, from, arr, showAll) {
       if (!gUser.events) {
         return;
       }
+
       const issignedup = gUser.events.some(e => (e.email != undefined && e.eventsid == event.id) );
       const isowned = gUser.events.some(e => (e.email == undefined && e.eventsid == event.id) );
       return <TouchableOpacity key={event.id} onPress={() => nav.navigate('EventView', { 
@@ -48,7 +57,7 @@ export function EventList(nav, from, arr, showAll) {
         {event.maxslots > 0 && 
           <LinearProgress 
           variant='determinate'
-          color="#ff9900"
+          color="#D73F09"
           value={event.slots/event.maxslots}/>
         }
 
@@ -63,7 +72,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       right: 20,
       top: 20,
-      backgroundColor: '#ff9900',
+      backgroundColor: '#D73F09',
       borderRadius: 25/2,
       height: 25,
       width: 25,
@@ -82,19 +91,19 @@ const styles = StyleSheet.create({
     title: {
       color: "black",
       fontWeight: 'bold',
-      fontSize: 22
+      fontSize: fontSize
     },
     titleOrange: {
-      color: '#ff7600',
+      color: '#D73F09',
       fontWeight: 'bold',
-      fontSize: 22
+      fontSize: fontSize
     },
     description: {
-      fontSize: 16,
+      fontSize: fontSize/1.3,
       marginBottom: 10,
     },
     location: {
-      fontSize: 16,
+      fontSize: fontSize/1.3,
       fontStyle: "italic",
       color: 'gray'
     },

@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import EventView from './EventView';
 import ViewEventsWithSearch from './ViewEventsWithSearch';
 import EditEvent from './EditEvent';
+import CreateEvent from './CreateEvent';
 
 const MyEventStack = createStackNavigator();
 
@@ -14,6 +15,7 @@ export default class Search extends Component {
         <MyEventStack.Screen name="ViewEventsWithSearch" component={ViewEventsWithSearch} options={{headerShown: false}} />
         <MyEventStack.Screen name="EventView" component={EventView} options={{headerShown: false}}/>
         <MyEventStack.Screen name="EditEvent" component={EditEvent} options={{headerShown: false}} />
+        <MyEventStack.Screen name="CreateEvent" component={CreateEvent} options={{headerShown: false}} />
       </MyEventStack.Navigator>
     )
   }

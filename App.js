@@ -29,6 +29,7 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
+
 //Logs the user in and grabs relevent information
 async function getUserData(email) {
   try {
@@ -42,7 +43,7 @@ async function getUserData(email) {
     gUser.type = data.data[0].attributes.primaryAffiliation;
 
     //Can set youself as admin here[DELETE FOR RELEASE]
-    gUser.type = 'Admin';
+    //gUser.type = 'Admin';
 
     isValid = true;
     return isValid; 
@@ -97,7 +98,7 @@ function App({ user,  signInWithGoogle }) {
                   },
                 })}
                 tabBarOptions={{
-                  activeTintColor: '#ff7600',
+                  activeTintColor: '#D73F09',
                   inactiveTintColor: 'gray',
                 }}>
           
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'center', 
     alignItems: 'center', 
-    backgroundColor: '#ff7600',
+    backgroundColor: '#D73F09',
     borderRadius: 16,
     height: 100,
     width: 200,

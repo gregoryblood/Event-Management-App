@@ -27,13 +27,29 @@ export default class CreateEvent extends Component {
       slots: 0,
       maxslots: 0,
       author: "default",
+      lastPage: null
     };
   }
 
   updateField = (field) => (text) => {
     this.setState({ [field]: text });
   }
+  componentDidMount() {
+    //This will update when naved back to
+    const unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log(this.props.route.params.lastPage);
+      this.setState({
+        lastPage: this.props.route.params.lastPage
+      })
+    });
+    return () => {
+      // Clear setInterval in case of screen unmount
+      clearTimeout(interval);
+      // Unsubscribe for the focus Listener
+      unsubscribe;
+    };
 
+  }
   //Adds object to Events  //addToEvents = async () =>
   addToEvents = async () => {
     const { name, description, location, eDate, eTime } = this.state;
@@ -108,7 +124,7 @@ export default class CreateEvent extends Component {
     return (
       <React.Fragment  >
         <View style ={styles.viewBar}>
-          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(this.props.route.params.lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
+          <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(this.state.lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'}/></TouchableOpacity>
         </View>
         <View style={styles.formstyle}>
         <Input
@@ -176,7 +192,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    marginBottom: 20,
   },
   formstyle: {
     flex: 1,
@@ -225,7 +240,7 @@ const styles = StyleSheet.create({
   },
 
   finishCreateButton: {
-    backgroundColor: '#ff7600',
+    backgroundColor: '#D73F09',
     borderRadius: 12,
     width: '100%',
   },

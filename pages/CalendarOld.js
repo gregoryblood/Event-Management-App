@@ -159,7 +159,7 @@ export default class Calendar extends Component {
           </div>
           <div style={{ flex: 1, textAlign: 'right' }}>
             <div style={{ margin: '12px' }}>
-              <span  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': this.state.selectedTab == 'Tab1' ? "#ff9900" : "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-calendar"} size={30} color={this.state.selectedTab == 'Tab1' ? "#fff" : "#666"} /></span>
+              <span  style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 50, 'background': this.state.selectedTab == 'Tab1' ? "#D73F09" : "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-calendar"} size={30} color={this.state.selectedTab == 'Tab1' ? "#fff" : "#666"} /></span>
               <span  onClick={() => this.props.navigation.navigate('ViewEvents')} style={{ 'overflow': 'none', 'zIndex': 1, 'position': 'fixed', 'top': 5, 'right': 85, 'background': this.state.selectedTab == 'Tab2' ? "#ff9900" : "#fff", padding: 6, display: 'inline-block', border: '1px solid #ff9900' }}><Ionicons name={"ios-list"} size={30} color={this.state.selectedTab == 'Tab1' ? "#666" : "#fff"} /></span>
             </div>
           </div>

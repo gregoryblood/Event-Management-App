@@ -1,6 +1,6 @@
 import React, { Component, } from 'react'
 import {
-  View, Text, StyleSheet, TouchableOpacity
+  View, Text, StyleSheet, TouchableOpacity, Dimensions
 } from 'react-native';
 import {  addAttendee,removeAttendee, removeEvent, getAttendee } from '../Client/API/index.js';
 import {Feather} from '@expo/vector-icons';
@@ -8,7 +8,14 @@ import {MilToCil} from './HelperFuncs';
 
 import { firebase } from '@firebase/app'
 import 'firebase/auth';
-
+import { ScrollView } from 'react-native-gesture-handler';
+const {
+  width: SCREEN_WIDTH,
+} = Dimensions.get('window');
+var fontSize = 20;
+if (SCREEN_WIDTH > 400) {
+  fontSize = 36;
+}
 export default class EventView extends Component {
   constructor(props) {
     super(props);
@@ -74,6 +81,20 @@ export default class EventView extends Component {
 
     await this.getList(id);
   }
+  showAttendees() {
+    const data = this.state.signedup;
+    if (data[0]) {
+      var items = [];
+      data.forEach(element => {
+        items.push(
+        <Text style={styles.studentsSignedUp} key={element.email}>
+          {element.email}
+        </Text>);
+      });
+      return items;
+    }
+  }
+
   //Sync the user's calendar
   syncFun() {
     //Calendar part
@@ -111,31 +132,36 @@ export default class EventView extends Component {
   render() {
     const {id, name, edate, location, description, etime, maxslots, slots, lastPage, owned} = this.props.route.params;
     return (
-      <View style ={styles.containter}>
+      <View style={styles.container}>
         {this.state.menu && 
-        <View style = {styles.signSheet}>
-          <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Feather name={"check-circle"} size = {40} /></Text></TouchableOpacity>
-          {owned && 
-            <TouchableOpacity style = {styles.optionContainer} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
-          }
-          <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.signOut}><Text style = {styles.logout}>Sign Out <Feather name={"log-out"} size = {40} /></Text></TouchableOpacity>
-        </View>
+          <View style = {styles.signSheet}>
+            <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Feather name={"check-circle"} size = {40} /></Text></TouchableOpacity>
+            {owned && 
+              <TouchableOpacity style = {styles.optionContainer} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
+            }
+            <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.signOut}><Text style = {styles.logout}>Sign Out <Feather name={"log-out"} size = {40} /></Text></TouchableOpacity>
+          </View>
         }
-        <View style ={styles.displayCard}>
         <View style ={styles.viewBar}>
           <TouchableOpacity style = {styles.backBox} onPress={() => this.props.navigation.navigate(lastPage)}><Feather name={"arrow-left"} size={42} color={'gray'} /></TouchableOpacity>
           <TouchableOpacity style = {styles.optionBox} onPress={this.openMenu}><Feather name={"more-vertical"} size={42} color={'gray'} /></TouchableOpacity>
         </View>
-        <Text style = {styles.cardTitle}>{name}</Text>
-        <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
-        <Text style = {styles.cardWhenWhere}>{location} at { MilToCil(etime) }</Text>
-        {
-          maxslots > 0 &&
-          <Text style = {styles.cardWhenWhere}>{this.state.slots}/{maxslots} spots available</Text>
-        }
-        <Text style = {styles.cardDescription}>{description}</Text>
-
-        {owned ? 
+        <ScrollView showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}>
+          <View style ={styles.displayCard}>
+            <Text style = {styles.cardTitle}>{name}</Text>
+            <Text style = {styles.cardWhenWhere}>{edate.slice(0, 10) }</Text>
+            <Text style = {styles.cardWhenWhere}>{location} at { MilToCil(etime) }</Text>
+            {
+              maxslots > 0 &&
+              <Text style = {styles.cardWhenWhere}>{this.state.slots}/{maxslots} spots available</Text>
+            }
+            <Text style = {styles.cardDescription}>{description}</Text>
+            {owned && <Text style={styles.studentsSignedUpHeader}>Students Signed Up</Text>}
+            {owned && this.showAttendees()}
+          </View>  
+        </ScrollView>
+        {owned ?   
           <TouchableOpacity style={styles.editbutton} title="Edit Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('EditEvent', 
               {
                 lastPage: 'EventView', 
@@ -161,7 +187,6 @@ export default class EventView extends Component {
             <Text style={styles.signUpText}>Sign Up</Text>
           </TouchableOpacity> 
         }
-        </View>  
       </View>
     )
   }
@@ -185,7 +210,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 60/2,
     zIndex: 0,
-    backgroundColor: '#ff7600',
+    backgroundColor: '#D73F09',
     margin: 0,
     marginLeft: 'auto',
     padding: 13,
@@ -195,12 +220,14 @@ const styles = StyleSheet.create({
     textAlign:'center',
   },
 
-  containter: {
+  container: {
     padding: 20,
     position: 'absolute',
     zIndex: 0,
     width: '100%',
     height:'100%',
+    justifyContent: 'center',
+    
   },
 
   backBox:{
@@ -296,7 +323,6 @@ const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     borderWidth: 2,
     borderRadius: 16,
-    
   },
 
   optionBox:{
@@ -316,28 +342,24 @@ const styles = StyleSheet.create({
   cardWhenWhere:{
     color: 'grey',
     textAlign: 'left',
-    fontSize: 25,
+    fontSize: fontSize/1.2,
+    
   },
   displayCard:{
     width: '100%',
     height: '100%',
     paddingBottom: 80,
   }, 
-  cardText:{
-    fontSize: 16,
-    textAlign: 'left',
-  },
+
   cardDescription:{
     paddingTop: 10,
     textAlign: 'left',
-    fontSize: 20,
-
+    fontSize: fontSize,
   },
   cardTitle:{
     paddingTop: 10,
     textAlign: 'left',
-    fontSize: 26,
-
+    fontSize: fontSize,
   },
 
   signUpButton: {
@@ -360,12 +382,15 @@ const styles = StyleSheet.create({
   },
   signedupButton: {
     position: 'absolute',
-    bottom: 0,
-    backgroundColor: '#ff7600',
+    bottom: 75,
+    backgroundColor: '#D73F09',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#ff7600',
-    width: '100%',
+    display: 'flex',
+    margin: 'auto',
+    borderColor: '#D73F09',
+    width: '97%',
+
   },
   signedupText: {
     textAlign: 'center',
@@ -376,6 +401,13 @@ const styles = StyleSheet.create({
     paddingBottom: 70,
     width: '100%',
   },
-
+  studentsSignedUp: {
+    fontSize: fontSize/1.5,
+  },
+  studentsSignedUpHeader: {
+    fontSize: fontSize/1.5,
+    fontWeight: 'bold',
+    paddingTop: 20,
+  }
 
 });

@@ -112,7 +112,7 @@ export default class CalendarView extends Component {
     if (this.state.day) {
       markedDates[this.state.day] = {
         selected: true, 
-        selectedColor: '#ff7600', 
+        selectedColor: '#D73F09', 
         disableTouchEvent: true,
       }
     }
@@ -136,9 +136,9 @@ export default class CalendarView extends Component {
               }
             }}
             theme={{
-              todayTextColor: '#ff7600',
+              todayTextColor: '#D73F09',
               calendarBackground: '#f2f2f2',
-              selectedDayBackgroundColor: '#ff7600',
+              selectedDayBackgroundColor: '#D73F09',
               selectedDayTextColor: '#ffffff',
               textDayFontWeight: '600',
               textMonthFontWeight: 'bold',
@@ -210,7 +210,7 @@ export default class CalendarView extends Component {
           }
           {
             gUser.type !== 'Student' ? 
-            <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'ViewMyEvents'})}>
+            <TouchableOpacity style={styles.createbutton} title="Add Event" color = '#ff9900' onPress={() => this.props.navigation.navigate('CreateEvent', {lastPage: 'CalendarView'})}>
               <Feather style={styles.icon} name={'edit'} size={35} color={'white'} />
             </TouchableOpacity>
             :
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 60/2,
     zIndex: 0,
-    backgroundColor: '#ff7600',
+    backgroundColor: '#D73F09',
     margin: 20,
     marginLeft: 'auto',
     padding: 13,
