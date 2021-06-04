@@ -3,21 +3,25 @@
 https://osu-events.github.io/
 
 **About**<br>
-An app for OSU for students to view and sign-up for events
+The Oregon State Event Planner provides staff and students a platform for managing and signing up for events in an all-in-one web application. Students can to log in to the app using their OSU email and browse, search, and sign up for events hosted on campus. OSU faculty can login using their OSU emails and are provided with event management options such as deleting events, creating new ones, editing, or tracking event attendance. Users are able to not only sign up for these events, but track their own personal event page to stay up to date on their upcoming events. With the capabilities of the OSU Event Planner today, the goal for the future is to not only ease the current event management process, but to invite opportunities for more events on campus that were unlikely to happen before.
 
-The OSU Events App is built to help Oregon State University students to explore and sign up for different events at Oregon State.
+**Launch Directions**<br>
+1. Download Repo to local machine
+2. Navigate into Repo directory
+3. Run 'npm install'
+4. Run 'npm run web'
 
-Administrators are also able to create and manage events for the students to sign up for. 
-
-Uses React Native, Express, NodeJS, and Firebase
+-Additionally if you're using a local server you can go into the code and change out the 'baseURL' variable in 'Client/index.js' to localhost.
 
 **Incoming Features**<br>
 -Headers on the form for creating/editing an event.<br>
 -Can download the events to your calendar.
 
 **Current Bugs**<br>
--On Safari, selecting a date on the calendar does not send a correct date.<br>
--Calendar can cause a crash.
+-On mobile safari, selecting a date on the calendar does not send a correct date.<br>
+-Formatting of the Sign-up button reacts differently on Mobile
+
+
 
 **Screenshots**
 
