@@ -1,6 +1,6 @@
 # Event-Management-App
-**Link**<br>
-[OSU Events](https://osu-events.github.io/)
+#**Link**<br>
+###[OSU Events](https://osu-events.github.io/)
 
 
 **About**<br>
