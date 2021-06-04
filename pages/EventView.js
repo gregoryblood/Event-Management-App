@@ -35,7 +35,6 @@ export default class EventView extends Component {
     this.openMenu = this.openMenu.bind(this);
   }
   componentDidMount() {
-    
     const { id } = this.props.route.params;
     this.getList(id);
     this.setState({
@@ -58,7 +57,7 @@ export default class EventView extends Component {
   }
 
  async addToList(id, maxslots){
-    if(this.state.slots != maxslots){
+    if(this.state.slots != maxslots || maxslots == 0){
       this.setState({
         issignedup: true,
         slots: this.state.slots+1
@@ -136,7 +135,7 @@ export default class EventView extends Component {
         {this.state.menu && 
           <View style = {styles.signSheet}>
             <TouchableOpacity style = {styles.optionContainerTop} onPress={this.syncFun}><Text style = {styles.syncCalendar}>Sync Calendar <Feather name={"check-circle"} size = {40} /></Text></TouchableOpacity>
-            {owned && 
+            {(owned || gUser.type === 'Master') && 
               <TouchableOpacity style = {styles.optionContainer} onPress={this.delFun}><Text style = {styles.deleteEvent}>Delete Event <Feather name={"trash"} size = {40} /></Text></TouchableOpacity>
             }
             <TouchableOpacity style = {styles.optionContainerBottom} onPress={this.signOut}><Text style = {styles.logout}>Sign Out <Feather name={"log-out"} size = {40} /></Text></TouchableOpacity>
@@ -157,7 +156,7 @@ export default class EventView extends Component {
               <Text style = {styles.cardWhenWhere}>{this.state.slots}/{maxslots} spots available</Text>
             }
             <Text style = {styles.cardDescription}>{description}</Text>
-            {owned && <Text style={styles.studentsSignedUpHeader}>Students Signed Up</Text>}
+            {(owned && slots > 0) && <Text style={styles.studentsSignedUpHeader}>Students Signed Up</Text>}
             {owned && this.showAttendees()}
           </View>  
         </ScrollView>
@@ -364,12 +363,14 @@ const styles = StyleSheet.create({
 
   signUpButton: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 75,
     backgroundColor: 'white',
     borderRadius: 16,
     borderWidth: 1,
+    display: 'flex',
+    margin: 'auto',
     borderColor: 'black',
-    width: '100%',
+    width: '90%',
   },
   signUpText: {
     textAlign: 'center',
@@ -389,7 +390,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     margin: 'auto',
     borderColor: '#D73F09',
-    width: '97%',
+    width: '90%',
 
   },
   signedupText: {

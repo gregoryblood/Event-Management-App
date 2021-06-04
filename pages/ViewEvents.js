@@ -11,7 +11,6 @@ export default class ViewEvents extends Component {
     super(props);
     this.state = {
       data: null,
-
     };
   }
   componentDidMount() {
@@ -33,7 +32,6 @@ export default class ViewEvents extends Component {
     if (data) {
       this.setState({ data });
     }
-    
   }
 
   render() {
@@ -51,7 +49,6 @@ export default class ViewEvents extends Component {
                   {data && EventList(this.props.navigation, 'ViewEvents', this.state.data, true)}
                 </View>
               </React.Fragment>
-              
             )
               : //else 
               (<ActivityIndicator style={{ top: '50%'}}/>)
@@ -67,7 +64,6 @@ export default class ViewEvents extends Component {
       </React.Fragment>
     )
   }
-
 }
 
 const styles = StyleSheet.create({

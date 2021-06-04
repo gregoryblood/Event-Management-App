@@ -43,7 +43,7 @@ async function getUserData(email) {
     gUser.type = data.data[0].attributes.primaryAffiliation;
 
     //Can set youself as admin here[DELETE FOR RELEASE]
-    //gUser.type = 'Admin';
+    //gUser.type = 'Master';
 
     isValid = true;
     return isValid; 
@@ -61,6 +61,7 @@ function App({ user,  signInWithGoogle }) {
     getUserData(user.email).then(() => {
       if (isValid == true) {
         gUser.email = user.email;
+        //gUser.email = 'student@oregonstate.edu';
         gUser.onid = gUser.email.substr(0, gUser.email.indexOf('@'));
         setLoggedIn(true);
       }

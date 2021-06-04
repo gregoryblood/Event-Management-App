@@ -31,7 +31,9 @@ export function EventList(nav, from, arr, showAll) {
                                         lastPage: from, owned: (event.author == gUser.email ? true : false), signedup: event.signedup
                                         })}>
       {
-        (showAll || issignedup || isowned) && 
+        //Essentially if on 'My Events' owned and signed up events are shown
+        //otherwise events not owned or signed up will show
+        ((showAll && !isowned && !issignedup) || (!showAll && (isowned || issignedup) )) && 
         <View style={styles.event} >
         {event.author == gUser.email ?
           <View style={styles.icon} />

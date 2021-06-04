@@ -55,38 +55,29 @@ export default class EditEvent extends Component {
       maxslots = 0;
     }
     
-    if (String(name).length >= 3
-        && String(location).length >= 2
-        && String(eDate).length == 10
-        && String(eTime).length == 5
-        ) 
+    if (String(name).length >= 3 && String(location).length >= 2 && String(eDate).length == 10 && String(eTime).length == 5) 
     {
       //Makes sure date input are all numbers
-      if (!(/^\d+$/.test(eDate.substr(5, 2))) || 
-          !(/^\d+$/.test(eDate.substr(8, 2))) ||
-          !(/^\d+$/.test(eDate.substr(0, 4))))
+      if (!(/^\d+$/.test(eDate.substr(5, 2))) || !(/^\d+$/.test(eDate.substr(8, 2))) ||!(/^\d+$/.test(eDate.substr(0, 4))))
       {
         alert("Date is invalid");
         return;
       }
       //Gets Date from string after checking ranges and if num
       //(Not perfect for days but that's handled later)
-      if (!(parseInt(eDate.substr(5, 2), 10) >= 0 && parseInt(eDate.substr(5, 2), 10) < 13 &&
-           parseInt(eDate.substr(8, 2), 10) >= 0 && parseInt(eDate.substr(8, 2), 10) < 32 )) {
+      if (!(parseInt(eDate.substr(5, 2), 10) >= 0 && parseInt(eDate.substr(5, 2), 10) < 13 && parseInt(eDate.substr(8, 2), 10) >= 0 && parseInt(eDate.substr(8, 2), 10) < 32 )) {
         alert("Date Range is Incorrect");
         return;
       }
       const date = eDate.substr(0, 4)+'-'+eDate.substr(5, 2)+'-'+eDate.substr(8, 2)+'T00:00:00.000Z';
       //Makes sure time input are all numbers
-      if (!(/^\d+$/.test(eTime.substr(0, 2))) || 
-      !(/^\d+$/.test(eTime.substr(3, 2))))
+      if (!(/^\d+$/.test(eTime.substr(0, 2))) || !(/^\d+$/.test(eTime.substr(3, 2))))
         {
           alert("Time is invalid");
           return;
         }
       //Gets time from string after checking ranges
-      if (!(parseInt(eTime.substr(0, 2), 10) >= 0 && parseInt(eTime.substr(0, 2), 10) < 24 &&
-          parseInt(eTime.substr(3, 2), 10) >= 0 && parseInt(eTime.substr(3, 2), 10) < 60)) {
+      if (!(parseInt(eTime.substr(0, 2), 10) >= 0 && parseInt(eTime.substr(0, 2), 10) < 24 && parseInt(eTime.substr(3, 2), 10) >= 0 && parseInt(eTime.substr(3, 2), 10) < 60)) {
         alert("Invalid time of the day");
         return;
       }
@@ -141,7 +132,7 @@ export default class EditEvent extends Component {
             <Input
               placeholder='HH:MM'
               defaultValue={etime.substr(0, 5)}
-              onChangeText={this.updateField('etime')}
+              onChangeText={this.updateField('eTime')}
               label="Time (24 Hr)"
               maxLength={5}
               containerStyle={styles.formInputTime}
@@ -152,7 +143,7 @@ export default class EditEvent extends Component {
             <Input
               placeholder='YYYY-MM-DD'
               defaultValue={edate.substr(0, 10)}
-              onChangeText={this.updateField('edate')}
+              onChangeText={this.updateField('eDate')}
               label="Date"
               maxLength={10}
               containerStyle={styles.formInputDate}
