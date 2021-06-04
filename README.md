@@ -11,7 +11,7 @@ The Oregon State Event Planner provides staff and students a platform for managi
 3. Run 'npm install'
 4. Run 'npm run web'
 
--Additionally if you're using a local server you can go into the code and change out the 'baseURL' variable in 'Client/index.js' to localhost.
+  -Additionally if you're using a local server you can go into the code and change out the 'baseURL' variable in 'Client/index.js' to localhost.
 
 **Incoming Features**<br>
 -Headers on the form for creating/editing an event.<br>
